@@ -1,3 +1,3 @@
 import streamlit as st
 
-st.title("모의 면접 사이트")
+st.title("모의 면접 사이트 <모면>")
