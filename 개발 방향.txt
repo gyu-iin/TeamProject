@@ -1,5 +1,5 @@
-main - 사이트 메인 페이지
-~~ - 사용자 정보 입력 페이지( API key, 이름, 나이, 관심 분야, 관심 회사 등등)
-AI mock interview - 모의 면접을 진행하는 페이지 (AI)
-Interview_result - 모의 면접을 진행한 결과 확인 및 피드백 제공 (AI)
-AI_interview_Tip - 면접 준비를 위해 필요한 여러가지 정보를 제공 (AI)
+main - 사이트 메인 페이지 - 김규민
+~~ - 사용자 정보 입력 페이지( API key, 이름, 나이, 관심 분야, 관심 회사 등등) - 장경태
+AI mock interview - 모의 면접을 진행하는 페이지 (AI) - 정경환
+Interview_result - 모의 면접을 진행한 결과 확인 및 피드백 제공 (AI) - 장인영
+AI_interview_Tip - 면접 준비를 위해 필요한 여러가지 정보를 제공 (AI) - 장인영
