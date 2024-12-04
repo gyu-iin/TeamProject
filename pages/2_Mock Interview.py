@@ -26,6 +26,8 @@ if "thread" not in st.session_state:
 for msg in st.session_state.interview_messages:
     show_message(msg)
 
+st.tilte("모의 면접관")
+
 if prompt := st.chat_input("Ask any question"):
     msg = {"role":"user", "content":prompt}
     show_message(msg)
