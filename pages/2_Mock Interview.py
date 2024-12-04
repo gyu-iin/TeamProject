@@ -55,7 +55,7 @@ if prompt := st.chat_input("Ask any question"):
         assistant_id=assistant.id
     )
 
-if run.status == 'completed':
+    if run.status == 'completed':
         api_response = client.beta.threads.messages.list(
             thread_id=thread.id,
             run_id=run.id,
