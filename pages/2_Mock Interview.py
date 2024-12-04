@@ -18,6 +18,10 @@ if api_key:
         client = OpenAI(api_key=api_key)
         st.session_state['openai_client'] = client
 
+def show_message(msg):
+    with st.chat_message(msg['role']):
+        st.markdown(msg["content"])
+
 if "interview_messages" not in st.session_state:
     st.session_state.interview_messages = []
 
@@ -28,12 +32,11 @@ if "assistant" not in st.session_state:
         model="gpt-4o-mini"
     )
 
-def show_message(msg):
-    with st.chat_message(msg['role']):
-        st.markdown(msg["content"])
-
 if "thread" not in st.session_state:
     st.session_state.thread = client.beta.threads.create()
+
+for msg in st.session_state.chatpdf_messages:
+    show_message(msg)
 
 if prompt := st.chat_input("Ask any question"):
     msg = {"role":"user", "content":prompt}
