@@ -35,7 +35,7 @@ if "assistant" not in st.session_state:
 if "thread" not in st.session_state:
     st.session_state.thread = client.beta.threads.create()
 
-for msg in st.session_state.chatpdf_messages:
+for msg in st.session_state.interview_messages:
     show_message(msg)
 
 if prompt := st.chat_input("Ask any question"):
