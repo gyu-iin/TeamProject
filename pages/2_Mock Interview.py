@@ -18,8 +18,8 @@ if api_key:
         client = OpenAI(api_key=api_key)
         st.session_state['openai_client'] = client
 
-if "messages" not in st.session_state:
-    st.session_state.messages = []
+if "interview_messages" not in st.session_state:
+    st.session_state.interview_messages = []
 
 if "assistant" not in st.session_state:
     st.session_state.assistant = client.beta.assistants.create(
@@ -38,7 +38,7 @@ if "thread" not in st.session_state:
 if prompt := st.chat_input("Ask any question"):
     msg = {"role":"user", "content":prompt}
     show_message(msg)
-    st.session_state.messages.append(msg)
+    st.session_state.interview_messages.append(msg)
 
     thread = st.session_state.thread
 
@@ -67,6 +67,6 @@ if prompt := st.chat_input("Ask any question"):
                     response = content.text.value
                     msg = {"role":"assistant","content":response}
                     show_message(msg)
-                    st.session_state.chatpdf_messages.append(msg)
+                    st.session_state.interview_messages.append(msg)
     else:
         st.error(f"Response not completed: {run.status}")
