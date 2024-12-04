@@ -16,8 +16,8 @@ if "messages" not in st.session_state:
 if "assistant" not in st.session_state:
     st.session_state.assistant = client.beta.assistants.create(
         instructions="사용자 정보에 따라 모의 면접을 도와주세요.",
-        name="Assistant",
-        model="gpt-4o-mini",
+        name="모의면접관",
+        model="gpt-4o-mini"
     )
 
 def show_message(msg):
