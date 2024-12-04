@@ -9,7 +9,7 @@ from openai import OpenAI
 api_key = st.text_input("OpenAI API Key", 
                         value=st.session_state.get('api_key',''),
                         type='password')
-                        
+
 if api_key:
     st.session_state['api_key'] = api_key
     if 'openai_client' in st.session_state:
@@ -54,3 +54,12 @@ if prompt := st.chat_input("Ask any question"):
         thread_id=thread.id,
         assistant_id=assistant.id
     )
+
+    for run_step in run_steps.data:
+        if run_step.step_details.type == 'tool_calls':
+            for tool_call in run_step.step_details.tool_calls:
+                if tool_call.type == 'code_interpreter':
+                    code = tool_call.code_interpreter.input
+                    msg = {"role":"code","content":code}
+                    show_message(msg)
+                    st.session_state.messages.append(msg)
