@@ -1,22 +1,10 @@
 import streamlit as st
-from openai import OpenAI
 
-# client = st.session_state.get('openai_client', None)
-# if client is None:
-#     if st.button("사용자 정보에서 API Key가 입력되지 않았습니다."):
-#         st.switch_page("pages/1_User information.py")
-#     st.stop()
-api_key = st.text_input("OpenAI API Key", 
-                        value=st.session_state.get('api_key',''),
-                        type='password')
-
-if api_key:
-    st.session_state['api_key'] = api_key
-    if 'openai_client' in st.session_state:
-        client = st.session_state['openai_client']
-    else:
-        client = OpenAI(api_key=api_key)
-        st.session_state['openai_client'] = client
+client = st.session_state.get('openai_client', None)
+if client is None:
+    if st.button("사용자 정보에서 API Key가 입력되지 않았습니다."):
+        st.switch_page("pages/1_User information.py")
+    st.stop()
 
 def show_message(msg):
     with st.chat_message(msg['role']):
