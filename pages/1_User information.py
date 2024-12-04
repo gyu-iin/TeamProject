@@ -13,3 +13,4 @@ if api_key:
         client = OpenAI(api_key=api_key)
         st.session_state['openai_client'] = client
 
+user_name = st.text_input("사용자 이름", value =st.session_state.get('user_name',''))
