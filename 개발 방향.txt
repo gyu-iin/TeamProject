@@ -1,6 +1,9 @@
 Streamlit 사이트 주소
 https://teamproject-rtt3q7mjbjqmxjrrzq9c2j.streamlit.app/
 
+streamlit 기능 모음
+https://docs.streamlit.io/develop/api-reference
+
 main - 사이트 메인 페이지 - 김규민
 ~~ - 사용자 정보 입력 페이지( API key, 이름, 나이, 관심 분야, 관심 회사 등등) - 김규민
 AI mock interview - 모의 면접을 진행하는 페이지 (AI) - 정경환
