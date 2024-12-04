@@ -55,11 +55,18 @@ if prompt := st.chat_input("Ask any question"):
         assistant_id=assistant.id
     )
 
-    for run_step in run_steps.data:
-        if run_step.step_details.type == 'tool_calls':
-            for tool_call in run_step.step_details.tool_calls:
-                if tool_call.type == 'code_interpreter':
-                    code = tool_call.code_interpreter.input
-                    msg = {"role":"code","content":code}
+if run.status == 'completed':
+        api_response = client.beta.threads.messages.list(
+            thread_id=thread.id,
+            run_id=run.id,
+            order="asc"
+        )
+        for data in api_response.data:
+            for content in data.content:
+                if content.type == 'text':
+                    response = content.text.value
+                    msg = {"role":"assistant","content":response}
                     show_message(msg)
-                    st.session_state.messages.append(msg)
+                    st.session_state.chatpdf_messages.append(msg)
+    else:
+        st.error(f"Response not completed: {run.status}")
