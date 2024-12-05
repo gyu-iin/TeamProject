@@ -1,5 +1,7 @@
 import streamlit as st
 
+st.write(st.session_state.user_info)
+
 client = st.session_state.get('openai_client', None)
 if client is None:
     if st.button("사용자 정보에서 API Key가 입력되지 않았습니다."):
