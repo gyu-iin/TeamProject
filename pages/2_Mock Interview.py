@@ -1,5 +1,7 @@
 import streamlit as st
 
+st.title("모의 면접관")
+#사용자 정보 업데이트
 user_info = st.session_state.user_info
 
 client = st.session_state.get('openai_client', None)
@@ -37,7 +39,6 @@ if "thread" not in st.session_state:
 for msg in st.session_state.interview_messages:
     show_message(msg)
 
-st.write("모의 면접관")
 
 if prompt := st.chat_input("Ask any question"):
     msg = {"role":"user", "content":prompt}
