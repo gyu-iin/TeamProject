@@ -30,14 +30,7 @@ if "assistant" not in st.session_state:
 
 #사용자 정보를 LLM에게 전달
 if "thread" not in st.session_state:
-    st.session_state.thread = client.beta.threads.create(
-        messages = [
-        {
-        "role": "user",
-        "content" : f"{user_info} 다음 사용자 정보를  토대로 모의 면접을 진행하십시오"
-        }
-        ]
-    )
+    st.session_state.thread = client.beta.threads.create()
     
 
 for msg in st.session_state.interview_messages:
