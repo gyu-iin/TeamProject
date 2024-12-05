@@ -23,7 +23,7 @@ user_info = (f"""
 이름 : {user_name}
 나이 : {user_age}
 관심분야 : {user_field}
-나이 : {user_edu}
+학력 : {user_edu}
 """)
 
 st.session_state.user_info = user_info
