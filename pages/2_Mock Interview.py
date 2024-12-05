@@ -1,6 +1,6 @@
 import streamlit as st
 
-st.write(st.session_state.user_info)
+user_info = st.session_state.user_info
 
 client = st.session_state.get('openai_client', None)
 if client is None:
@@ -22,8 +22,12 @@ if "assistant" not in st.session_state:
         model="gpt-4o-mini"
     )
 
+#사용자 정보를 LLM에게 전달
 if "thread" not in st.session_state:
-    st.session_state.thread = client.beta.threads.create()
+    st.session_state.thread = client.beta.threads.create(
+        "role": "user",
+        "content" : f"{user_info} 다음 사용자 정보를  토대로 모의 면접을 진행하십시오"
+    )
 
 for msg in st.session_state.interview_messages:
     show_message(msg)
