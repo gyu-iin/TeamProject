@@ -55,6 +55,19 @@ if "assistant" not in st.session_state:
 if "thread" not in st.session_state:
     st.session_state.thread = client.beta.threads.create()
 
+col1, col2 = st.columns(2)
+
+with col1:
+    if st.button("Clear"):
+        st.session_state.messages = []
+        del st.session_state.thread
+
+with col2:
+    if st.button("Exit Chat"):
+        st.session_state.messages = []
+        del st.session_state.thread
+        del st.session_state.assistant
+
 if "chatbot_messages" not in st.session_state:
     st.session_state.chatbot_messages = [
         {"role":"system","content":f"""
