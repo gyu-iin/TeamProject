@@ -96,6 +96,7 @@ if not start_interview:
     if st.button("면접 시작"):
         start_interview = True
         st.session_state["interview started"] = start_interview
+        st.write(st.session_state.interview_messages)
 
 if start_interview:
     if len(st.session_state.interview_messages) < 2:
