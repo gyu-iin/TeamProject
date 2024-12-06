@@ -2,10 +2,14 @@ import streamlit as st
 
 st.title("모의 면접관")
 
-if start_interview in st.session_state:
-    start_interview = st.session_state["interview started"]
-else:
+start_interview = st.session_state.get('interview started')
+if start_interview is None:
     start_interview = False
+else:
+    if 'interview started' in st.session_state:
+        start_interview = st.session_state['interview started']
+    else:
+        st.session_state['interview started'] = start_interview
 
 #사용자 정보 업데이트
 user_info = st.session_state.get('user_info', None)
@@ -46,8 +50,9 @@ if "chatbot_messages" not in st.session_state:
 {user_info}        
 """}
     ]
-    for msg in st.session_state.interview_messages:
-        show_message(msg)
+
+for msg in st.session_state.interview_messages:
+    show_message(msg)
 
 if not start_interview:
     interview_company = st.text_input("면접을 볼 회사를 입력해주세요", 
