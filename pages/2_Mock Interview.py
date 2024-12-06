@@ -49,7 +49,7 @@ if "assistant" not in st.session_state:
         instructions="사용자 정보에 따라 모의 면접을 도와주세요.",
         name="모의면접관",
         model="gpt-4o-mini",
-        tool = FUNCTION_TOOLS_SCHEMA
+        tools = FUNCTION_TOOLS_SCHEMA
     )
 
 if "thread" not in st.session_state:
