@@ -64,7 +64,7 @@ if user_info["면접을 볼 회사"] is not None:
     {user_info}        
     """}
         ]
-        
+    st.write(user_info)   
     
     if "assistant" not in st.session_state:
         st.session_state.assistant = client.beta.assistants.create(
