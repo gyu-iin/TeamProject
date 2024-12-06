@@ -33,7 +33,7 @@ with col1:
 
 with col2:
     if st.button("면접 조기 종료"):
-        st.session_state.interview_messages = None
+        st.session_state.interview_messages = []
         user_info["면접을 볼 회사"] = None
         del st.session_state.thread
         del st.session_state.assistant
