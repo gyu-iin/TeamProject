@@ -18,8 +18,6 @@ col1, col2 = st.columns(2)
 with col1:
     st.title("모의 면접관")
 
-st.write(len(st.session_state.interview_messages))
-
 #사용자 정보 업데이트
 user_info = st.session_state.get('user_info', None)
 if user_info is None:
@@ -65,6 +63,8 @@ if "interview_messages" not in st.session_state:
 """}
     ]
     st.write(user_info)
+
+st.write(len(st.session_state.interview_messages))
 
 for msg in st.session_state.interview_messages[1:]:
     show_message(msg)
