@@ -1,7 +1,6 @@
 import streamlit as st
 import json
 import langchain
-# from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import JsonOutputParser
 from pydantic import BaseModel, Field
@@ -15,7 +14,7 @@ FUNCTION_TOOLS_SCHEMA = [
     SCHEMA_INTERVIEW
 ]
 
-col1, col2 = st.columns(2)
+col1, col2, col3 = st.columns(3)
 
 with col1:
     st.title("모의 면접관")
@@ -48,10 +47,10 @@ def show_message(msg):
     with st.chat_message(msg['role']):
         st.markdown(msg["content"])
 
-for msg in st.session_state.interview_messages[1:]:
+for msg in st.session_state.interview_messages[2:]:
     show_message(msg)
     
-with col2:
+with col3:
     if start_interview:
         if st.button("면접 조기 종료"):
             st.session_state.interview_messages = []
@@ -93,8 +92,10 @@ if not start_interview:
         st.session_state["interview started"] = start_interview
 
 if start_interview:
-    if len(st.session_state.interview_messages) < 1:
+    if len(st.session_state.interview_messages) < 2:
         msg = {"role":"user", "content": "면접을 시작해줘"}
+        st.session_state.interview_messages.append(msg)
+
         thread = st.session_state.thread
 
         assistant = st.session_state.assistant
