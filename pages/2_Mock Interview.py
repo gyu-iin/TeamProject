@@ -46,7 +46,7 @@ if "chatbot_messages" not in st.session_state:
     for msg in st.session_state.interview_messages:
         show_message(msg)
 
-if not start_interview:
+while not start_interview:
     interview_company = st.text_input("면접을 볼 회사를 입력해주세요", 
                             value=st.session_state.get('interview_company',''))
     user_info["면접을 볼 회사"] = interview_company
@@ -54,7 +54,7 @@ if not start_interview:
     if st.button("면접 시작"):
         start_interview = True
 
-while(start_interview):
+while start_interview:
     if prompt := st.chat_input("질문에 대답하세요."):
         msg = {"role":"user", "content":prompt}
         show_message(msg)
