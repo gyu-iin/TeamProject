@@ -13,7 +13,18 @@ FUNCTION_TOOLS_SCHEMA = [
     SCHEMA_INTERVIEW
 ]
 
-st.title("모의 면접관")
+col1, col2 = st.columns(2)
+
+with col1:
+    st.title("모의 면접관")
+
+with col2:
+    if st.button("면접 조기 종료"):
+        st.session_state.interview_messages = None
+        user_info["면접을 볼 회사"] = None
+        del st.session_state.thread
+        del st.session_state.assistant
+        start_interview = False 
 
 start_interview = st.session_state.get('interview started')
 if start_interview is None:
@@ -55,45 +66,31 @@ if "interview_messages" not in st.session_state:
 for msg in st.session_state.interview_messages[2:]:
     show_message(msg)
 
-if "assistant" not in st.session_state:
-    st.session_state.assistant = client.beta.assistants.create(
-        instructions="사용자 정보에 따라 모의 면접을 도와주세요.",
-        name="모의면접관",
-        model="gpt-4o-mini",
-        tools = FUNCTION_TOOLS_SCHEMA
-    )
-
-if "thread" not in st.session_state:
-    st.session_state.thread = client.beta.threads.create(
-        messages = st.session_state.interview_messages
-        
-    )
-    st.write(user_info)
-
-col1, col2 = st.columns(2)
-
-with col1:
-    if st.button("Clear"):
-        st.session_state.messages = []
-        del st.session_state.thread
-
-with col2:
-    if st.button("Exit Chat"):
-        st.session_state.messages = []
-        del st.session_state.thread
-        del st.session_state.assistant
-
 if not start_interview:
     interview_company = st.text_input("면접을 볼 회사를 입력해주세요", 
                             value=st.session_state.get('interview_company',''))
     user_info["면접을 볼 회사"] = interview_company
 
     if st.button("면접 시작"):
+        if "assistant" not in st.session_state:
+            st.session_state.assistant = client.beta.assistants.create(
+                instructions="사용자 정보에 따라 모의 면접을 도와주세요.",
+                name="모의면접관",
+                model="gpt-4o-mini",
+                tools = FUNCTION_TOOLS_SCHEMA
+            )
+
+        if "thread" not in st.session_state:
+            st.session_state.thread = client.beta.threads.create(
+                messages = st.session_state.interview_messages
+                
+            )
+
         start_interview = True
         st.session_state["interview started"] = start_interview
 
 if start_interview:
-    if len(st.session_state.interview_messages) < 1:
+    if len(st.session_state.interview_messages) <= 1:
         msg = {"role":"user", "content": "면접을 시작해줘"}
         st.write(len(st.session_state.interview_messages))
         st.write(user_info)
