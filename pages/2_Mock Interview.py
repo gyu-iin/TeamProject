@@ -41,6 +41,19 @@ def show_message(msg):
     with st.chat_message(msg['role']):
         st.markdown(msg["content"])
 
+if "chatbot_messages" not in st.session_state:
+    st.session_state.chatbot_messages = [
+        {"role":"system","content":f"""
+당신은 모의면접관입니다. 사용자 정보에 따라 사용자에게 모의면접을 실시하세요
+
+## 사용자 정보
+{user_info}        
+"""}
+    ]
+
+for msg in st.session_state.chatbot_messages[1:]:
+    show_message(msg)
+
 if "interview_messages" not in st.session_state:
     st.session_state.interview_messages = []
 
@@ -53,15 +66,7 @@ if "assistant" not in st.session_state:
     )
 
 if "thread" not in st.session_state:
-    st.session_state.thread = client.beta.threads.create(
-        messages=[
-    {
-      "role": "user",
-      "content": "사용자 정보에 따라 모의 면접을 실시하세요",
-      "attachments": [{"사용자 정보":user_info}]
-    }
-  ]
-    )
+    st.session_state.thread = client.beta.threads.create()
 
 col1, col2 = st.columns(2)
 
@@ -75,9 +80,6 @@ with col2:
         st.session_state.messages = []
         del st.session_state.thread
         del st.session_state.assistant
-
-for msg in st.session_state.interview_messages:
-    show_message(msg)
 
 if not start_interview:
     interview_company = st.text_input("면접을 볼 회사를 입력해주세요", 
