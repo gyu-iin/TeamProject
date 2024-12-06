@@ -69,26 +69,27 @@ st.write(len(st.session_state.interview_messages))
 for msg in st.session_state.interview_messages[1:]:
     show_message(msg)
 
+if user_info["면접을 볼 회사"] is not None
+    if "assistant" not in st.session_state or st.session_state.assistant is None:
+        st.session_state.assistant = client.beta.assistants.create(
+            instructions="사용자 정보에 따라 모의 면접을 도와주세요.",
+            name="모의면접관",
+            model="gpt-4o-mini",
+            tools = FUNCTION_TOOLS_SCHEMA
+        )
+
+    if "thread" not in st.session_state or st.session_state.thread is None:
+        st.session_state.thread = client.beta.threads.create(
+            messages = st.session_state.interview_messages
+            
+        )
+
 if not start_interview:
     interview_company = st.text_input("면접을 볼 회사를 입력해주세요", 
                             value=st.session_state.get('interview_company',''))
     user_info["면접을 볼 회사"] = interview_company
 
     if st.button("면접 시작"):
-        if "assistant" not in st.session_state or st.session_state.assistant is None:
-            st.session_state.assistant = client.beta.assistants.create(
-                instructions="사용자 정보에 따라 모의 면접을 도와주세요.",
-                name="모의면접관",
-                model="gpt-4o-mini",
-                tools = FUNCTION_TOOLS_SCHEMA
-            )
-
-        if "thread" not in st.session_state or st.session_state.thread is None:
-            st.session_state.thread = client.beta.threads.create(
-                messages = st.session_state.interview_messages
-                
-            )
-
         start_interview = True
         st.session_state["interview started"] = start_interview
 
