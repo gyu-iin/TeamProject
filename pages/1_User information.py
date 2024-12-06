@@ -36,3 +36,15 @@ if user_name or user_age or user_field or user_edu or user_exp:
     else:
         user_info = {"이름": user_name, "나이" : user_age, "관심분야" : user_field, "학력" : user_edu, "경력사항" : user_exp, "면접을 볼 회사":""}
         st.session_state['user_info'] = user_info
+
+col1, col2 = st.columns(2)
+
+withwith col1:
+    if st.button("사용자 정보 삭제"):
+        for i in user_info.keys():
+            user_info[i] = None
+
+with col2:
+    if st.button("면접 시작"):
+        st.switch_page("pages/2_Mock interview.py")
+    st.stop()
