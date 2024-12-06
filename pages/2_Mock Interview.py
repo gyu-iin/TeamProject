@@ -53,14 +53,14 @@ for msg in st.session_state.interview_messages[1:]:
 
 if user_info["면접을 볼 회사"] is not None:
     if "interview_messages" not in st.session_state:
-    st.session_state.interview_messages = [
-        {"role":"user","content":f"""
-당신은 모의면접관입니다. 사용자 정보에 따라 사용자에게 모의면접을 실시하세요
+        st.session_state.interview_messages = [
+            {"role":"user","content":f"""
+    당신은 모의면접관입니다. 사용자 정보에 따라 사용자에게 모의면접을 실시하세요
 
-## 사용자 정보
-{user_info}        
-"""}
-    ]
+    ## 사용자 정보
+    {user_info}        
+    """}
+        ]
     if "assistant" not in st.session_state:
         st.session_state.assistant = client.beta.assistants.create(
             instructions="사용자 정보에 따라 모의 면접을 도와주세요.",
