@@ -55,31 +55,7 @@ for msg in st.session_state.interview_messages[1:]:
 
 if user_info["면접을 볼 회사"] is not None:
     st.write(user_info)
-    if st.session_state.interview_messages == []:
-        st.write(user_info)
-        st.session_state.interview_messages = [
-            {"role":"user","content":f"""
-    당신은 모의면접관입니다. 사용자 정보에 따라 사용자에게 모의면접을 실시하세요
-
-    ## 사용자 정보
-    {user_info}        
-    """}
-        ]
-    st.write(user_info)   
     
-    if "assistant" not in st.session_state:
-        st.session_state.assistant = client.beta.assistants.create(
-            instructions="사용자 정보에 따라 모의 면접을 도와주세요.",
-            name="모의면접관",
-            model="gpt-4o-mini",
-            tools = FUNCTION_TOOLS_SCHEMA
-        )
-
-    if "thread" not in st.session_state:
-        st.session_state.thread = client.beta.threads.create(
-            messages = st.session_state.interview_messages
-            
-        )
 
 with col2:
     if start_interview:
@@ -96,6 +72,31 @@ if not start_interview:
     user_info["면접을 볼 회사"] = interview_company
 
     if st.button("면접 시작"):
+        if st.session_state.interview_messages == []:
+            st.write(user_info)
+            st.session_state.interview_messages = [
+                {"role":"user","content":f"""
+        당신은 모의면접관입니다. 사용자 정보에 따라 사용자에게 모의면접을 실시하세요
+
+        ## 사용자 정보
+        {user_info}        
+        """}
+            ]
+        st.write(user_info)   
+        
+        if "assistant" not in st.session_state:
+            st.session_state.assistant = client.beta.assistants.create(
+                instructions="사용자 정보에 따라 모의 면접을 도와주세요.",
+                name="모의면접관",
+                model="gpt-4o-mini",
+                tools = FUNCTION_TOOLS_SCHEMA
+            )
+
+        if "thread" not in st.session_state:
+            st.session_state.thread = client.beta.threads.create(
+                messages = st.session_state.interview_messages
+                
+            )
         start_interview = True
         st.session_state["interview started"] = start_interview
         st.write(st.session_state.interview_messages)
