@@ -1,4 +1,17 @@
 import streamlit as st
+import json
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import JsonOutputParser
+from pydantic import BaseModel, Field
+from lib.tools import Langchain_interview_question, SCHEMA_INTERVIEW
+
+TOOL_FUNCTIONS = {
+    "Langchain_interview_question": Langchain_interview_question
+}
+
+FUNCTION_TOOLS_SCHEMA = [
+    SCHEMA_INTERVIEW
+]
 
 st.title("모의 면접관")
 
@@ -35,7 +48,8 @@ if "assistant" not in st.session_state:
     st.session_state.assistant = client.beta.assistants.create(
         instructions="사용자 정보에 따라 모의 면접을 도와주세요.",
         name="모의면접관",
-        model="gpt-4o-mini"
+        model="gpt-4o-mini",
+        tool = FUNCTION_TOOLS_SCHEMA
     )
 
 if "thread" not in st.session_state:
@@ -84,12 +98,38 @@ if start_interview:
             assistant_id=assistant.id
         )
 
+    while run.status == 'requires_action':
+        tool_calls = run.required_action.submit_tool_outputs.tool_calls
+        tool_outputs = []
+
+        for tool in tool_calls:
+            func_name = tool.function.name
+            kwargs = json.loads(tool.function.arguments)
+            output = None
+
+            if func_name in TOOL_FUNCTIONS:
+                output = TOOL_FUNCTIONS[func_name](**kwargs)
+
+            tool_outputs.append(
+                {
+                    "tool_call_id": tool.id,
+                    "output": str(output)
+                }
+            )
+
+        run = client.beta.threads.runs.submit_tool_outputs_and_poll(
+            thread_id=thread.id,
+            run_id=run.id,
+            tool_outputs=tool_outputs
+        )
+
         if run.status == 'completed':
             api_response = client.beta.threads.messages.list(
                 thread_id=thread.id,
                 run_id=run.id,
                 order="asc"
             )
+            
             for data in api_response.data:
                 for content in data.content:
                     if content.type == 'text':
