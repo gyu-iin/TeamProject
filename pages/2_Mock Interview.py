@@ -54,6 +54,7 @@ for msg in st.session_state.interview_messages[1:]:
     show_message(msg)
 
 if user_info["면접을 볼 회사"] is not None:
+    st.write(user_info)
     if st.session_state.interview_messages == []:
         st.session_state.interview_messages = [
             {"role":"user","content":f"""
@@ -63,7 +64,7 @@ if user_info["면접을 볼 회사"] is not None:
     {user_info}        
     """}
         ]
-        st.write(user_info)
+        
     
     if "assistant" not in st.session_state:
         st.session_state.assistant = client.beta.assistants.create(
