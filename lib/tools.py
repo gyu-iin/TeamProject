@@ -5,7 +5,7 @@ from langchain_core.output_parsers import JsonOutputParser
 from pydantic import BaseModel, Field
 
 @st.cache_data
-def Langchain_interview_question(prompt):
+def Langchain_interview_question(prompt, user_info):
     model = ChatOpenAI(model="gpt-4o-mini", temperature=0.9, api_key=st.session_state['api_key'])
     user_info = st.session_state['user_info']
 
