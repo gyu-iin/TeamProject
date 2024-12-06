@@ -50,6 +50,7 @@ if "interview_messages" not in st.session_state:
 {user_info}        
 """}
     ]
+    st.write(user_info)
 
 for msg in st.session_state.interview_messages[2:]:
     show_message(msg)
@@ -65,6 +66,7 @@ if "assistant" not in st.session_state:
 if "thread" not in st.session_state:
     st.session_state.thread = client.beta.threads.create(
         messages = st.session_state.interview_messages
+        st.write(user_info)
     )
 
 col1, col2 = st.columns(2)
@@ -90,9 +92,10 @@ if not start_interview:
         st.session_state["interview started"] = start_interview
 
 if start_interview:
-    if len(st.session_state.interview_messages) < 2:
+    if len(st.session_state.interview_messages) < 1:
         msg = {"role":"user", "content": "면접을 시작해줘"}
         st.write(len(st.session_state.interview_messages))
+        st.write(user_info)
         thread = st.session_state.thread
 
         assistant = st.session_state.assistant
