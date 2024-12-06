@@ -53,9 +53,15 @@ if "assistant" not in st.session_state:
     )
 
 if "thread" not in st.session_state:
-    st.session_state.thread = client.beta.threads.create()
-
-st.write(user_info)
+    st.session_state.thread = client.beta.threads.create(
+        messages=[
+    {
+      "role": "system",
+      "content": "다음 정보에 의거하여 사용자에게 모의면접을 실시하세요",
+      "attachments": [{"user_info":user_info}] }]
+    }
+  ]
+    )
 
 col1, col2 = st.columns(2)
 
@@ -70,16 +76,6 @@ with col2:
         del st.session_state.thread
         del st.session_state.assistant
 
-if "chatbot_messages" not in st.session_state:
-    st.session_state.chatbot_messages = [
-        {"role":"system","content":f"""
-사용자 정보를 이용하여 모의면접을 실시하세요
-
-## 사용자 정보
-{user_info}        
-"""}
-    ]
-
 for msg in st.session_state.interview_messages:
     show_message(msg)
 
@@ -89,6 +85,67 @@ if not start_interview:
     user_info["면접을 볼 회사"] = interview_company
 
     if st.button("면접 시작"):
+        msg = {"role":"user", "content": "면접을 시작해줘"}
+        show_message(msg)
+        st.session_state.interview_messages.append(msg)
+
+        thread = st.session_state.thread
+
+        assistant = st.session_state.assistant
+
+        client.beta.threads.messages.create(
+            thread_id=thread.id,
+            role="user",
+            content=msg.content
+        )
+
+        run = client.beta.threads.runs.create_and_poll(
+            thread_id=thread.id,
+            assistant_id=assistant.id
+        )
+
+        while run.status == 'requires_action':
+            tool_calls = run.required_action.submit_tool_outputs.tool_calls
+            tool_outputs = []
+
+            for tool in tool_calls:
+                func_name = tool.function.name
+                kwargs = json.loads(tool.function.arguments)
+                output = None
+
+                if func_name in TOOL_FUNCTIONS:
+                    output = TOOL_FUNCTIONS[func_name](**kwargs)
+
+                tool_outputs.append(
+                    {
+                        "tool_call_id": tool.id,
+                        "output": str(output)
+                    }
+                )
+
+            run = client.beta.threads.runs.submit_tool_outputs_and_poll(
+                thread_id=thread.id,
+                run_id=run.id,
+                tool_outputs=tool_outputs
+            )
+
+        if run.status == 'completed':
+            api_response = client.beta.threads.messages.list(
+                thread_id=thread.id,
+                run_id=run.id,
+                order="asc"
+            )
+            
+            for data in api_response.data:
+                for content in data.content:
+                    if content.type == 'text':
+                        response = content.text.value
+                        msg = {"role":"assistant","content":response}
+                        show_message(msg)
+                        st.session_state.interview_messages.append(msg)
+        else:
+            st.error(f"Response not completed: {run.status}")
+
         start_interview = True
         st.session_state["interview started"] = start_interview
 
