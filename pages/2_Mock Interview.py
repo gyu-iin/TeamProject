@@ -48,9 +48,6 @@ def show_message(msg):
 
 
 
-for msg in st.session_state.interview_messages[1:]:
-    show_message(msg)
-
 if user_info["면접을 볼 회사"] is not None:
     if "interview_messages" not in st.session_state:
         st.session_state.interview_messages = [
@@ -82,6 +79,9 @@ with col2:
             user_info["면접을 볼 회사"] = None
             st.session_state["interview started"] = False
 
+for msg in st.session_state.interview_messages[1:]:
+    show_message(msg)
+    
 st.write(len(st.session_state.interview_messages))
 
 if not start_interview:
