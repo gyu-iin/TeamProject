@@ -41,7 +41,7 @@ def show_message(msg):
     with st.chat_message(msg['role']):
         st.markdown(msg["content"])
 
-if "chatbot_messages" not in st.session_state:
+if "interview_messages" not in st.session_state:
     st.session_state.interview_messages = [
         {"role":"system","content":f"""
 당신은 모의면접관입니다. 사용자 정보에 따라 사용자에게 모의면접을 실시하세요
@@ -53,9 +53,6 @@ if "chatbot_messages" not in st.session_state:
 
 for msg in st.session_state.interview_messages[2:]:
     show_message(msg)
-
-if "interview_messages" not in st.session_state:
-    st.session_state.interview_messages = []
 
 if "assistant" not in st.session_state:
     st.session_state.assistant = client.beta.assistants.create(
