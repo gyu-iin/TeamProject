@@ -1,4 +1,5 @@
 import streamlit as st
+from langchain_openai import ChatOpenAI
 
 @st.cache_data
 def Langchain_interview_question(prompt):
