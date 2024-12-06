@@ -38,7 +38,9 @@ for msg in st.session_state.interview_messages[2:]:
     
 with col2:
     if start_interview:
-        if st.button("면접 조기 종료"):
+        if st.button("면접 종료"):
+            msg = {"role":"user","content":"면접을 종료합니다"}
+            show_message(msg)
             st.session_state.interview_messages = []
             user_info["면접을 볼 회사"] = None
             del st.session_state.assistant
@@ -72,8 +74,7 @@ if not start_interview:
 
         if "thread" not in st.session_state:
             st.session_state.thread = client.beta.threads.create(
-                messages = st.session_state.interview_messages
-                
+                messages = st.session_state.interview_messages  
             )
         start_interview = True
         st.session_state["interview started"] = start_interview
