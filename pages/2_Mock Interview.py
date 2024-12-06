@@ -26,8 +26,6 @@ if user_info is None:
         st.switch_page("pages/1_User information.py")
     st.stop()
 
-st.write(st.session_state.user_info[5])
-
 client = st.session_state.get('openai_client', None)
 if client is None:
     if st.button("사용자 정보에서 API Key가 입력되지 않았습니다."):
@@ -65,7 +63,7 @@ if not start_interview:
     interview_company = st.text_input("면접을 볼 회사를 입력해주세요", 
                             value=st.session_state.get('interview_company',''))
     user_info["면접을 볼 회사"] = interview_company
-    
+    st.session_state.user_info = user_info
 
     if st.button("면접 시작"):
         if st.session_state.interview_messages == []:
