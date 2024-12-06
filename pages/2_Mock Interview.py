@@ -28,47 +28,59 @@ if "assistant" not in st.session_state:
         model="gpt-4o-mini"
     )
 
-#사용자 정보를 LLM에게 전달
 if "thread" not in st.session_state:
     st.session_state.thread = client.beta.threads.create()
+
+if "chatbot_messages" not in st.session_state:
+    st.session_state.chatbot_messages = [
+        {"role":"system","content":f"""
+사용자 정보를 이용하여 모의면접을 실시하세요
+
+## 사용자 정보
+{user_info}        
+"""}
+    ]
     
+interview_company = st.text_input("면접을 볼 회사를 입력해주세요", 
+                        value=st.session_state.get('interview_company',''))
+user_info["면접을 볼 회사"] = interview_company
 
 for msg in st.session_state.interview_messages:
     show_message(msg)
 
+if st.button("면접 시작"):
+    if prompt := st.chat_input("질문에 대답하세요."):
+        msg = {"role":"user", "content":prompt}
+        show_message(msg)
+        st.session_state.interview_messages.append(msg)
 
-if prompt := st.chat_input("Ask any question"):
-    msg = {"role":"user", "content":prompt}
-    show_message(msg)
-    st.session_state.interview_messages.append(msg)
+        thread = st.session_state.thread
 
-    thread = st.session_state.thread
+        assistant = st.session_state.assistant
 
-    assistant = st.session_state.assistant
-
-    client.beta.threads.messages.create(
-        thread_id=thread.id,
-        role="user",
-        content=prompt
-    )
-
-    run = client.beta.threads.runs.create_and_poll(
-        thread_id=thread.id,
-        assistant_id=assistant.id
-    )
-
-    if run.status == 'completed':
-        api_response = client.beta.threads.messages.list(
+        client.beta.threads.messages.create(
             thread_id=thread.id,
-            run_id=run.id,
-            order="asc"
+            role="user",
+            content=prompt
         )
-        for data in api_response.data:
-            for content in data.content:
-                if content.type == 'text':
-                    response = content.text.value
-                    msg = {"role":"assistant","content":response}
-                    show_message(msg)
-                    st.session_state.interview_messages.append(msg)
-    else:
-        st.error(f"Response not completed: {run.status}")
+
+        run = client.beta.threads.runs.create_and_poll(
+            thread_id=thread.id,
+            assistant_id=assistant.id
+        )
+
+        if run.status == 'completed':
+            api_response = client.beta.threads.messages.list(
+                thread_id=thread.id,
+                run_id=run.id,
+                order="asc"
+            )
+            for data in api_response.data:
+                for content in data.content:
+                    if content.type == 'text':
+                        response = content.text.value
+                        msg = {"role":"assistant","content":response}
+                        show_message(msg)
+                        st.session_state.interview_messages.append(msg)
+        else:
+            st.error(f"Response not completed: {run.status}")
