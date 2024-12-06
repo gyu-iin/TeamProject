@@ -10,7 +10,7 @@ def Langchain_interview_question(prompt):
     user_info = st.session_state['user_info']
 
     class interview_patton(BaseModel):
-        company_name: str = Field(description="면접을 실시하는 회사 명")
+        company_name: str = Field(description=user_info["면접을 볼 회사"])
         question: str = Field(description="면접관의 질문")
 
     parser = JsonOutputParser(pydantic_object = interview_patton)
