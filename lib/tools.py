@@ -1,5 +1,6 @@
 import streamlit as st
 from langchain_openai import ChatOpenAI
+from pydantic import BaseModel, Field
 
 @st.cache_data
 def Langchain_interview_question(prompt):
