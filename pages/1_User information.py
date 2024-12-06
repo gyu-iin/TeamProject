@@ -39,7 +39,7 @@ if user_name or user_age or user_field or user_edu or user_exp:
 
 col1, col2 = st.columns(2)
 
-withwith col1:
+with col1:
     if st.button("사용자 정보 삭제"):
         for i in user_info.keys():
             user_info[i] = None
