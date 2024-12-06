@@ -14,7 +14,7 @@ FUNCTION_TOOLS_SCHEMA = [
     SCHEMA_INTERVIEW
 ]
 
-col1, col2, col3 = st.columns(3)
+col1, col2= st.columns()
 
 with col1:
     st.title("모의 면접관")
@@ -50,7 +50,7 @@ def show_message(msg):
 for msg in st.session_state.interview_messages[2:]:
     show_message(msg)
     
-with col3:
+with col2:
     if start_interview:
         if st.button("면접 조기 종료"):
             st.session_state.interview_messages = []
@@ -80,7 +80,7 @@ if not start_interview:
                 instructions="사용자 정보에 따라 모의 면접을 도와주세요.",
                 name="모의면접관",
                 model="gpt-4o-mini",
-                tools = FUNCTION_TOOLS_SCHEMA
+                tools=[{"type":"code_interpreter"}] + FUNCTION_TOOLS_SCHEMA
             )
 
         if "thread" not in st.session_state:
@@ -178,6 +178,10 @@ if start_interview:
             tool_outputs = []
 
             for tool in tool_calls:
+                func_name = tool.function.name
+                kwargs = json.loads(tool.function.arguments)
+                output = None
+
                 if func_name in TOOL_FUNCTIONS:
                     output = TOOL_FUNCTIONS[func_name](**kwargs)
 
