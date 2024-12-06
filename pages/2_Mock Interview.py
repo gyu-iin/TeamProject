@@ -56,7 +56,7 @@ if "thread" not in st.session_state:
     st.session_state.thread = client.beta.threads.create(
         messages=[
     {
-      "role": "system",
+      "role": "user",
       "content": "사용자 정보에 따라 모의 면접을 실시하세요",
       "attachments": [{"사용자 정보":user_info}]
     }
