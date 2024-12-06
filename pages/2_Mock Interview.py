@@ -14,7 +14,7 @@ FUNCTION_TOOLS_SCHEMA = [
     SCHEMA_INTERVIEW
 ]
 
-col1, col2= st.columns()
+col1, col2= st.columns(2)
 
 with col1:
     st.title("모의 면접관")
