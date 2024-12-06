@@ -23,8 +23,8 @@ def Langchain_interview_question(prompt):
 
     chain = prompt | model | parser
     response = chain.invoke({"prompt": prompt})
-    st.write(response)
-    return response.text
+
+    return response
 
 SCHEMA_INTERVIEW = {
     "type":"function",
