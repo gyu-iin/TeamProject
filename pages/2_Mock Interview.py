@@ -26,7 +26,7 @@ if user_info is None:
         st.switch_page("pages/1_User information.py")
     st.stop()
 
-st.write(st.session_state.user_info["면접을 볼 회사"])
+st.write(st.session_state.user_info[5])
 
 client = st.session_state.get('openai_client', None)
 if client is None:
