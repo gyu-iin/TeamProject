@@ -48,8 +48,6 @@ def show_message(msg):
     with st.chat_message(msg['role']):
         st.markdown(msg["content"])
 
-st.write(len(st.session_state.interview_messages))
-
 for msg in st.session_state.interview_messages[1:]:
     show_message(msg)
     
@@ -93,13 +91,10 @@ if not start_interview:
             )
         start_interview = True
         st.session_state["interview started"] = start_interview
-        st.write(st.session_state.interview_messages)
 
 if start_interview:
-    if len(st.session_state.interview_messages) < 2:
+    if len(st.session_state.interview_messages) < 1:
         msg = {"role":"user", "content": "면접을 시작해줘"}
-        st.write(len(st.session_state.interview_messages))
-        st.write(user_info)
         thread = st.session_state.thread
 
         assistant = st.session_state.assistant
@@ -156,65 +151,61 @@ if start_interview:
                         st.session_state.interview_messages.append(msg)
         else:
             st.error(f"Response not completed: {run.status}")
-    else:
-        if prompt := st.chat_input("질문에 대답하세요."):
-            msg = {"role":"user", "content":prompt}
-            show_message(msg)
-            st.session_state.interview_messages.append(msg)
 
-            thread = st.session_state.thread
+    if prompt := st.chat_input("질문에 대답하세요."):
+        msg = {"role":"user", "content":prompt}
+        show_message(msg)
+        st.session_state.interview_messages.append(msg)
 
-            assistant = st.session_state.assistant
+        thread = st.session_state.thread
 
-            client.beta.threads.messages.create(
-                thread_id=thread.id,
-                role="user",
-                content=prompt
-            )
+        assistant = st.session_state.assistant
 
-            run = client.beta.threads.runs.create_and_poll(
-                thread_id=thread.id,
-                assistant_id=assistant.id
-            )
+        client.beta.threads.messages.create(
+            thread_id=thread.id,
+            role="user",
+            content=prompt
+        )
 
-            while run.status == 'requires_action':
-                tool_calls = run.required_action.submit_tool_outputs.tool_calls
-                tool_outputs = []
+        run = client.beta.threads.runs.create_and_poll(
+            thread_id=thread.id,
+            assistant_id=assistant.id
+        )
 
-                for tool in tool_calls:
-                    func_name = tool.function.name
-                    kwargs = json.loads(tool.function.arguments)
-                    output = None
+        while run.status == 'requires_action':
+            tool_calls = run.required_action.submit_tool_outputs.tool_calls
+            tool_outputs = []
 
-                    if func_name in TOOL_FUNCTIONS:
-                        output = TOOL_FUNCTIONS[func_name](**kwargs)
+            for tool in tool_calls:
+                if func_name in TOOL_FUNCTIONS:
+                    output = TOOL_FUNCTIONS[func_name](**kwargs)
 
-                    tool_outputs.append(
-                        {
-                            "tool_call_id": tool.id,
-                            "output": str(output)
-                        }
-                    )
-
-                run = client.beta.threads.runs.submit_tool_outputs_and_poll(
-                    thread_id=thread.id,
-                    run_id=run.id,
-                    tool_outputs=tool_outputs
+                tool_outputs.append(
+                    {
+                        "tool_call_id": tool.id,
+                        "output": str(output)
+                    }
                 )
 
-            if run.status == 'completed':
-                api_response = client.beta.threads.messages.list(
-                    thread_id=thread.id,
-                    run_id=run.id,
-                    order="asc"
-                )
-                
-                for data in api_response.data:
-                    for content in data.content:
-                        if content.type == 'text':
-                            response = content.text.value
-                            msg = {"role":"assistant","content":response}
-                            show_message(msg)
-                            st.session_state.interview_messages.append(msg)
-            else:
-                st.error(f"Response not completed: {run.status}")
+            run = client.beta.threads.runs.submit_tool_outputs_and_poll(
+                thread_id=thread.id,
+                run_id=run.id,
+                tool_outputs=tool_outputs
+            )
+
+        if run.status == 'completed':
+            api_response = client.beta.threads.messages.list(
+                thread_id=thread.id,
+                run_id=run.id,
+                order="asc"
+            )
+            
+            for data in api_response.data:
+                for content in data.content:
+                    if content.type == 'text':
+                        response = content.text.value
+                        msg = {"role":"assistant","content":response}
+                        show_message(msg)
+                        st.session_state.interview_messages.append(msg)
+        else:
+            st.error(f"Response not completed: {run.status}")
