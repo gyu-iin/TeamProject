@@ -88,8 +88,6 @@ if not start_interview:
 
     if st.button("면접 시작"):
         msg = {"role":"user", "content": "면접을 시작해줘"}
-        show_message(msg)
-        st.session_state.interview_messages.append(msg)
 
         thread = st.session_state.thread
 
@@ -98,7 +96,7 @@ if not start_interview:
         client.beta.threads.messages.create(
             thread_id=thread.id,
             role="user",
-            content=msg.content
+            content="면접을 시작해줘"
         )
 
         run = client.beta.threads.runs.create_and_poll(
