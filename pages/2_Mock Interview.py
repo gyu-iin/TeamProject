@@ -2,7 +2,10 @@ import streamlit as st
 
 st.title("모의 면접관")
 
-start_interview = False
+if start_interview in st.session_state:
+    start_interview = st.session_state["interview started"]
+else:
+    start_interview = False
 
 #사용자 정보 업데이트
 user_info = st.session_state.get('user_info', None)
@@ -53,6 +56,7 @@ while not start_interview:
 
     if st.button("면접 시작"):
         start_interview = True
+        st.session_state["interview started"] = start_interview
 
 while start_interview:
     if prompt := st.chat_input("질문에 대답하세요."):
