@@ -41,8 +41,13 @@ col1, col2 = st.columns(2)
 
 with col1:
     if st.button("사용자 정보 삭제"):
+        st.write(user_info)
         for i in user_info.keys():
             user_info[i] = None
+            st.session_state[i] = None
+            
+        st.session_state['user_info'] = user_info
+        st.write(user_info)
 
 with col2:
     if st.button("면접 시작"):
