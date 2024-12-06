@@ -41,28 +41,12 @@ else:
         start_interview = st.session_state['interview started']
     else:
         st.session_state['interview started'] = start_interview
-
-with col2:
-    if start_interview:
-        if st.button("면접 조기 종료"):
-            st.session_state.interview_messages = []
-            user_info["면접을 볼 회사"] = None
-            st.session_state["interview started"] = False
+if "interview_messages" not in st.session_state:
+        st.session_state.interview_messages = []
 
 def show_message(msg):
     with st.chat_message(msg['role']):
         st.markdown(msg["content"])
-
-if "interview_messages" not in st.session_state:
-    st.session_state.interview_messages = [
-        {"role":"user","content":f"""
-당신은 모의면접관입니다. 사용자 정보에 따라 사용자에게 모의면접을 실시하세요
-
-## 사용자 정보
-{user_info}        
-"""}
-    ]
-    st.write(user_info)
 
 st.write(len(st.session_state.interview_messages))
 
@@ -70,6 +54,15 @@ for msg in st.session_state.interview_messages[1:]:
     show_message(msg)
 
 if user_info["면접을 볼 회사"] is not None:
+    if st.session_state.interview_messages = []:
+        st.session_state.interview_messages = [
+            {"role":"user","content":f"""
+    당신은 모의면접관입니다. 사용자 정보에 따라 사용자에게 모의면접을 실시하세요
+
+    ## 사용자 정보
+    {user_info}        
+    """}
+        ]
     if "assistant" not in st.session_state:
         st.session_state.assistant = client.beta.assistants.create(
             instructions="사용자 정보에 따라 모의 면접을 도와주세요.",
@@ -83,6 +76,13 @@ if user_info["면접을 볼 회사"] is not None:
             messages = st.session_state.interview_messages
             
         )
+
+with col2:
+    if start_interview:
+        if st.button("면접 조기 종료"):
+            st.session_state.interview_messages = []
+            user_info["면접을 볼 회사"] = None
+            st.session_state["interview started"] = False
 
 if not start_interview:
     interview_company = st.text_input("면접을 볼 회사를 입력해주세요", 
