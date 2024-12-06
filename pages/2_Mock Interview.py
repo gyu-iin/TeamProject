@@ -95,7 +95,7 @@ if not start_interview:
 if start_interview:
     if len(st.session_state.interview_messages) < 2:
         msg = {"role":"user", "content": "면접을 시작해줘"}
-
+        st.write(len(st.session_state.interview_messages))
         thread = st.session_state.thread
 
         assistant = st.session_state.assistant
