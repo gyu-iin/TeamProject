@@ -87,7 +87,12 @@ if not start_interview:
     user_info["면접을 볼 회사"] = interview_company
 
     if st.button("면접 시작"):
-        msg = {"role":"user", "content": "면접을 시작해줘"}
+        start_interview = True
+        st.session_state["interview started"] = start_interview
+
+if start_interview:
+
+    msg = {"role":"user", "content": "면접을 시작해줘"}
 
         thread = st.session_state.thread
 
@@ -146,10 +151,6 @@ if not start_interview:
         else:
             st.error(f"Response not completed: {run.status}")
 
-        start_interview = True
-        st.session_state["interview started"] = start_interview
-
-if start_interview:
     if prompt := st.chat_input("질문에 대답하세요."):
         msg = {"role":"user", "content":prompt}
         show_message(msg)
