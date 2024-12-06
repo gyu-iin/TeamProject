@@ -45,11 +45,11 @@ with col1:
         for i in user_info.keys():
             user_info[i] = None
             st.session_state[i] = None
-            
+
         st.session_state['user_info'] = user_info
         st.write(user_info)
 
 with col2:
     if st.button("면접 시작"):
-        st.switch_page("pages/2_Mock interview.py")
+        st.switch_page("pages/2_Mock Interview.py")
     st.stop()
