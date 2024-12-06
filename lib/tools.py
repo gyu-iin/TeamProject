@@ -23,7 +23,7 @@ def Langchain_interview_question(prompt):
 
     chain = prompt | model | parser
     response = chain.invoke({"prompt": prompt})
-
+    st.write(response)
     return response.text
 
 SCHEMA_INTERVIEW = {
