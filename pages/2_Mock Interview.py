@@ -35,9 +35,9 @@ with col2:
     if st.button("면접 조기 종료"):
         st.session_state.interview_messages = []
         user_info["면접을 볼 회사"] = None
-        st.session_state.thread = None
-        st.session_state.assistant = None
-        start_interview = None
+        del st.session_state.thread
+        del st.session_state.assistant
+        start_interview = False
 
 start_interview = st.session_state.get('interview started')
 if start_interview is None:
