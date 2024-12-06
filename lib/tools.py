@@ -12,7 +12,6 @@ def Langchain_interview_question(prompt):
     class interview_patton(BaseModel):
         company_name: str = Field(description="면접을 실시하는 회사 명")
         question: str = Field(description="면접관의 질문")
-        end_ment: str = Field(description="면접관의 면접 마무리 인사")
 
     parser = JsonOutputParser(pydantic_object = interview_patton)
 
