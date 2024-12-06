@@ -55,6 +55,8 @@ if "assistant" not in st.session_state:
 if "thread" not in st.session_state:
     st.session_state.thread = client.beta.threads.create()
 
+st.write(user_info)
+
 col1, col2 = st.columns(2)
 
 with col1:
