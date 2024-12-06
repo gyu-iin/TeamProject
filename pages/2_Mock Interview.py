@@ -1,5 +1,7 @@
 import streamlit as st
 import json
+import langchain
+from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import JsonOutputParser
 from pydantic import BaseModel, Field
@@ -92,7 +94,7 @@ if not start_interview:
         st.session_state["interview started"] = start_interview
 
 if start_interview:
-    if len(st.session_state.interview_messages) < 1:
+    if len(st.session_state.interview_messages) < 2:
         msg = {"role":"user", "content": "면접을 시작해줘"}
         st.write(len(st.session_state.interview_messages))
         st.write(user_info)
