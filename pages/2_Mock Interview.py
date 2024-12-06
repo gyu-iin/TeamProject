@@ -1,18 +1,4 @@
 import streamlit as st
-import json
-from langchain_openai import ChatOpenAI
-from langchain_core.prompts import PromptTemplate
-from langchain_core.output_parsers import JsonOutputParser
-from pydantic import BaseModel, Field
-from lib.tools import Langchain_interview_question, SCHEMA_INTERVIEW
-
-TOOL_FUNCTIONS = {
-    "Langchain_interview_question": Langchain_interview_question
-}
-
-FUNCTION_TOOLS_SCHEMA = [
-    SCHEMA_INTERVIEW
-]
 
 col1, col2= st.columns(2)
 
@@ -81,7 +67,7 @@ if not start_interview:
                 instructions="사용자 정보에 따라 모의 면접을 도와주세요.",
                 name="모의면접관",
                 model="gpt-4o-mini",
-                tools=[{"type":"code_interpreter"}] + FUNCTION_TOOLS_SCHEMA
+                tools=[{"type":"code_interpreter"}]
             )
 
         if "thread" not in st.session_state:
