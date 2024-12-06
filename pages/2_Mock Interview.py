@@ -45,8 +45,8 @@ with col2:
         if st.button("면접 조기 종료"):
             st.session_state.interview_messages = []
             user_info["면접을 볼 회사"] = None
-            st.session_state.thread = None
-            st.session_state.assistant = None
+            del st.session_state.thread
+            del st.session_state.assistant
             st.session_state["interview started"] = False
 
 def show_message(msg):
@@ -70,7 +70,7 @@ for msg in st.session_state.interview_messages[1:]:
     show_message(msg)
 
 if user_info["면접을 볼 회사"] is not None:
-    if "assistant" not in st.session_state or st.session_state.assistant is None:
+    if "assistant" not in st.session_state:
         st.session_state.assistant = client.beta.assistants.create(
             instructions="사용자 정보에 따라 모의 면접을 도와주세요.",
             name="모의면접관",
@@ -78,7 +78,7 @@ if user_info["면접을 볼 회사"] is not None:
             tools = FUNCTION_TOOLS_SCHEMA
         )
 
-    if "thread" not in st.session_state or st.session_state.thread is None:
+    if "thread" not in st.session_state:
         st.session_state.thread = client.beta.threads.create(
             messages = st.session_state.interview_messages
             
