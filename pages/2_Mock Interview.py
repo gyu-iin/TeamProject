@@ -13,6 +13,11 @@ FUNCTION_TOOLS_SCHEMA = [
     SCHEMA_INTERVIEW
 ]
 
+col1, col2 = st.columns(2)
+
+with col1:
+    st.title("모의 면접관")
+
 #사용자 정보 업데이트
 user_info = st.session_state.get('user_info', None)
 if user_info is None:
@@ -26,18 +31,14 @@ if client is None:
         st.switch_page("pages/1_User information.py")
     st.stop()
 
-col1, col2 = st.columns(2)
-
-with col1:
-    st.title("모의 면접관")
-
 with col2:
-    if st.button("면접 조기 종료"):
-        st.session_state.interview_messages = []
-        user_info["면접을 볼 회사"] = None
-        del st.session_state.thread
-        del st.session_state.assistant
-        st.session_state["interview started"] = False
+    if start_interview:
+        if st.button("면접 조기 종료"):
+            st.session_state.interview_messages = []
+            user_info["면접을 볼 회사"] = None
+            del st.session_state.thread
+            del st.session_state.assistant
+            st.session_state["interview started"] = False
 
 start_interview = st.session_state.get('interview started')
 if start_interview is None:
