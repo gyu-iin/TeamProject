@@ -26,6 +26,16 @@ else:
         start_interview = st.session_state['interview started']
     else:
         st.session_state['interview started'] = start_interview
+
+end_interview = st.session_state.get('interview ended')
+if end_interview is None:
+    end_interview = False
+else:
+    if 'interview ended' in st.session_state:
+        end_interview = st.session_state['interview ended']
+    else:
+        st.session_state['interview ended'] = end_interview
+
 if "interview_messages" not in st.session_state:
         st.session_state.interview_messages = []
 
@@ -38,14 +48,10 @@ for msg in st.session_state.interview_messages[2:]:
     
 with col2:
     if start_interview:
-        if st.button("면접 종료"):
-            msg = {"role":"user","content":"면접을 종료합니다"}
-            show_message(msg)
+        if st.button("면접 종료"):)
             st.session_state.interview_messages = []
-            user_info["면접을 볼 회사"] = None
-            del st.session_state.assistant
-            del st.session_state.thread
             st.session_state["interview started"] = False
+            st.session_state["interview ended"] = True
 
 if not start_interview:
     interview_company = st.text_input("면접을 볼 회사를 입력해주세요", 
@@ -202,3 +208,17 @@ if start_interview:
                         st.session_state.interview_messages.append(msg)
         else:
             st.error(f"Response not completed: {run.status}")
+
+if end_interview:
+    msg = {"role":"assistant","content":"면접을 종료합니다."}
+    show_message(msg)
+    msg = {"role":"assistant","content":"면접 내용을 다운받으시려면 다운로드 버튼을 눌러주세요. 바로 결과화면으로 넘어가고 싶으시다면 다음 버튼을 눌러주세요."}
+    show_message(msg)
+    col1, col2= st.columns(2)
+    with col1:
+        st.download_button("면접 결과 다운로드", st.session_state.interview_result)
+    
+    with col2:
+        if st.button("다음"):
+            st.switch_page("pages/3_Interview result.py")
+        st.stop()
