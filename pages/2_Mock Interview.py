@@ -67,7 +67,7 @@ if "assistant" not in st.session_state:
 
 if "thread" not in st.session_state:
     st.session_state.thread = client.beta.threads.create(
-        messages = st.session_state.chatbot_messages
+        messages = st.session_state.interview_messages
     )
 
 col1, col2 = st.columns(2)
