@@ -31,6 +31,15 @@ if client is None:
         st.switch_page("pages/1_User information.py")
     st.stop()
 
+start_interview = st.session_state.get('interview started')
+if start_interview is None:
+    start_interview = False
+else:
+    if 'interview started' in st.session_state:
+        start_interview = st.session_state['interview started']
+    else:
+        st.session_state['interview started'] = start_interview
+        
 with col2:
     if start_interview:
         if st.button("면접 조기 종료"):
@@ -40,14 +49,7 @@ with col2:
             del st.session_state.assistant
             st.session_state["interview started"] = False
 
-start_interview = st.session_state.get('interview started')
-if start_interview is None:
-    start_interview = False
-else:
-    if 'interview started' in st.session_state:
-        start_interview = st.session_state['interview started']
-    else:
-        st.session_state['interview started'] = start_interview
+
 
 def show_message(msg):
     with st.chat_message(msg['role']):
