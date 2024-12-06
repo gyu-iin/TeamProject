@@ -23,7 +23,7 @@ def Langchain_interview_question(prompt):
     )
 
     chain = prompt | model | parser
-    response = chain.invoke({"user_info": user_info, "prompt": prompt})
+    response = chain.invoke({"prompt": prompt})
 
     return response.company_name and response.question and response.end_ment
 
