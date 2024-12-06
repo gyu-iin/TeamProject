@@ -55,12 +55,12 @@ if "assistant" not in st.session_state:
 if "thread" not in st.session_state:
     st.session_state.thread = client.beta.threads.create(
         messages=[
-        {
-        "role": "user",
-        "content": "다음 정보에 의거하여 사용자에게 모의면접을 실시하세요",
-        "attachments": [{"user_info":user_info}]
-        }
-        ]
+    {
+      "role": "system",
+      "content": "사용자 정보에 따라 모의 면접을 실시하세요",
+      "attachments": [{"사용자 정보":user_info}]
+    }
+  ]
     )
 
 col1, col2 = st.columns(2)
