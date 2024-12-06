@@ -39,7 +39,7 @@ else:
         start_interview = st.session_state['interview started']
     else:
         st.session_state['interview started'] = start_interview
-        
+
 with col2:
     if start_interview:
         if st.button("면접 조기 종료"):
@@ -66,7 +66,7 @@ if "interview_messages" not in st.session_state:
     ]
     st.write(user_info)
 
-for msg in st.session_state.interview_messages[2:]:
+for msg in st.session_state.interview_messages[1:]:
     show_message(msg)
 
 if not start_interview:
