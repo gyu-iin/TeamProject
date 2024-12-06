@@ -34,5 +34,5 @@ if user_name and user_age and user_field and user_edu and user_exp:
     if 'user_info' in st.session_state:
         user_info = st.session_state['user_info']
     else:
-        user_info = {"이름": user_name, "나이" : user_age, "관심분야" : user_field, "학력" : user_edu, "경력사항" : user_exp}
+        user_info = {"이름": user_name, "나이" : user_age, "관심분야" : user_field, "학력" : user_edu, "경력사항" : user_exp, "면접을 볼 회사":""}
         st.session_state['user_info'] = user_info
