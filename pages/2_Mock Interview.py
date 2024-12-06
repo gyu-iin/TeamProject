@@ -98,30 +98,30 @@ if start_interview:
             assistant_id=assistant.id
         )
 
-    while run.status == 'requires_action':
-        tool_calls = run.required_action.submit_tool_outputs.tool_calls
-        tool_outputs = []
+        while run.status == 'requires_action':
+            tool_calls = run.required_action.submit_tool_outputs.tool_calls
+            tool_outputs = []
 
-        for tool in tool_calls:
-            func_name = tool.function.name
-            kwargs = json.loads(tool.function.arguments)
-            output = None
+            for tool in tool_calls:
+                func_name = tool.function.name
+                kwargs = json.loads(tool.function.arguments)
+                output = None
 
-            if func_name in TOOL_FUNCTIONS:
-                output = TOOL_FUNCTIONS[func_name](**kwargs)
+                if func_name in TOOL_FUNCTIONS:
+                    output = TOOL_FUNCTIONS[func_name](**kwargs)
 
-            tool_outputs.append(
-                {
-                    "tool_call_id": tool.id,
-                    "output": str(output)
-                }
+                tool_outputs.append(
+                    {
+                        "tool_call_id": tool.id,
+                        "output": str(output)
+                    }
+                )
+
+            run = client.beta.threads.runs.submit_tool_outputs_and_poll(
+                thread_id=thread.id,
+                run_id=run.id,
+                tool_outputs=tool_outputs
             )
-
-        run = client.beta.threads.runs.submit_tool_outputs_and_poll(
-            thread_id=thread.id,
-            run_id=run.id,
-            tool_outputs=tool_outputs
-        )
 
         if run.status == 'completed':
             api_response = client.beta.threads.messages.list(
