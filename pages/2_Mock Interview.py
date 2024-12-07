@@ -272,6 +272,7 @@ if start_interview:
             st.error(f"Response not completed: {run.status}")
 
 if end_interview:
+    print(user_info)
     msg = {"role":"assistant","content":"면접을 종료합니다."}
     show_message(msg)
     msg = {"role":"assistant","content":"면접 내용을 다운받으시려면 다운로드 버튼을 눌러주세요. 바로 결과화면으로 넘어가고 싶으시다면 다음 버튼을 눌러주세요."}
