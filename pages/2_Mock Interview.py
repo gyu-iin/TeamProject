@@ -100,22 +100,23 @@ with col2:
                 )
 
             if run.status == 'completed':
+                st.write(run.status)
                 api_response = client.beta.threads.messages.list(
                     thread_id=thread.id,
                     run_id=run.id,
                     order="asc"
                 )
+                st.write(api_response)
+                # response = client.files.list()
+                
+                # output_file_id = response.data.id
 
+                # file = client.files.retrieve_content(output_file_id)
+                # if file is not None :
+                #     save_uploaded_file('interview', file)
+                
             else:
                 st.error(f"Response not completed: {run.status}")
-
-            response = client.files.list()
-                
-            output_file_id = response.data.id
-
-            file = client.files.retrieve_content(output_file_id)
-            if file is not None :
-                save_uploaded_file('interview', file)
 
             st.session_state.interview_messages = []
             st.session_state["interview started"] = False
@@ -284,8 +285,8 @@ if end_interview:
     show_message(msg)
     col1, col2= st.columns(2)
 
-    with col1:
-        st.download_button("면접 결과 다운로드", file_name = file)
+    # with col1:
+    #     st.download_button("면접 결과 다운로드", file_name = file)
     
     with col2:
         if st.button("다음"):
