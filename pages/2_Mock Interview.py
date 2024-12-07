@@ -3,7 +3,7 @@ import openai
 import os
 
 col1, col2= st.columns(2)
-openai.api_key = os.getenv(st.session_state['api_key'])
+openai.api_key = os.getenv(st.session_state.api_key)
 
 with col1:
     st.title("모의 면접관")
