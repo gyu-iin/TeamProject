@@ -43,12 +43,82 @@ def show_message(msg):
     with st.chat_message(msg['role']):
         st.markdown(msg["content"])
 
+def save_uploaded_file(directory, file) :
+    if not os.path.exists(directory) :
+        os.makedirs(directory)
+
+    with open(os.path.join(directory, file.name), 'wb') as f:
+        f.write(file.getbuffer())
+
 for msg in st.session_state.interview_messages[2:]:
     show_message(msg)
     
 with col2:
     if start_interview:
-        if st.button("면접 종료"):)
+        if st.button("면접 종료"):
+            msg = {"role":"user", "content": "면접 내용 요약"}
+            st.session_state.interview_messages.append(msg)
+
+            thread = st.session_state.thread
+
+            assistant = st.session_state.assistant
+
+            client.beta.threads.messages.create(
+                thread_id=thread.id,
+                role="user",
+                content=f"면접 내용을 요약해서 Q:질문 A:답변 형식으로 저장해서 '{user_info["면접을 볼 회사"]} interview result.text'로 저장하세요"
+            )
+
+            run = client.beta.threads.runs.create_and_poll(
+                thread_id=thread.id,
+                assistant_id=assistant.id
+            )
+
+            while run.status == 'requires_action':
+                tool_calls = run.required_action.submit_tool_outputs.tool_calls
+                tool_outputs = []
+
+                for tool in tool_calls:
+                    func_name = tool.function.name
+                    kwargs = json.loads(tool.function.arguments)
+                    output = None
+
+                    if func_name in TOOL_FUNCTIONS:
+                        output = TOOL_FUNCTIONS[func_name](**kwargs)
+
+                    tool_outputs.append(
+                        {
+                            "tool_call_id": tool.id,
+                            "output": str(output)
+                        }
+                    )
+
+                run = client.beta.threads.runs.submit_tool_outputs_and_poll(
+                    thread_id=thread.id,
+                    run_id=run.id,
+                    tool_outputs=tool_outputs
+                )
+
+            if run.status == 'completed':
+                api_response = client.beta.threads.messages.list(
+                    thread_id=thread.id,
+                    run_id=run.id,
+                    order="asc"
+                )
+                code_interpreter_file_ids = []
+
+                thread_messages = client.beta.threads.messages.list(thread_id=thread.id, run_id=run.id)
+                output_file_id = thread_messages.data[0].content[0].text.annotations[0].file_path.file_id
+                code_interpreter_file_ids.append(output_file_id)
+
+                file = openai.File.download(code_interpreter_file_ids[:-1])
+
+                if file is not None :
+                    save_uploaded_file('interview', file)
+                
+            else:
+                st.error(f"Response not completed: {run.status}")
+
             st.session_state.interview_messages = []
             st.session_state["interview started"] = False
             st.session_state["interview ended"] = True
@@ -97,7 +167,7 @@ if start_interview:
         client.beta.threads.messages.create(
             thread_id=thread.id,
             role="user",
-            content="면접을 시작해줘"
+            content="면접 시작"
         )
 
         run = client.beta.threads.runs.create_and_poll(
@@ -215,8 +285,9 @@ if end_interview:
     msg = {"role":"assistant","content":"면접 내용을 다운받으시려면 다운로드 버튼을 눌러주세요. 바로 결과화면으로 넘어가고 싶으시다면 다음 버튼을 눌러주세요."}
     show_message(msg)
     col1, col2= st.columns(2)
+
     with col1:
-        st.download_button("면접 결과 다운로드", st.session_state.interview_result)
+        st.download_button("면접 결과 다운로드", file_name = file)
     
     with col2:
         if st.button("다음"):
