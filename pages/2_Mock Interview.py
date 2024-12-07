@@ -105,7 +105,7 @@ with col2:
                     run_id=run.id,
                     order="asc"
                 )
-                a = openai.files.list()
+                a = client.files.list()
                 st.write(print(a.data))
                 sorted_files = sorted(a.data, key=lambda f: f.created_at, reverse=True)
                 output_file_id = sorted_files[0].id
@@ -115,7 +115,7 @@ with col2:
                 except Exception as e:
                     st.write(print(f"Error occurred: {e}"))
 
-                response = openai.files.list()
+                response = client.files.list()
                 if response is None:
                     st.write(print("Response is None. There might be an issue with the API request."))
                 else:
