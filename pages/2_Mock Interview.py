@@ -75,11 +75,11 @@ with col2:
                 thread_id=thread.id,
                 assistant_id=assistant.id
             )
-            st.write(run.status)
+
             while run.status == 'requires_action':
                 tool_calls = run.required_action.submit_tool_outputs.tool_calls
                 tool_outputs = []
-
+                st.write(run.status)
                 for tool in tool_calls:
                     func_name = tool.function.name
                     kwargs = json.loads(tool.function.arguments)
