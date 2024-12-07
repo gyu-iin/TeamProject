@@ -102,7 +102,7 @@ with col2:
                 new_data = client.files.content(output_file_id)
                 filename = f"{user_info["면접을 볼 회사"]} interview result.txt"
                 with open(os.path.join(directory, filename),'wb') as f:
-                f.write(new_data.read())
+                    f.write(new_data.read())
                 
             else:
                 st.error(f"Response not completed: {run.status}")
