@@ -106,7 +106,7 @@ with col2:
                     order="asc"
                 )
                 a = client.files.list()
-                st.write(print(a))
+                st.write(print(a.data))
                 output_file_id = api_response.data[0].content[0].text.annotations[0].file_path.file_id
 
 
