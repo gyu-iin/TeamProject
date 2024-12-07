@@ -4,11 +4,7 @@ from openai import OpenAIError
 import os
 import time
 
-
-col1, col2= st.columns(2)
-
-with col1:
-    st.title("모의 면접관")
+st.title("모의 면접관")
 
 ##사용자 정보 업데이트
 user_info = st.session_state.get('user_info', None)
@@ -68,7 +64,7 @@ def get_file_content_infinite(client, output_file_id, wait_time=2):
             time.sleep(wait_time)
 
 ##면접 종료 버튼 - 면접 종료와 동시에 이때까지의 대화내용을 txt파일로 저장
-with col2:
+with st.sidebar:
     if start_interview:
         if st.button("면접 종료"):
             msg = {"role":"user", "content": "면접 내용 요약"}
@@ -300,7 +296,6 @@ if end_interview:
     msg = {"role":"assistant","content":"면접 내용을 다운받으시려면 다운로드 버튼을 눌러주세요. 다음 화면으로 넘어가고 싶으시다면 다음 버튼을 눌러주세요."}
     show_message(msg)
     col1, col2= st.columns(2)
-    print(f"{user_info["면접을 볼 회사"]} interview contents.txt")
 
     with col1:
         with open(os.path.join("interview contents", f"{user_info["면접을 볼 회사"]} interview contents.txt"), "rb") as file:
