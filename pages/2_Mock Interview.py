@@ -67,14 +67,14 @@ with col2:
             client.beta.threads.messages.create(
                 thread_id=thread.id,
                 role="user",
-                content=f"면접 내용을 요약해서 Q:질문 A:답변 형식으로 저장해서 '{user_info["면접을 볼 회사"]} interview result.txt'로 저장하세요. 그리고 파일 id를 반황하세요"
+                content=f"면접 내용을 요약해서 Q:질문 A:답변 형식으로 저장해서 '{user_info["면접을 볼 회사"]} interview result.txt'로 저장하세요."
             )
 
             run = client.beta.threads.runs.create_and_poll(
                 thread_id=thread.id,
                 assistant_id=assistant.id
             )
-
+            st.write(run.status)
             while run.status == 'requires_action':
                 tool_calls = run.required_action.submit_tool_outputs.tool_calls
                 tool_outputs = []
