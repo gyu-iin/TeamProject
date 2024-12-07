@@ -105,7 +105,7 @@ with col2:
                     run_id=run.id,
                     order="asc"
                 )
-                st.session_state.apu_response = api_response
+                st.session_state.api_response = api_response
                 st.write(st.session_state.api_response)
 
                 output_file_id = api_response.data[0].content[0].text.annotations[0].file_path.file_id
