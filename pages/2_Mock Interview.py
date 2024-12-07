@@ -104,21 +104,12 @@ with col2:
                     run_id=run.id,
                     order="asc"
                 )
-                for data in api_response.data:
-                    for content in data.content:
-                        if content.type == 'text':
-                            response = content.text.value
-                            msg = {"role":"assistant","content":response}
-                            show_message(msg)
-                            st.session_state.interview_messages.append(msg)
-
-                # response = client.files.list()
                 
-                # output_file_id = response.data.id
+                output_file_id = api_response.data[0].content[0].text.annotations[0].file_path.file_id
 
-                # file = client.files.retrieve_content(output_file_id)
-                # if file is not None :
-                #     save_uploaded_file('interview', file)
+                file = client.files.retrieve_content(output_file_id)
+                if file is not None :
+                    save_uploaded_file('interview', file)
                 
             else:
                 st.error(f"Response not completed: {run.status}")
