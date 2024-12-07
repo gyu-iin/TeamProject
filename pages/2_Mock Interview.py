@@ -105,9 +105,9 @@ with col2:
                     run_id=run.id,
                     order="asc"
                 )
-
+                a = client.files.list()
                 output_file_id = api_response.data[0].content[0].text.annotations[0].file_path.file_id
-                st.write(print(api_response))
+                st.write(print(a))
                 
 
                 file = code_interpreter_file_ids[:-1]
