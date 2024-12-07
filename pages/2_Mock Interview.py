@@ -75,7 +75,7 @@ with col2:
                 thread_id=thread.id,
                 assistant_id=assistant.id
             )
-
+            st.write(run.status)
             while run.status == 'requires_action':
                 tool_calls = run.required_action.submit_tool_outputs.tool_calls
                 tool_outputs = []
@@ -100,7 +100,7 @@ with col2:
                     run_id=run.id,
                     tool_outputs=tool_outputs
                 )
-            st.write(run.status)
+
             if run.status == 'completed':
                 api_response = client.beta.threads.messages.list(
                     thread_id=thread.id,
