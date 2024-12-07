@@ -105,7 +105,8 @@ with col2:
                     run_id=run.id,
                     order="asc"
                 )
-                while client.files.list() is None:
+                a = client.files.list()
+                while a is None:
                     a = client.files.list()
                     st.write(print(a.data))
                     sorted_files = sorted(a.data, key=lambda f: f.created_at, reverse=True)
