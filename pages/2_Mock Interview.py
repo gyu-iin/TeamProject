@@ -115,6 +115,7 @@ with col2:
                 except Exception as e:
                     st.write(print(f"Error occurred: {e}"))
 
+                response = openai.files.list()
                 if response is None:
                     st.write(print("Response is None. There might be an issue with the API request."))
                 else:
