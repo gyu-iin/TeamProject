@@ -106,12 +106,11 @@ with col2:
                     order="asc"
                 )
                 a = client.files.list()
+                st.write(a)
                 output_file_id = api_response.data[0].content[0].text.annotations[0].file_path.file_id
-                st.write(print(a))
-                
 
-                file = code_interpreter_file_ids[:-1]
-                st.write(file)
+
+                # file = 
                 # if file is not None :
                 #     file.name = f"{user_info["면접을 볼 회사"]} interview result.text"
                 #     save_uploaded_file('interview', file)
