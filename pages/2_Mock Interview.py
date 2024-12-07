@@ -107,7 +107,7 @@ with col2:
                 )
 
                 output_file_id = api_response.data[0].content[0].text.annotations[0].file_path.file_id
-                st.write(print(output_file_id))
+                st.write(print(api_response))
                 
 
                 file = code_interpreter_file_ids[:-1]
