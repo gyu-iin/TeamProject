@@ -115,6 +115,11 @@ with col2:
                 except Exception as e:
                     st.write(print(f"Error occurred: {e}"))
 
+                if response is None:
+                    st.write(print("Response is None. There might be an issue with the API request."))
+                else:
+                    st.write(print(response))
+
                 # file = client.files.retrieve_content(output_file_id)
                 # if file is not None :
                 #     save_uploaded_file('interview', file)
