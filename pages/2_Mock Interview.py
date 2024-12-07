@@ -106,21 +106,16 @@ with col2:
                     order="asc"
                 )
 
-                response = client.files.list(extra_query={
-                    'order': 'asc',
-                    'limit': 1
-                })
-
-                st.write(print(response))
-                
-                output_file_id = response.data.id
-
-                file = client.files.retrieve_content(output_file_id)
-                if file is not None :
-                    save_uploaded_file('interview', file)
-                
             else:
                 st.error(f"Response not completed: {run.status}")
+
+            response = client.files.list()
+                
+            output_file_id = response.data.id
+
+            file = client.files.retrieve_content(output_file_id)
+            if file is not None :
+                save_uploaded_file('interview', file)
 
             st.session_state.interview_messages = []
             st.session_state["interview started"] = False
