@@ -57,15 +57,15 @@ for msg in st.session_state.interview_messages[2:]:
 
 ##서버에서 파일 받을때 오류 발생시 재시도하는 함수
 def get_file_content_infinite(client, output_file_id, wait_time=2):
-while True:
-    try:
-        new_data = client.files.content(output_file_id)
-        print("File content retrieved successfully.")
-        return new_data
-    except OpenAIError as e:
-        print(f"Error occurred: {e}")
-        print(f"Retrying in {wait_time} seconds...")
-        time.sleep(wait_time)
+    while True:
+        try:
+            new_data = client.files.content(output_file_id)
+            print("File content retrieved successfully.")
+            return new_data
+        except OpenAIError as e:
+            print(f"Error occurred: {e}")
+            print(f"Retrying in {wait_time} seconds...")
+            time.sleep(wait_time)
 
 ##면접 종료 버튼 - 면접 종료와 동시에 이때까지의 대화내용을 txt파일로 저장
 with col2:
