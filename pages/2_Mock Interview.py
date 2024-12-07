@@ -67,7 +67,7 @@ with col2:
             client.beta.threads.messages.create(
                 thread_id=thread.id,
                 role="user",
-                content=f"면접 내용을 요약해서 Q:질문 A:답변 형식으로 저장해서 '{user_info["면접을 볼 회사"]} interview result.txt'로 저장하세요. 그리고 파"
+                content=f"면접 내용을 요약해서 Q:질문 A:답변 형식으로 저장해서 '{user_info["면접을 볼 회사"]} interview result.txt'로 저장하세요. 그리고 파일 id를 반황하세요"
             )
 
             run = client.beta.threads.runs.create_and_poll(
@@ -106,9 +106,7 @@ with col2:
                     order="asc"
                 )
 
-                thread_messages = client.beta.threads.messages.list(thread_id=thread.id, run_id=run.id)
-                st.write(print(thread_messages))
-                output_file_id = thread_messages.data[0].content[0].text.annotations[0].file_path.file_id
+                output_file_id = api_response.data[0].content[0].text.annotations[0].file_path.file_id
                 code_interpreter_file_ids.append(output_file_id)
                 
 
