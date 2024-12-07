@@ -119,7 +119,7 @@ with col2:
                 )
                 
                 output_file_id = api_response.data[0].content[0].text.annotations[0].file_path.file_id
-                new_data = get_file_content_infinite(client, output_file_id)
+                new_data = get_file_content_infinite(client, 'file-8d9WSJWfQiY1NU4YKPm51u')
                 filename = f"{user_info["면접을 볼 회사"]} interview contents.txt"
 
                 if not os.path.exists("interview contents"):
@@ -303,7 +303,7 @@ if end_interview:
     print(f"{user_info["면접을 볼 회사"]} interview contents.txt")
 
     with col1:
-        with open(open(os.path.join("interview contents", f"{user_info["면접을 볼 회사"]} interview contents.txt"), "rb") as file:
+        with open(os.path.join("interview contents", f"{user_info["면접을 볼 회사"]} interview contents.txt"), "rb") as file:
             btn = st.download_button(
                 label="면접 내용 다운로드",
                 data=file,
