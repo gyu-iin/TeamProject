@@ -114,7 +114,7 @@ with col2:
                 code_interpreter_file_ids.append(output_file_id)
 
                 file = code_interpreter_file_ids[:-1]
-
+                st.write(file)
                 if file is not None :
                     file.name = f"{user_info["면접을 볼 회사"]} interview result.text"
                     save_uploaded_file('interview', file)
