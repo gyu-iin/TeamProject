@@ -103,6 +103,9 @@ with col2:
                 if new_data is None:
                     st.write("왜 안되세요")
                 filename = f"{user_info["면접을 볼 회사"]} interview result.txt"
+                if not os.path.exists("interview result") :
+                    os.makedirs("interview result")
+
                 with open(os.path.join("interview result", filename),'wb') as f:
                     f.write(new_data.read())
                 
