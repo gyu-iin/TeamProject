@@ -3,6 +3,7 @@ import openai
 import os
 
 col1, col2= st.columns(2)
+openai.api_key = os.getenv(st.session_state['api_key'])
 
 with col1:
     st.title("모의 면접관")
@@ -105,17 +106,17 @@ with col2:
                     run_id=run.id,
                     order="asc"
                 )
-                a = client.files.list()
+                a = openai.files.list()
                 st.write(print(a.data))
                 sorted_files = sorted(a.data, key=lambda f: f.created_at, reverse=True)
                 output_file_id = sorted_files[0].id
                 try:
-                    response = client.files.list()
+                    response = openai.files.list()
                     st.write(print(response))
                 except Exception as e:
                     st.write(print(f"Error occurred: {e}"))
 
-                response = client.files.list()
+                response = openai.files.list()
                 if response is None:
                     st.write(print("Response is None. There might be an issue with the API request."))
                 else:
