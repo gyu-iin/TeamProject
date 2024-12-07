@@ -74,7 +74,6 @@ with col2:
                 thread_id=thread.id,
                 assistant_id=assistant.id
             )
-            st.write(run.status)
             while run.status == 'requires_action':
                 tool_calls = run.required_action.submit_tool_outputs.tool_calls
                 tool_outputs = []
@@ -100,13 +99,19 @@ with col2:
                 )
 
             if run.status == 'completed':
-                st.write(run.status)
                 api_response = client.beta.threads.messages.list(
                     thread_id=thread.id,
                     run_id=run.id,
                     order="asc"
                 )
-                st.write(print(api_response))
+                for data in api_response.data:
+                    for content in data.content:
+                        if content.type == 'text':
+                            response = content.text.value
+                            msg = {"role":"assistant","content":response}
+                            show_message(msg)
+                            st.session_state.interview_messages.append(msg)
+
                 # response = client.files.list()
                 
                 # output_file_id = response.data.id
