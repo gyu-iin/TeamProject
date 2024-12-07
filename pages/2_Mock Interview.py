@@ -105,8 +105,8 @@ with col2:
                     run_id=run.id,
                     order="asc"
                 )
-                openai.api_key = os.getenv(st.session_state.api_key)
-
+                set OPENAI_API_KEY=st.session_state.api_key
+                openai.api_key = os.getenv("OPENAI_API_KEY")
                 if openai.api_key is None:
                     print("API key is not set. Please check your environment variable.")
 
