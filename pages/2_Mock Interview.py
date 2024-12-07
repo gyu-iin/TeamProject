@@ -67,7 +67,7 @@ with col2:
             client.beta.threads.messages.create(
                 thread_id=thread.id,
                 role="user",
-                content=f"면접 내용을 요약해서 Q:질문 A:답변 형식으로 저장해서 '{user_info["면접을 볼 회사"]} interview result.csv'로 저장하세요"
+                content=f"면접 내용을 요약해서 Q:질문 A:답변 형식으로 저장해서 '{user_info["면접을 볼 회사"]} interview result.txt'로 저장하세요. 그리고 파"
             )
 
             run = client.beta.threads.runs.create_and_poll(
@@ -78,7 +78,6 @@ with col2:
             while run.status == 'requires_action':
                 tool_calls = run.required_action.submit_tool_outputs.tool_calls
                 tool_outputs = []
-                st.write(tool_calls)
                 for tool in tool_calls:
                     func_name = tool.function.name
                     kwargs = json.loads(tool.function.arguments)
@@ -106,7 +105,7 @@ with col2:
                     run_id=run.id,
                     order="asc"
                 )
-                code_interpreter_file_ids = []
+                st.write(api_response)
 
                 output_file_id = api_response.data[0].content[0].text.annotations[0].file_path.file_id
                 code_interpreter_file_ids.append(output_file_id)
