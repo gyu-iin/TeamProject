@@ -45,13 +45,6 @@ def show_message(msg):
     with st.chat_message(msg['role']):
         st.markdown(msg["content"])
 
-def save_uploaded_file(directory, file) :
-    if not os.path.exists(directory) :
-        os.makedirs(directory)
-
-    with open(os.path.join(directory, file.name), 'wb') as f:
-        f.write(file.getbuffer())
-
 for msg in st.session_state.interview_messages[2:]:
     show_message(msg)
     
@@ -106,10 +99,10 @@ with col2:
                 )
                 
                 output_file_id = api_response.data[0].content[0].text.annotations[0].file_path.file_id
-
-                file = client.files.retrieve_content(output_file_id)
-                if file is not None :
-                    save_uploaded_file('interview', file)
+                new_data = client.files.content(output_file_id)
+                filename = "{user_info["면접을 볼 회사"]} interview result.txt"
+                with open(os.path.join(directory, filename),'wb') as f:
+                f.write(new_data.read())
                 
             else:
                 st.error(f"Response not completed: {run.status}")
