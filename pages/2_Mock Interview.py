@@ -281,8 +281,8 @@ if end_interview:
     show_message(msg)
     col1, col2= st.columns(2)
 
-    # with col1:
-    #     st.download_button("면접 결과 다운로드", file_name = file)
+    with col1:
+        st.download_button("면접 결과 다운로드", file_name = file)
     
     with col2:
         if st.button("다음"):
