@@ -105,27 +105,14 @@ with col2:
                     run_id=run.id,
                     order="asc"
                 )
-                set OPENAI_API_KEY=st.session_state.api_key
-                openai.api_key = os.getenv("OPENAI_API_KEY")
-                if openai.api_key is None:
-                    print("API key is not set. Please check your environment variable.")
+                while client.files.list() is None:
+                    a = client.files.list()
+                    st.write(print(a.data))
+                    sorted_files = sorted(a.data, key=lambda f: f.created_at, reverse=True)
+                    output_file_id = sorted_files[0].id
 
-                a = client.files.list()
-                st.write(print(a.data))
-                sorted_files = sorted(a.data, key=lambda f: f.created_at, reverse=True)
-                output_file_id = sorted_files[0].id
-                try:
-                    response = openai.files.list()
-                    st.write(print(response))
-                except Exception as e:
-                    st.write(print(f"Error occurred: {e}"))
-
-                response = openai.files.list()
-                if response is None:
-                    st.write(print("Response is None. There might be an issue with the API request."))
-                else:
-                    st.write(print(response))
-
+                if a is not None:
+                    st.write(print(a.data))
                 # file = client.files.retrieve_content(output_file_id)
                 # if file is not None :
                 #     save_uploaded_file('interview', file)
