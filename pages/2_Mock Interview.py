@@ -100,7 +100,7 @@ with col2:
                 
                 output_file_id = api_response.data[0].content[0].text.annotations[0].file_path.file_id
                 file_status = client.files.retrieve(output_file_id)
-                st.write(print(f"File Status: {file_status}"))
+                print(f"File Status: {file_status}")
                 # new_data = client.files.content(output_file_id)
                 # filename = f"{user_info["면접을 볼 회사"]} interview result.txt"
                 # if not os.path.exists("interview result"):
