@@ -114,9 +114,10 @@ with col2:
 
                 if a is not None:
                     st.write(print(a.data))
-                # file = client.files.retrieve_content(output_file_id)
-                # if file is not None :
-                #     save_uploaded_file('interview', file)
+                    
+                file = client.files.retrieve_content(output_file_id)
+                if file is not None :
+                    save_uploaded_file('interview', file)
                 
             else:
                 st.error(f"Response not completed: {run.status}")
