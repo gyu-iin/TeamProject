@@ -1,6 +1,9 @@
 import streamlit as st
 import openai
+from openai import OpenAIError
 import os
+import time
+
 
 col1, col2= st.columns(2)
 
@@ -51,6 +54,18 @@ def show_message(msg):
 ##이전 메시지 출력
 for msg in st.session_state.interview_messages[2:]:
     show_message(msg)
+
+##서버에서 파일 받을때 오류 발생시 재시도하는 함수
+def get_file_content_infinite(client, output_file_id, wait_time=2):
+while True:
+    try:
+        new_data = client.files.content(output_file_id)
+        print("File content retrieved successfully.")
+        return new_data
+    except OpenAIError as e:
+        print(f"Error occurred: {e}")
+        print(f"Retrying in {wait_time} seconds...")
+        time.sleep(wait_time)
 
 ##면접 종료 버튼 - 면접 종료와 동시에 이때까지의 대화내용을 txt파일로 저장
 with col2:
@@ -104,7 +119,7 @@ with col2:
                 )
                 
                 output_file_id = api_response.data[0].content[0].text.annotations[0].file_path.file_id
-                new_data = client.files.content(output_file_id)
+                new_data = get_file_content_infinite(client, output_file_id)
                 filename = f"{user_info["면접을 볼 회사"]} interview contents.txt"
 
                 if not os.path.exists("interview contents"):
