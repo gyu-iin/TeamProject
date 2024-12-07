@@ -100,13 +100,12 @@ with col2:
                 
                 output_file_id = api_response.data[0].content[0].text.annotations[0].file_path.file_id
                 new_data = client.files.content(output_file_id)
-                print(new_data.read())
                 filename = f"{user_info["면접을 볼 회사"]} interview result.txt"
                 if not os.path.exists("interview result"):
                     os.makedirs("interview result")
 
                 with open(os.path.join("interview result", filename),'wb') as f:
-                    f.write(new_data.text())
+                    f.write(new_data.read().decode('utf-8'))
                 
             else:
                 st.error(f"Response not completed: {run.status}")
