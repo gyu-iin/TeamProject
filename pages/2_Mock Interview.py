@@ -110,7 +110,7 @@ with col2:
                 sorted_files = sorted(a.data, key=lambda f: f.created_at, reverse=True)
                 output_file_id = sorted_files[0].id
                 try:
-                    response = openai.files.list()
+                    response = client.files.list()
                     st.write(print(response))
                 except Exception as e:
                     st.write(print(f"Error occurred: {e}"))
