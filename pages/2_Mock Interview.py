@@ -112,7 +112,7 @@ with col2:
                 output_file_id = thread_messages.data[0].content[0].text.annotations[0].file_path.file_id
                 code_interpreter_file_ids.append(output_file_id)
 
-                file = client.files.retrieve_content(code_interpreter_file_ids[:-1])
+                file = code_interpreter_file_ids[:-1]
 
                 if file is not None :
                     save_uploaded_file('interview', file)
