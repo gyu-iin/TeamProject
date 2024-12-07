@@ -108,13 +108,14 @@ with col2:
                 a = client.files.list()
                 while a is None:
                     a = client.files.list()
-                    st.write(print(a.data))
-                    sorted_files = sorted(a.data, key=lambda f: f.created_at, reverse=True)
-                    output_file_id = sorted_files[0].id
+
+                st.write(print(a.data))
+                sorted_files = sorted(a.data, key=lambda f: f.created_at, reverse=True)
+                output_file_id = sorted_files[0].id
 
                 if a is not None:
                     st.write(print(a.data))
-                    
+
                 file = client.files.retrieve_content(output_file_id)
                 if file is not None :
                     save_uploaded_file('interview', file)
