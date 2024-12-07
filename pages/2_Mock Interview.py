@@ -109,10 +109,9 @@ with col2:
                 )
                 code_interpreter_file_ids = []
 
-                thread_messages = client.beta.threads.messages.list(thread_id=thread.id, run_id=run.id)
-                output_file_id = thread_messages.data[0].content[0].text.annotations[0].file_path.file_id
+                output_file_id = api_response.data[0].content[0].text.annotations[0].file_path.file_id
                 code_interpreter_file_ids.append(output_file_id)
-                st.write(thread_messages)
+                st.write(api_response)
 
                 file = code_interpreter_file_ids[:-1]
                 st.write(file)
