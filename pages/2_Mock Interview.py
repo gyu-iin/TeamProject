@@ -1,5 +1,6 @@
 import streamlit as st
 import openai
+import os
 
 col1, col2= st.columns(2)
 
