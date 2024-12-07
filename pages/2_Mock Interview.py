@@ -113,8 +113,7 @@ with col2:
 
                 st.write(print(response))
                 
-                sorted_files = sorted(response.data, key=lambda f: f.created_at, reverse=True)
-                output_file_id = sorted_files[0].id
+                output_file_id = response.data.id
 
                 file = client.files.retrieve_content(output_file_id)
                 if file is not None :
