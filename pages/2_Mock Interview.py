@@ -1,6 +1,5 @@
 import streamlit as st
 import openai
-import os
 
 col1, col2= st.columns(2)
 
@@ -101,10 +100,8 @@ with col2:
                 output_file_id = api_response.data[0].content[0].text.annotations[0].file_path.file_id
                 new_data = client.files.content(output_file_id)
                 filename = f"{user_info["면접을 볼 회사"]} interview result.txt"
-                if not os.path.exists("interview result"):
-                    os.makedirs("interview result")
 
-                with open(os.path.join("interview result", filename),'wb') as f:
+                with open(filename,'wb') as f:
                     f.write(new_data.read())
                 
             else:
