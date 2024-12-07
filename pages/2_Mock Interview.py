@@ -106,7 +106,7 @@ with col2:
                     run_id=run.id,
                     order="asc"
                 )
-                st.write(api_response)
+                st.write(print(api_response))
                 # response = client.files.list()
                 
                 # output_file_id = response.data.id
