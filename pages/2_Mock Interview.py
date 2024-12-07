@@ -278,7 +278,13 @@ if end_interview:
     col1, col2= st.columns(2)
 
     with col1:
-        st.download_button("면접 결과 다운로드", data=str, file_name = f"{user_info["면접을 볼 회사"]} interview result.txt")
+        with open(f"{user_info["면접을 볼 회사"]} interview result.txt", "rb") as file:
+            btn = st.download_button(
+                label="면접 결과 다운로드",
+                data=file,
+                file_name=f"{user_info["면접을 볼 회사"]} interview result.txt",
+                mime="text/csv",
+            )
     
     with col2:
         if st.button("다음"):
