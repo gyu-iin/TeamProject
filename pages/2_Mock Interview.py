@@ -59,7 +59,6 @@ with col2:
     if start_interview:
         if st.button("면접 종료"):
             msg = {"role":"user", "content": "면접 내용 요약"}
-            st.session_state.interview_messages.append(msg)
 
             thread = st.session_state.thread
 
@@ -68,7 +67,7 @@ with col2:
             client.beta.threads.messages.create(
                 thread_id=thread.id,
                 role="user",
-                content=f"면접 내용을 요약해서 Q:질문 A:답변 형식으로 저장해서 '{user_info["면접을 볼 회사"]} interview result.text'로 저장하세요"
+                content=f"면접 내용을 요약해서 Q:질문 A:답변 형식으로 저장해서 '{user_info["면접을 볼 회사"]} interview result.csv'로 저장하세요"
             )
 
             run = client.beta.threads.runs.create_and_poll(
