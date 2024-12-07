@@ -105,11 +105,15 @@ with col2:
                     run_id=run.id,
                     order="asc"
                 )
-                a = client.files.list()
 
-                st.write(print(a))
+                response = client.files.list(extra_query={
+                    'order': 'asc',
+                    'limit': 1
+                })
+
+                st.write(print(response))
                 
-                sorted_files = sorted(a.data, key=lambda f: f.created_at, reverse=True)
+                sorted_files = sorted(response.data, key=lambda f: f.created_at, reverse=True)
                 output_file_id = sorted_files[0].id
 
                 file = client.files.retrieve_content(output_file_id)
