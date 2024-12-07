@@ -1,5 +1,6 @@
 import streamlit as st
 import openai
+import os
 
 col1, col2= st.columns(2)
 
@@ -101,47 +102,50 @@ with col2:
                 new_data = client.files.content(output_file_id)
                 filename = f"{user_info["면접을 볼 회사"]} interview result.txt"
 
-                with open(filename,'wb') as f:
+                if not os.path.exists("interview result"):
+                    os.makedirs("interview result")
+
+                with open(os.path.join("interview result", filename),'wb') as f:
                     f.write(new_data.read())
                 
             else:
                 st.error(f"Response not completed: {run.status}")
 
-            st.session_state.interview_messages = []
             st.session_state["interview started"] = False
             st.session_state["interview ended"] = True
 
-if not start_interview:
-    interview_company = st.text_input("면접을 볼 회사를 입력해주세요", 
-                            value=st.session_state.get('interview_company',''))
-    user_info["면접을 볼 회사"] = interview_company
-    st.session_state.user_info = user_info
+if not end_interview
+    if not start_interview:
+        interview_company = st.text_input("면접을 볼 회사를 입력해주세요", 
+                                value=st.session_state.get('interview_company',''))
+        user_info["면접을 볼 회사"] = interview_company
+        st.session_state.user_info = user_info
 
-    if st.button("면접 시작"):
-        if st.session_state.interview_messages == []:
-            st.session_state.interview_messages = [
-                {"role":"user","content":f"""
-        당신은 모의면접관입니다. 사용자 정보에 따라 사용자에게 모의면접을 실시하세요
+        if st.button("면접 시작"):
+            if st.session_state.interview_messages == []:
+                st.session_state.interview_messages = [
+                    {"role":"user","content":f"""
+            당신은 모의면접관입니다. 사용자 정보에 따라 사용자에게 모의면접을 실시하세요
 
-        ## 사용자 정보
-        {user_info}        
-        """}
-            ]   
-        
-        if "assistant" not in st.session_state:
-            st.session_state.assistant = client.beta.assistants.create(
-                instructions="사용자 정보에 따라 모의 면접을 도와주세요.",
-                name="모의면접관",
-                model="gpt-4o-mini",
-                tools=[{"type":"code_interpreter"}]
-            )
+            ## 사용자 정보
+            {user_info}        
+            """}
+                ]   
+            
+            if "assistant" not in st.session_state:
+                st.session_state.assistant = client.beta.assistants.create(
+                    instructions="사용자 정보에 따라 모의 면접을 도와주세요.",
+                    name="모의면접관",
+                    model="gpt-4o-mini",
+                    tools=[{"type":"code_interpreter"}]
+                )
 
-        if "thread" not in st.session_state:
-            st.session_state.thread = client.beta.threads.create(
-                messages = st.session_state.interview_messages  
-            )
-        start_interview = True
-        st.session_state["interview started"] = start_interview
+            if "thread" not in st.session_state:
+                st.session_state.thread = client.beta.threads.create(
+                    messages = st.session_state.interview_messages  
+                )
+            start_interview = True
+            st.session_state["interview started"] = start_interview
 
 if start_interview:
     if len(st.session_state.interview_messages) < 2:
