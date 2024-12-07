@@ -300,9 +300,10 @@ if end_interview:
     msg = {"role":"assistant","content":"면접 내용을 다운받으시려면 다운로드 버튼을 눌러주세요. 다음 화면으로 넘어가고 싶으시다면 다음 버튼을 눌러주세요."}
     show_message(msg)
     col1, col2= st.columns(2)
+    print(f"{user_info["면접을 볼 회사"]} interview contents.txt")
 
     with col1:
-        with open(f"{user_info["면접을 볼 회사"]} interview contents.txt", "rb") as file:
+        with open(open(os.path.join("interview contents", f"{user_info["면접을 볼 회사"]} interview contents.txt"), "rb") as file:
             btn = st.download_button(
                 label="면접 내용 다운로드",
                 data=file,
