@@ -3,7 +3,7 @@ import openai
 import os
 
 col1, col2= st.columns(2)
-openai.api_key = os.getenv(st.session_state['api_key'])
+
 with col1:
     st.title("모의 면접관")
 
@@ -105,6 +105,11 @@ with col2:
                     run_id=run.id,
                     order="asc"
                 )
+                openai.api_key = os.getenv(st.session_state.api_key)
+
+                if openai.api_key is None:
+                    print("API key is not set. Please check your environment variable.")
+
                 a = client.files.list()
                 st.write(print(a.data))
                 sorted_files = sorted(a.data, key=lambda f: f.created_at, reverse=True)
