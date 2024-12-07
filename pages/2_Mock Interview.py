@@ -114,7 +114,7 @@ with col2:
             st.session_state["interview started"] = False
             st.session_state["interview ended"] = True
 
-if not end_interview
+if not end_interview:
     if not start_interview:
         interview_company = st.text_input("면접을 볼 회사를 입력해주세요", 
                                 value=st.session_state.get('interview_company',''))
