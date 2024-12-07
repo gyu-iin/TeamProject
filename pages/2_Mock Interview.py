@@ -100,7 +100,7 @@ with col2:
                     run_id=run.id,
                     tool_outputs=tool_outputs
                 )
-
+            st.write(run.status)
             if run.status == 'completed':
                 api_response = client.beta.threads.messages.list(
                     thread_id=thread.id,
@@ -111,7 +111,7 @@ with col2:
 
                 output_file_id = api_response.data[0].content[0].text.annotations[0].file_path.file_id
                 code_interpreter_file_ids.append(output_file_id)
-                st.write(api_response)
+                
 
                 file = code_interpreter_file_ids[:-1]
                 st.write(file)
