@@ -120,8 +120,8 @@ with col2:
             st.session_state["interview ended"] = True
 
 ##면접을 볼 회사를 정한 후 면접을 시작하는 버튼
-while not end_interview:
-    while not start_interview:
+if not end_interview:
+    if not start_interview:
         interview_company = st.text_input("면접을 볼 회사를 입력해주세요", 
                                 value=st.session_state.get('interview_company',''))
         user_info["면접을 볼 회사"] = interview_company
