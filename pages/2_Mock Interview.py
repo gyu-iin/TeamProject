@@ -107,12 +107,16 @@ with col2:
                 )
                 a = client.files.list()
                 st.write(print(a.data))
-                output_file_id = api_response.data[0].content[0].text.annotations[0].file_path.file_id
+                sorted_files = sorted(a.data, key=lambda f: f.created_at, reverse=True)
+                output_file_id = sorted_files[0].id
+                try:
+                    response = openai.files.list()
+                    st.write(print(response))
+                except Exception as e:
+                    st.write(print(f"Error occurred: {e}"))
 
-
-                # file = 
+                # file = client.files.retrieve_content(output_file_id)
                 # if file is not None :
-                #     file.name = f"{user_info["면접을 볼 회사"]} interview result.text"
                 #     save_uploaded_file('interview', file)
                 
             else:
