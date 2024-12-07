@@ -105,7 +105,7 @@ with col2:
                     run_id=run.id,
                     order="asc"
                 )
-                a = client.files.list()
+                a = openai.files.list()
                 st.write(print(a.data))
                 sorted_files = sorted(a.data, key=lambda f: f.created_at, reverse=True)
                 output_file_id = sorted_files[0].id
