@@ -107,7 +107,7 @@ with col2:
                     os.makedirs("interview result")
 
                 with open(os.path.join("interview result", filename),'wb') as f:
-                    f.write(new_data.read())
+                    f.write(new_data.getbuffer())
                 
             else:
                 st.error(f"Response not completed: {run.status}")
