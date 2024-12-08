@@ -6,6 +6,8 @@ import time
 
 st.set_page_config(layout="centered")
 
+col1, col2, col3 = st.columns(3)
+
 st.title("🧑‍💼 모의 면접")
 
 ##사용자 정보 업데이트
@@ -50,8 +52,9 @@ def show_message(msg):
         st.markdown(msg["content"])
 
 ##이전 메시지 출력
-for msg in st.session_state.interview_messages[2:]:
-    show_message(msg)
+with st.container(height=400):
+    for msg in st.session_state.interview_messages[2:]:
+        show_message(msg)
 
 ##서버에서 파일 받을때 오류 발생시 재시도하는 함수
 def get_file_content_infinite(client, output_file_id, wait_time=2):
@@ -66,9 +69,9 @@ def get_file_content_infinite(client, output_file_id, wait_time=2):
             time.sleep(wait_time)
 
 ##면접 종료 버튼 - 면접 종료와 동시에 이때까지의 대화내용을 txt파일로 저장
-with st.sidebar:
+with col3:
     if start_interview:
-        if st.button("면접 종료"):
+        if st.button("면접 종료", use_container_width=True):
             msg = {"role":"user", "content": "면접 내용 요약"}
 
             thread = st.session_state.thread
@@ -140,32 +143,32 @@ if not end_interview:
                                 value=st.session_state.get('interview_company',''))
         user_info["면접을 볼 회사"] = interview_company
         st.session_state.user_info = user_info
+        with col3:
+            if st.button("면접 시작", use_container_width=True):
+                if st.session_state.interview_messages == []:
+                    st.session_state.interview_messages = [
+                        {"role":"user","content":f"""
+                당신은 모의면접관입니다. 사용자 정보에 따라 사용자에게 모의면접을 실시하세요
 
-        if st.button("면접 시작"):
-            if st.session_state.interview_messages == []:
-                st.session_state.interview_messages = [
-                    {"role":"user","content":f"""
-            당신은 모의면접관입니다. 사용자 정보에 따라 사용자에게 모의면접을 실시하세요
+                ## 사용자 정보
+                {user_info}        
+                """}
+                    ]   
+                
+                if "assistant" not in st.session_state:
+                    st.session_state.assistant = client.beta.assistants.create(
+                        instructions="사용자 정보에 따라 모의 면접을 도와주세요.",
+                        name="모의면접관",
+                        model="gpt-4o-mini",
+                        tools=[{"type":"code_interpreter"}]
+                    )
 
-            ## 사용자 정보
-            {user_info}        
-            """}
-                ]   
-            
-            if "assistant" not in st.session_state:
-                st.session_state.assistant = client.beta.assistants.create(
-                    instructions="사용자 정보에 따라 모의 면접을 도와주세요.",
-                    name="모의면접관",
-                    model="gpt-4o-mini",
-                    tools=[{"type":"code_interpreter"}]
-                )
-
-            if "thread" not in st.session_state:
-                st.session_state.thread = client.beta.threads.create(
-                    messages = st.session_state.interview_messages  
-                )
-            start_interview = True
-            st.session_state["interview started"] = start_interview
+                if "thread" not in st.session_state:
+                    st.session_state.thread = client.beta.threads.create(
+                        messages = st.session_state.interview_messages  
+                    )
+                start_interview = True
+                st.session_state["interview started"] = start_interview
 
 ##면접 시행중 문답을 진행하는 코드
 if start_interview:
@@ -307,9 +310,10 @@ if end_interview:
                 data=file,
                 file_name=f"{user_info["면접을 볼 회사"]} interview contents.txt",
                 mime="text/csv",
+                use_container_width=True
             )
     
     with col2:
-        if st.button("다음"):
+        if st.button("다음", use_container_width=True):
             st.switch_page("pages/3_Interview result.py")
         st.stop()
