@@ -77,7 +77,7 @@ if st.session_state["interview_summary"] is None:
                 temperature=0.7
             )
 
-            summary = response["choices"][0]["message"]["content"]
+            summary = ompletion.choices[0].message.content
             st.session_state["interview_summary"] = summary
 
         except Exception as e:
