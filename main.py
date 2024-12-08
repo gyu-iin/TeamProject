@@ -9,7 +9,7 @@ st.subheader("자신감을 키우고 면접 실력을 한 단계 업그레이드
 col1, col2 = st.columns([2, 3])
 
 with col1:
-    st.image("/workspaces/TeamProject/img/main.jpg", caption="면접 준비의 시작!", use_column_width=True)
+    st.image("img/main.jpg", caption="면접 준비의 시작!", use_column_width=True)
 
 with col2:
     st.markdown("""
