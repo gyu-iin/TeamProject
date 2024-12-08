@@ -49,10 +49,10 @@ if "interview_messages" not in st.session_state:
 
 ##메시지 출력 함수
 def show_message(msg):
-    with con1:
-        with st.container(height=400):
-            with st.chat_message(msg['role']):
-                st.markdown(msg["content"])
+    # with con1:
+    with st.container(height=400):
+        with st.chat_message(msg['role']):
+            st.markdown(msg["content"])
 
 ##이전 메시지 출력
 for msg in st.session_state.interview_messages[2:]:
@@ -72,80 +72,80 @@ def get_file_content_infinite(client, output_file_id, wait_time=2):
 
 ##면접 종료 버튼 - 면접 종료와 동시에 이때까지의 대화내용을 txt파일로 저장
 with con4:
-    if start_interview:
-        if st.button("면접 종료", use_container_width=True):
-            msg = {"role":"user", "content": "면접 내용 요약"}
+if start_interview:
+    if st.button("면접 종료", use_container_width=True):
+        msg = {"role":"user", "content": "면접 내용 요약"}
 
-            thread = st.session_state.thread
+        thread = st.session_state.thread
 
-            assistant = st.session_state.assistant
+        assistant = st.session_state.assistant
 
-            client.beta.threads.messages.create(
-                thread_id=thread.id,
-                role="user",
-                content=f"면접 내용을 요약해서 Q:질문 A:답변 형식으로 저장해서 '{user_info["면접을 볼 회사"]} interview contents.txt'로 저장하세요."
-            )
+        client.beta.threads.messages.create(
+            thread_id=thread.id,
+            role="user",
+            content=f"면접 내용을 요약해서 Q:질문 A:답변 형식으로 저장해서 '{user_info["면접을 볼 회사"]} interview contents.txt'로 저장하세요."
+        )
 
-            run = client.beta.threads.runs.create_and_poll(
-                thread_id=thread.id,
-                assistant_id=assistant.id
-            )
-            while run.status == 'requires_action':
-                tool_calls = run.required_action.submit_tool_outputs.tool_calls
-                tool_outputs = []
-                for tool in tool_calls:
-                    func_name = tool.function.name
-                    kwargs = json.loads(tool.function.arguments)
-                    output = None
+        run = client.beta.threads.runs.create_and_poll(
+            thread_id=thread.id,
+            assistant_id=assistant.id
+        )
+        while run.status == 'requires_action':
+            tool_calls = run.required_action.submit_tool_outputs.tool_calls
+            tool_outputs = []
+            for tool in tool_calls:
+                func_name = tool.function.name
+                kwargs = json.loads(tool.function.arguments)
+                output = None
 
-                    if func_name in TOOL_FUNCTIONS:
-                        output = TOOL_FUNCTIONS[func_name](**kwargs)
+                if func_name in TOOL_FUNCTIONS:
+                    output = TOOL_FUNCTIONS[func_name](**kwargs)
 
-                    tool_outputs.append(
-                        {
-                            "tool_call_id": tool.id,
-                            "output": str(output)
-                        }
-                    )
-
-                run = client.beta.threads.runs.submit_tool_outputs_and_poll(
-                    thread_id=thread.id,
-                    run_id=run.id,
-                    tool_outputs=tool_outputs
+                tool_outputs.append(
+                    {
+                        "tool_call_id": tool.id,
+                        "output": str(output)
+                    }
                 )
 
-            if run.status == 'completed':
-                api_response = client.beta.threads.messages.list(
-                    thread_id=thread.id,
-                    run_id=run.id,
-                    order="asc"
-                )
-                
-                output_file_id = api_response.data[0].content[0].text.annotations[0].file_path.file_id
-                st.session_state.file_id = output_file_id
-                new_data = get_file_content_infinite(client, output_file_id)
-                filename = f"{user_info["면접을 볼 회사"]} interview contents.txt"
+            run = client.beta.threads.runs.submit_tool_outputs_and_poll(
+                thread_id=thread.id,
+                run_id=run.id,
+                tool_outputs=tool_outputs
+            )
 
-                if not os.path.exists("interview contents"):
-                    os.makedirs("interview contents")
+        if run.status == 'completed':
+            api_response = client.beta.threads.messages.list(
+                thread_id=thread.id,
+                run_id=run.id,
+                order="asc"
+            )
+            
+            output_file_id = api_response.data[0].content[0].text.annotations[0].file_path.file_id
+            st.session_state.file_id = output_file_id
+            new_data = get_file_content_infinite(client, output_file_id)
+            filename = f"{user_info["면접을 볼 회사"]} interview contents.txt"
 
-                with open(os.path.join("interview contents", filename),'wb') as f:
-                    f.write(new_data.read())
-                
-            else:
-                st.error(f"Response not completed: {run.status}")
+            if not os.path.exists("interview contents"):
+                os.makedirs("interview contents")
 
-            st.session_state["interview started"] = False
-            st.session_state["interview ended"] = True
+            with open(os.path.join("interview contents", filename),'wb') as f:
+                f.write(new_data.read())
+            
+        else:
+            st.error(f"Response not completed: {run.status}")
+
+        st.session_state["interview started"] = False
+        st.session_state["interview ended"] = True
 
 ##면접을 볼 회사를 정한 후 면접을 시작하는 버튼
-with con1:
-    if not end_interview:
-        if not start_interview:
-            interview_company = st.text_input("면접을 볼 회사를 입력해주세요", 
-                                    value=st.session_state.get('interview_company',''))
-            user_info["면접을 볼 회사"] = interview_company
-            st.session_state.user_info = user_info
+# with con1:
+if not end_interview:
+    if not start_interview:
+        interview_company = st.text_input("면접을 볼 회사를 입력해주세요", 
+                                value=st.session_state.get('interview_company',''))
+        user_info["면접을 볼 회사"] = interview_company
+        st.session_state.user_info = user_info
 with con4:
     if not end_interview:
         if not start_interview:    
@@ -306,7 +306,7 @@ if end_interview:
     show_message(msg)
     msg = {"role":"assistant","content":"면접 내용을 다운받으시려면 다운로드 버튼을 눌러주세요. 다음 화면으로 넘어가고 싶으시다면 다음 버튼을 눌러주세요."}
     show_message(msg)
-    
+
 with con2:
     if end_interview:
         with open(os.path.join("interview contents", f"{user_info["면접을 볼 회사"]} interview contents.txt"), "rb") as file:
