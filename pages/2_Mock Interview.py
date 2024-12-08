@@ -30,6 +30,7 @@ if client is None:
 
 ##면접 시작 여부 확인
 start_interview = st.session_state.get('interview_started')
+print(start_interview)
 if start_interview is None:
     start_interview = False
 else:
@@ -40,6 +41,7 @@ else:
 
 ##면접 종료 여부 확인
 end_interview = st.session_state.get('interview_ended')
+print(end_interview)
 if end_interview is None:
     end_interview = False
 else:
