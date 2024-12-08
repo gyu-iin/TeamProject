@@ -16,7 +16,7 @@ if api_key:
         st.session_state['openai_client'] = client
 
 keys = ['user_name', 'user_age', 'user_field', 'user_edu', 'user_exp']
-user_info = {"이름": None, "나이" : None, "관심분야" : None, "학력" : None, "경력사항" : None, "면접을 볼 회사" : None}
+user_info = st.session_state['user_info']
 
 user_name = st.text_input("이름을 입력해주세요", 
                         value=st.session_state.get('user_name',''))
