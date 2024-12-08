@@ -15,7 +15,7 @@ con2, con3, con4 = st.columns(3)
 # 사용자 정보와 API Key 확인 함수
 user_info = st.session_state.get('user_info', None)
 client = st.session_state.get('openai_client', None)
-
+st.write(user_info)
 def check_user_info_and_api():
     
 
