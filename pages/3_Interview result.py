@@ -6,7 +6,7 @@ import os
 st.title("📖 면접 결과 확인 📖")
 
 ## 면접 진행 여부 확인
-end_interview = st.session_state.get('interview ended', None)
+end_interview = st.session_state.get('interview_ended', None)
 if end_interview is None or not end_interview:
     if st.button("면접을 진행하지 않았습니다."):
         st.switch_page("pages/2_Mock Interview.py")
@@ -119,5 +119,6 @@ st.download_button(
 if st.button("다시 시작하기"):
     del st.session_state.thread
     del st.session_state.interview_messages
+    st.session_state.interview_
     st.switch_page("pages/1_User information.py")
     st.stop()
