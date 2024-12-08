@@ -49,7 +49,7 @@ with col1:
             st.session_state[i] = None
 
         st.session_state['user_info'] = user_info
-        st.write(user_info)
+        st.write(st.session_state.user_info)
 
 with col2:
     if st.button("면접 시작"):
