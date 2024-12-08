@@ -52,7 +52,7 @@ col1, col2, col3 = st.columns(3)
 
 with col1:
     if st.button("사용자 정보 삭제"):
-        if user_name is None and user_age is None and user_field is None and user_edu is None and user_exp is None:
+        if not user_name and not user_age and not user_field and not user_edu and not user_exp:
             st.write("삭제할 사용자 정보가 없습니다")
         for key in keys:
             if key is None:
