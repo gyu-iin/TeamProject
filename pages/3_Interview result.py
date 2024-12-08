@@ -117,8 +117,8 @@ st.download_button(
 
 # 앱 다시 시작 옵션
 if st.button("다시 시작하기"):
-    del st.session_state.thread
-    del st.session_state.interview_messages
-    st.session_state.interview_ended = False
+    # del st.session_state.thread
+    # del st.session_state.interview_messages
+    # st.session_state.interview_ended = False
     st.switch_page("pages/1_User information.py")
 st.stop()
