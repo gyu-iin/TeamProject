@@ -87,12 +87,12 @@ if st.session_state["interview_summary"] is None:
 # 결과 출력
 summary = st.session_state.get("interview_summary", "")
 if summary:
-    st.markdown("### 면접 내용 요약")
+    st.markdown("📄 면접 내용 요약 📄")
     for section in summary.split("\n\n"):  # 섹션별 출력
         if section.strip():
             st.markdown(section.strip())
 
-    st.markdown("### 평가 점수 및 피드백")
+    st.markdown("🔬평가 점수 및 피드백 🔬")
     feedback_start = summary.find("Feedback:")
     if feedback_start != -1:
         st.markdown(summary[feedback_start:])
