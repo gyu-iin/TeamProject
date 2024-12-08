@@ -30,24 +30,24 @@ if client is None:
     st.stop()
 
 ##면접 시작 여부 확인
-start_interview = st.session_state.get('interview started')
+start_interview = st.session_state.get('interview_started')
 if start_interview is None:
     start_interview = False
 else:
-    if 'interview started' in st.session_state:
-        start_interview = st.session_state['interview started']
+    if 'interview_started' in st.session_state:
+        start_interview = st.session_state['interview_started']
     else:
-        st.session_state['interview started'] = start_interview
+        st.session_state['interview_started'] = start_interview
 
 ##면접 종료 여부 확인
-end_interview = st.session_state.get('interview ended')
+end_interview = st.session_state.get('interview_ended')
 if end_interview is None:
     end_interview = False
 else:
-    if 'interview ended' in st.session_state:
-        end_interview = st.session_state['interview ended']
+    if 'interview_ended' in st.session_state:
+        end_interview = st.session_state['interview_ended']
     else:
-        st.session_state['interview ended'] = end_interview
+        st.session_state['interview_ended'] = end_interview
 
 if "interview_messages" not in st.session_state:
         st.session_state.interview_messages = []
@@ -177,7 +177,7 @@ if not end_interview:
                     start_interview = True
                     st.session_state["interview started"] = start_interview
 
-##면접 시행중 문답을 진행하는 코드
+##면접 시행 중 문답을 진행하는 코드
 if start_interview:
     if len(st.session_state.interview_messages) < 2:
         msg = {"role":"user", "content": "면접 시작"}
