@@ -3,7 +3,7 @@ import openai
 import os
 
 # Page title
-st.title("면접 결과 확인")
+st.title("📖 면접 결과 확인 📖")
 
 ## 면접 진행 여부 확인
 end_interview = st.session_state.get('interview ended', None)

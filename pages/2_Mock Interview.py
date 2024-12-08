@@ -6,7 +6,7 @@ import time
 
 st.set_page_config(layout="centered")
 
-st.title("모의 면접관")
+st.title("🧑‍💼 모의 면접")
 
 ##사용자 정보 업데이트
 user_info = st.session_state.get('user_info', None)

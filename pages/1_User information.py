@@ -1,6 +1,8 @@
 import streamlit as st
 from openai import OpenAI
 
+st.title("🖊 면접을 시작하기 전에 당신의 정보를 입력해주세요! 🖊")
+
 api_key = st.text_input("OpenAI API Key", 
                         value=st.session_state.get('api_key',''),
                         type='password')
