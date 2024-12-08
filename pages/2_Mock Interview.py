@@ -13,10 +13,11 @@ con2, con3, con4 = st.columns(3)
 
 ##사용자 정보 업데이트
 user_info = st.session_state.get('user_info', None)
-if user_info is None:
-    if st.button("사용자 정보가 입력되지 않았습니다."):
-        st.switch_page("pages/1_User information.py")
-    st.stop()
+for i in user_info.keys():
+    if user_info[i] is None:
+        if st.button("사용자 정보가 입력되지 않았습니다."):
+            st.switch_page("pages/1_User information.py")
+        st.stop()
 
 client = st.session_state.get('openai_client', None)
 if client is None:
