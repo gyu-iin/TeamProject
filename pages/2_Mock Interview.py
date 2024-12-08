@@ -293,6 +293,9 @@ def end_interview_and_download():
 # 화면 흐름 제어
 if start_interview:
     interview_in_progress()
+    with con4:
+        if st.button("면접 종료", use_container_width=True):
+            end_interview_and_save()
 
 if not end_interview and not start_interview:
     start_interview_process()
