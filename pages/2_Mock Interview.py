@@ -115,7 +115,7 @@ with st.sidebar:
                 )
                 
                 output_file_id = api_response.data[0].content[0].text.annotations[0].file_path.file_id
-                new_data = get_file_content_infinite(client, 'file-8d9WSJWfQiY1NU4YKPm51u')
+                new_data = get_file_content_infinite(client, output_file_id)
                 filename = f"{user_info["면접을 볼 회사"]} interview contents.txt"
 
                 if not os.path.exists("interview contents"):
