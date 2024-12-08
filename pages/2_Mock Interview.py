@@ -11,8 +11,6 @@ st.title("🧑‍💼 모의 면접")
 con1 = st.columns(1)
 con2, con3, con4 = st.columns(3)
 
-print(con1, con2, con3, con4)
-
 ##사용자 정보 업데이트
 user_info = st.session_state.get('user_info', None)
 if user_info is None:
@@ -141,15 +139,16 @@ with con4:
             st.session_state["interview ended"] = True
 
 ##면접을 볼 회사를 정한 후 면접을 시작하는 버튼
-if not end_interview:
-    if not start_interview:
-        with con1:
+with con1:
+    if not end_interview:
+        if not start_interview:
             interview_company = st.text_input("면접을 볼 회사를 입력해주세요", 
                                     value=st.session_state.get('interview_company',''))
             user_info["면접을 볼 회사"] = interview_company
             st.session_state.user_info = user_info
-
-        with con4:
+with con4:
+    if not end_interview:
+        if not start_interview:    
             if st.button("면접 시작", use_container_width=True):
                 if st.session_state.interview_messages == []:
                     st.session_state.interview_messages = [
@@ -307,8 +306,9 @@ if end_interview:
     show_message(msg)
     msg = {"role":"assistant","content":"면접 내용을 다운받으시려면 다운로드 버튼을 눌러주세요. 다음 화면으로 넘어가고 싶으시다면 다음 버튼을 눌러주세요."}
     show_message(msg)
-
-    with con2:
+    
+with con2:
+    if end_interview:
         with open(os.path.join("interview contents", f"{user_info["면접을 볼 회사"]} interview contents.txt"), "rb") as file:
             btn = st.download_button(
                 label="면접 내용 다운로드",
@@ -317,8 +317,9 @@ if end_interview:
                 mime="text/csv",
                 use_container_width=True
             )
-    
-    with con4:
+
+with con4:    
+    if end_interview:
         if st.button("다음", use_container_width=True):
             st.switch_page("pages/3_Interview result.py")
         st.stop()
