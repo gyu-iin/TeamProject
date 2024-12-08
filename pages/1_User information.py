@@ -15,6 +15,8 @@ if api_key:
         client = OpenAI(api_key=api_key)
         st.session_state['openai_client'] = client
 
+keys = ['user_name', 'user_age', 'user_field', 'user_edu', 'user_exp']
+
 user_name = st.text_input("이름을 입력해주세요", 
                         value=st.session_state.get('user_name',''))
 user_age = st.text_input("나이를 입력해주세요", 
@@ -26,7 +28,7 @@ user_edu = st.text_input("학력 사항을 입력해주세요(OO대학 OO학과�
 user_exp = st.text_area("관련 경력사항을 자유롭게 입력해주세요", 
                         value=st.session_state.get('user_exp',''))
 
-if user_name and user_age and user_field and user_edu and user_exp:
+if user_name or user_age or user_field or user_edu or user_exp:
     st.session_state['user_name'] = user_name
     st.session_state['user_age'] = user_age
     st.session_state['user_field'] = user_field
@@ -42,10 +44,15 @@ col1, col2, col3 = st.columns(3)
 
 with col1:
     if st.button("사용자 정보 삭제"):
-        keys_to_clear = ['user_name', 'user_age', 'user_field', 'user_edu', 'user_exp']
-        for key in keys_to_clear:
+        if user_name is None and user_age is None and user_field is None and user_edu is None and user_exp is None:
+            st.write("삭제할 사용자 정보가 없습니다")
+        for key in keys:
+            if key is None:
+                continue
             st.session_state.pop(key, None)
         for key in user_info.keys():
+            if st.session_state.user_info[key] is None:
+                continue
             st.session_state.user_info[key] = None
 
 
