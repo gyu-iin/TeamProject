@@ -6,9 +6,10 @@ import time
 
 st.set_page_config(layout="centered")
 
-col1, col2, col3 = st.columns(3)
-
 st.title("🧑‍💼 모의 면접")
+##페이지 레이아웃
+con1 = st.columns([1.0])
+con2, con3, con4 = st.columns(3)
 
 ##사용자 정보 업데이트
 user_info = st.session_state.get('user_info', None)
@@ -48,13 +49,14 @@ if "interview_messages" not in st.session_state:
 
 ##메시지 출력 함수
 def show_message(msg):
-    with st.chat_message(msg['role']):
-        st.markdown(msg["content"])
+    with con1:
+        with st.container(height=400):
+            with st.chat_message(msg['role']):
+                st.markdown(msg["content"])
 
 ##이전 메시지 출력
-with st.container(height=400):
-    for msg in st.session_state.interview_messages[2:]:
-        show_message(msg)
+for msg in st.session_state.interview_messages[2:]:
+    show_message(msg)
 
 ##서버에서 파일 받을때 오류 발생시 재시도하는 함수
 def get_file_content_infinite(client, output_file_id, wait_time=2):
@@ -69,7 +71,7 @@ def get_file_content_infinite(client, output_file_id, wait_time=2):
             time.sleep(wait_time)
 
 ##면접 종료 버튼 - 면접 종료와 동시에 이때까지의 대화내용을 txt파일로 저장
-with col3:
+with con4:
     if start_interview:
         if st.button("면접 종료", use_container_width=True):
             msg = {"role":"user", "content": "면접 내용 요약"}
@@ -139,11 +141,13 @@ with col3:
 ##면접을 볼 회사를 정한 후 면접을 시작하는 버튼
 if not end_interview:
     if not start_interview:
-        interview_company = st.text_input("면접을 볼 회사를 입력해주세요", 
-                                value=st.session_state.get('interview_company',''))
-        user_info["면접을 볼 회사"] = interview_company
-        st.session_state.user_info = user_info
-        with col3:
+        with con1:
+            interview_company = st.text_input("면접을 볼 회사를 입력해주세요", 
+                                    value=st.session_state.get('interview_company',''))
+            user_info["면접을 볼 회사"] = interview_company
+            st.session_state.user_info = user_info
+
+        with con4:
             if st.button("면접 시작", use_container_width=True):
                 if st.session_state.interview_messages == []:
                     st.session_state.interview_messages = [
@@ -301,9 +305,8 @@ if end_interview:
     show_message(msg)
     msg = {"role":"assistant","content":"면접 내용을 다운받으시려면 다운로드 버튼을 눌러주세요. 다음 화면으로 넘어가고 싶으시다면 다음 버튼을 눌러주세요."}
     show_message(msg)
-    col1, col2= st.columns(2)
 
-    with col1:
+    with con2:
         with open(os.path.join("interview contents", f"{user_info["면접을 볼 회사"]} interview contents.txt"), "rb") as file:
             btn = st.download_button(
                 label="면접 내용 다운로드",
@@ -313,7 +316,7 @@ if end_interview:
                 use_container_width=True
             )
     
-    with col2:
+    with con4:
         if st.button("다음", use_container_width=True):
             st.switch_page("pages/3_Interview result.py")
         st.stop()
