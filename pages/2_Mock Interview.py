@@ -14,7 +14,7 @@ con2, con3, con4 = st.columns(3)
 ##사용자 정보 업데이트
 user_info = st.session_state.get('user_info', None)
 for i in user_info.keys():
-    if user_info[i] is None:
+    if user_info[i] is None or user_info is None:
         if user_info["면접을 볼 회사"] is None:
             break
         with con1:
@@ -243,7 +243,7 @@ if start_interview:
                         st.session_state.interview_messages.append(msg)
         else:
             st.error(f"Response not completed: {run.status}")
-            
+
     if prompt := st.chat_input("질문에 대답하세요."):
         msg = {"role":"user", "content":prompt}
         show_message(msg)
