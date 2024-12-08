@@ -44,7 +44,7 @@ if 'user_info' in st.session_state:
     user_info = st.session_state['user_info']
 elif 'user_info' not in st.session_state or any(value is None for key, value in user_info.items() if key != '면접을 볼 회사'):
     for idx, key in enumerate(keys):
-        var_value = st.session_state.get(key)
+        var_value = st.session_state.get(key, '')
         if var_value is not None:
             user_info[list(user_info.keys())[idx]] = var_value
     st.session_state['user_info'] = user_info
