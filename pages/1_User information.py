@@ -44,7 +44,7 @@ with col1:
     if st.button("사용자 정보 삭제"):
         for i in user_info.keys():
             user_info[i] = None
-            i = None
+            globals()[i] = None
             st.session_state[i] = None
             st.session_state.user_info[i] = None
 
