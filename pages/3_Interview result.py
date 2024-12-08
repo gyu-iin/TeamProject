@@ -101,7 +101,7 @@ if summary:
 
 # 다운로드 버튼
 downloadable_text = f"""
-{user_info['면접을 볼 회사']}의 모의면접:
+{user_info['면접을 볼 회사']}에서의 모의면접:
 
 {summary}
 """
