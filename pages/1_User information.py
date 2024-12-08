@@ -42,14 +42,9 @@ col1, col2, col3 = st.columns(3)
 
 with col1:
     if st.button("사용자 정보 삭제"):
-        for i in user_info.keys():
-            user_info[i] = None
-            globals()[i] = None
-            st.session_state[i] = None
-            st.session_state.user_info[i] = None
-
-        st.session_state['user_info'] = user_info
-        st.rerun()
+        keys_to_clear = ['user_name', 'user_age', 'user_field', 'user_edu', 'user_exp', 'user_info']
+        for key in keys_to_clear:
+            st.session_state.pop(key, None)
 
 with col2:
     if st.button("면접 꿀팁 얻으러 가기"):
