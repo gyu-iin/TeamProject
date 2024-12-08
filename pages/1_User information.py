@@ -29,19 +29,24 @@ user_edu = st.text_input("학력 사항을 입력해주세요(OO대학 OO학과�
 user_exp = st.text_area("관련 경력사항을 자유롭게 입력해주세요", 
                         value=st.session_state.get('user_exp',''))
 
-if user_name or user_age or user_field or user_edu or user_exp:
+if user_name:
     st.session_state['user_name'] = user_name
+if user_age:
     st.session_state['user_age'] = user_age
+if user_field:
     st.session_state['user_field'] = user_field
+if user_edu:
     st.session_state['user_edu'] = user_edu
+if user_exp:
     st.session_state['user_exp'] = user_exp
-    if 'user_info' in st.session_state:
-        user_info = st.session_state['user_info']
-    else:
-        for key in keys:
-            for dic_key in user_info.keys():
-                user_info[dic_key] = key
-        st.session_state['user_info'] = user_info
+
+if 'user_info' in st.session_state:
+    user_info = st.session_state['user_info']
+else:
+    for key in keys:
+        for dic_key in user_info.keys():
+            user_info[dic_key] = key
+    st.session_state['user_info'] = user_info
 
 col1, col2, col3 = st.columns(3)
 
