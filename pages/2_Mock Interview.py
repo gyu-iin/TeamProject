@@ -11,6 +11,8 @@ st.title("🧑‍💼 모의 면접")
 con1 = st.columns(1)
 con2, con3, con4 = st.columns(3)
 
+print(con1, con2, con3, con4)
+
 ##사용자 정보 업데이트
 user_info = st.session_state.get('user_info', None)
 if user_info is None:
