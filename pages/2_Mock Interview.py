@@ -15,6 +15,8 @@ con2, con3, con4 = st.columns(3)
 user_info = st.session_state.get('user_info', None)
 for i in user_info.keys():
     if user_info[i] is None:
+        if user_info["면접을 볼 회사"] is None:
+            break
         with con1:
             if st.button("사용자 정보가 입력되지 않았습니다."):
                 st.switch_page("pages/1_User information.py")
