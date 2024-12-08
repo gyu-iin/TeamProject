@@ -17,7 +17,7 @@ user_info = st.session_state.get('user_info', None)
 client = st.session_state.get('openai_client', None)
 st.write(user_info)
 def check_user_info_and_api():
-    if 'user_info' not in st.session_state or user_info is None or not user_info:
+    if 'user_info' not in st.session_state or not st.session_state.user_info:
         st.session_state['user_info'] = {"이름": None, "나이": None, "관심분야": None, "학력": None, "경력사항": None, "면접을 볼 회사": None}
 
     with con1:
