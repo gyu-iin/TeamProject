@@ -30,8 +30,9 @@ if client is None:
 if "result_messages" not in st.session_state:
     st.session_state.result_messages = []
 
-# 면접 대화 기록 불러오기
-interview_messages = st.session_state.get("interview_messages", [])
+# 면접 대화 기록 불러오기 - 저장된 파일
+with open(os.path.join("interview contents", f"{user_info["면접을 볼 회사"]} interview contents.txt"), "rb") as file:
+    interview_messages = file
 
 if not interview_messages:
     st.error("면접 대화 기록을 찾을 수 없습니다. 먼저 면접을 진행해주세요.")
