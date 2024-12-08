@@ -13,6 +13,7 @@ con2, con3, con4 = st.columns(3)
 
 ##사용자 정보 업데이트
 user_info = st.session_state.get('user_info', None)
+print(user_info)
 for i in user_info.keys():
     if user_info[i] is None:
         if user_info["면접을 볼 회사"] is None:
