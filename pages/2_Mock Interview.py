@@ -8,7 +8,7 @@ st.set_page_config(layout="centered")
 
 st.title("🧑‍💼 모의 면접")
 ##페이지 레이아웃
-con1 = st.container(border=False)
+con1 = st.container(height=400, border=False)
 con2, con3, con4 = st.columns(3)
 
 ##사용자 정보 업데이트
