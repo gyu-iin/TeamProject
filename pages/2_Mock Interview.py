@@ -4,6 +4,8 @@ from openai import OpenAIError
 import os
 import time
 
+st.set_page_config(layout="centered")
+
 st.title("모의 면접관")
 
 ##사용자 정보 업데이트

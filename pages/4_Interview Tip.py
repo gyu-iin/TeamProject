@@ -1,6 +1,8 @@
 import streamlit as st
 import openai
 
+st.set_page_config(layout="centered")
+
 # Streamlit 페이지 구성
 st.title("AI 기반 면접 코칭 사이트")
 st.write("OpenAI API를 활용해 원하는 직업에 맞는 면접 팁과 정보를 제공합니다.")
