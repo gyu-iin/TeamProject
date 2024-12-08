@@ -64,6 +64,7 @@ with col1:
                     continue
                 st.session_state.user_info[key] = None
             st.write("사용자 정보 삭제 완료")
+            st.rerun()
 
 
 with col2:
