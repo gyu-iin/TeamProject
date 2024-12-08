@@ -51,9 +51,9 @@ else:
 if "interview_messages" not in st.session_state:
         st.session_state.interview_messages = []
 
-if start_interview:
+if not start_interview:
     print(".")
-if end_interview:
+if not end_interview:
     print(",")
 
 ##메시지 출력 함수
@@ -313,7 +313,6 @@ if end_interview:
     msg = {"role":"assistant","content":"면접 내용을 다운받으시려면 다운로드 버튼을 눌러주세요. 다음 화면으로 넘어가고 싶으시다면 다음 버튼을 눌러주세요."}
     show_message(msg)
 
-if end_interview:
     with con2:
         with open(os.path.join("interview contents", f"{user_info["면접을 볼 회사"]} interview contents.txt"), "rb") as file:
             btn = st.download_button(
