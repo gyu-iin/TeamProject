@@ -35,9 +35,9 @@ if user_name and user_age and user_field and user_edu and user_exp:
     if 'user_info' in st.session_state:
         user_info = st.session_state['user_info']
     else:
-        user_info = {"이름": user_name, "나이" : user_age, "관심분야" : user_field, "학력" : user_edu, "경력사항" : user_exp, "면접을 볼 회사":None}
+        user_info = {"이름": user_name, "나이" : user_age, "관심분야" : user_field, "학력" : user_edu, "경력사항" : user_exp, "면접을 볼 회사" : None}
         st.session_state['user_info'] = user_info
-st.write(user_info)
+
 col1, col2, col3 = st.columns(3)
 
 with col1:
@@ -45,8 +45,9 @@ with col1:
         keys_to_clear = ['user_name', 'user_age', 'user_field', 'user_edu', 'user_exp']
         for key in keys_to_clear:
             st.session_state.pop(key, None)
-            print(user_info)
-            st.session_state.user_info[key] = None
+        for key in user_info.keys():
+            st.session_state.user_info[] = None
+
 
 with col2:
     if st.button("면접 꿀팁 얻으러 가기"):
