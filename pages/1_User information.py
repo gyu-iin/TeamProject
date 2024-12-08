@@ -49,7 +49,7 @@ with col1:
             st.session_state.user_info[i] = None
 
         st.session_state['user_info'] = user_info
-        st.experimental_rerun()
+        st.rerun()
 
 with col2:
     if st.button("면접 꿀팁 얻으러 가기"):
