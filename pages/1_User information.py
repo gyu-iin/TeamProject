@@ -46,7 +46,7 @@ with col1:
         for key in keys_to_clear:
             st.session_state.pop(key, None)
         for key in user_info.keys():
-            st.session_state.user_info[] = None
+            st.session_state.user_info[key] = None
 
 
 with col2:
