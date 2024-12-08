@@ -1,6 +1,6 @@
 import streamlit as st
 
-st.set_page_config(layout="wide", initial_sidebar_state="collapsed",page_icon="👔")
+st.set_page_config(page_title="모면, AI기반 모의면접",layout="wide", initial_sidebar_state="collapsed",page_icon="👔")
 
 st.title("👔 모면 👔")
 st.subheader("GPT-4o-Mini 모델을 활용한 AI 모의 면접 사이트")
