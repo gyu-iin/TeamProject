@@ -54,14 +54,16 @@ if st.session_state["interview_summary"] is None:
         try:
             # GPT 프롬프트 작성
             evaluation_prompt = f"""
-            You are an expert interview evaluator. Summarize and score the following mock interview based on the content. Provide the following:
-            1. A concise summary of the interview (bullet points are preferred).
-            2. Feedback on the candidate's communication, relevance of answers, and adaptability.
-            3. Provide individual scores out of 10 for:
-              - Communication skills
-              - Relevance to the questions asked
-              - Adaptability
-            4. A final overall score out of 10.
+            당신은 전문가 인터뷰 평가자입니다. 면접 내용을 바탕으로 다음 모의 인터뷰를 요약하고 점수를 매기고 면접 결과를 한국어로 정리해야합니다.
+            아래의 조건에 따라 당신은 면접에 점수를 매기고 종합적으로 피드백해야합니다.
+            <평가 조건>
+            1. 인터뷰 요약(벌렛 포인트 선호).
+            2. 후보자의 커뮤니케이션, 답변의 적절성 및 적응력에 대한 피드백.
+            3. 10점 만점에 개별 점수를 제공합니다:
+            - 커뮤니케이션 기술(꼬리질문을 하였을때, 답변이 크게 흐트러지지 않거나 재치 있게 대답하는지 판단해야함.)
+            - 질문과의 관련성(특히, 질문의 의도와 답변이 일치하는지 면밀하고 꼼꼼히 따져봐야함.)
+            - 적응성(질문자의 출신, 학력, 경력, 스펙 등 다양한 요인을 비교하여 우리 회사의 분야와 적절한지, 입사 후 구성원과 잘 어울릴 수 있을지 판단해야함.)
+            4. 최종 종합 점수 10점 만점.(단, 10점 만점을 매기면 안되고 답변이 매우 모범적인 답안이고 질문자의 의도를 잘 파악했다고 판단될때만 만점에 가깝게 점수를 부여할 수 있음.)
             
             ## Transcript:
             {interview_messages}
