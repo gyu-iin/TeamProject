@@ -2,6 +2,22 @@ import streamlit as st
 
 st.set_page_config(page_title="모면, AI기반 모의면접",layout="wide", initial_sidebar_state="collapsed",page_icon="👔")
 
+option = st.sidebar.selectbox(
+    'Menu',
+     ('페이지1', '페이지2', '페이지3'))
+
+with st.sidebar:
+    choice = option_menu("Menu", ["페이지1", "페이지2", "페이지3"],
+                         icons=['house', 'kanban', 'bi bi-robot'],
+                         menu_icon="app-indicator", default_index=0,
+                         styles={
+        "container": {"padding": "4!important", "background-color": "#fafafa"},
+        "icon": {"color": "black", "font-size": "25px"},
+        "nav-link": {"font-size": "16px", "text-align": "left", "margin":"0px", "--hover-color": "#fafafa"},
+        "nav-link-selected": {"background-color": "#08c7b4"},
+    }
+    )
+
 st.title("👔 모면 👔")
 st.subheader("GPT-4o-Mini 모델을 활용한 AI 모의 면접 사이트")
 st.subheader("자신감을 키우고 면접 실력을 한 단계 업그레이드하세요!")
