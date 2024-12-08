@@ -39,19 +39,22 @@ if user_name and user_age and user_field and user_edu and user_exp:
         user_info = {"이름": user_name, "나이" : user_age, "관심분야" : user_field, "학력" : user_edu, "경력사항" : user_exp, "면접을 볼 회사":None}
         st.session_state['user_info'] = user_info
 
-col1, col2 = st.columns(2)
+col1, col2, col3 = st.columns(3)
 
 with col1:
     if st.button("사용자 정보 삭제"):
-        st.write(user_info)
         for i in user_info.keys():
             user_info[i] = None
-            st.session_state[i] = None
+            st.session_state.user_info[i] = None
 
         st.session_state['user_info'] = user_info
-        st.write(st.session_state.user_info)
 
 with col2:
+    if st.button("면접 꿀팁 얻으러 가기"):
+        st.switch_page("pages/4_Interview Tip.py")
+    st.stop()
+
+with col3:
     if st.button("면접 시작"):
         st.switch_page("pages/2_Mock Interview.py")
     st.stop()
