@@ -54,7 +54,6 @@ with col2:
         st.switch_page("pages/4_Interview Tip.py")
     st.stop()
 
-with col2:
     if st.button("면접 시작"):
         st.switch_page("pages/2_Mock Interview.py")
     st.stop()
