@@ -47,7 +47,7 @@ else:
         for dic_key in user_info.keys():
             user_info[dic_key] = key
     st.session_state['user_info'] = user_info
-
+st.write(st.session_state.user_info)
 col1, col2, col3 = st.columns(3)
 
 with col1:
