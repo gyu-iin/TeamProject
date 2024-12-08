@@ -92,7 +92,7 @@ if summary:
         if section.strip():
             st.markdown(section.strip())
 
-    st.markdown("🔬평가 점수 및 피드백 🔬")
+    st.markdown("🔬 평가 점수 및 피드백 🔬")
     feedback_start = summary.find("Feedback:")
     if feedback_start != -1:
         st.markdown(summary[feedback_start:])
