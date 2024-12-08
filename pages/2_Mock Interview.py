@@ -238,7 +238,7 @@ if start_interview:
                         st.session_state.interview_messages.append(msg)
         else:
             st.error(f"Response not completed: {run.status}")
-
+    print(len(st.session_state.interview_messages))
     if prompt := st.chat_input("질문에 대답하세요."):
         msg = {"role":"user", "content":prompt}
         show_message(msg)
