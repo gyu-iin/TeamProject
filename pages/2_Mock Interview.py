@@ -17,15 +17,16 @@ def check_user_info_and_api():
     user_info = st.session_state.get('user_info', None)
     client = st.session_state.get('openai_client', None)
 
-    if user_info is None or any(value is None for value in user_info.values()):
-        if st.button("사용자 정보가 입력되지 않았습니다."):
-            st.switch_page("pages/1_User information.py")
-        st.stop()
+    with con1:
+        if user_info is None or any(value is None for value in user_info.values()):
+                if st.button("사용자 정보가 입력되지 않았습니다."):
+                    st.switch_page("pages/1_User information.py")
+                st.stop()
 
-    if client is None:
-        if st.button("사용자 정보에서 API Key가 입력되지 않았습니다."):
-            st.switch_page("pages/1_User information.py")
-        st.stop()
+        if client is None:
+            if st.button("사용자 정보에서 API Key가 입력되지 않았습니다."):
+                st.switch_page("pages/1_User information.py")
+            st.stop()
 
 check_user_info_and_api()
 
@@ -118,10 +119,11 @@ def end_interview_and_save():
 
 ## 면접 시작 버튼
 def start_interview_process():
-    interview_company = st.text_input("면접을 볼 회사를 입력해주세요", 
-                                      value=st.session_state.get('interview_company', ''))
-    user_info["면접을 볼 회사"] = interview_company
-    st.session_state.user_info = user_info
+    with con1:
+        interview_company = st.text_input("면접을 볼 회사를 입력해주세요", 
+                                        value=st.session_state.get('interview_company', ''))
+        user_info["면접을 볼 회사"] = interview_company
+        st.session_state.user_info = user_info
 
     with con4:
         if st.button("면접 시작", use_container_width=True):
