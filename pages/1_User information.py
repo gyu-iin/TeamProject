@@ -52,8 +52,7 @@ with col1:
 with col2:
     if st.button("면접 꿀팁 얻으러 가기"):
         st.switch_page("pages/4_Interview Tip.py")
-    st.stop()
 
+with col3:
     if st.button("면접 시작"):
         st.switch_page("pages/2_Mock Interview.py")
-    st.stop()
