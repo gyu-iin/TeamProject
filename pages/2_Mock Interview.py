@@ -8,7 +8,7 @@ st.set_page_config(layout="centered")
 
 st.title("🧑‍💼 모의 면접")
 ##페이지 레이아웃
-con1 = st.columns(1)
+con1 = st.container(border=False)
 con2, con3, con4 = st.columns(3)
 
 ##사용자 정보 업데이트
@@ -49,8 +49,7 @@ if "interview_messages" not in st.session_state:
 
 ##메시지 출력 함수
 def show_message(msg):
-    # with con1:
-    with st.container(height=400):
+    with con1:
         with st.chat_message(msg['role']):
             st.markdown(msg["content"])
 
@@ -139,13 +138,13 @@ with con4:
             st.session_state["interview ended"] = True
 
 ##면접을 볼 회사를 정한 후 면접을 시작하는 버튼
-# with con1:
-if not end_interview:
-    if not start_interview:
-        interview_company = st.text_input("면접을 볼 회사를 입력해주세요", 
-                                value=st.session_state.get('interview_company',''))
-        user_info["면접을 볼 회사"] = interview_company
-        st.session_state.user_info = user_info
+with con1:
+    if not end_interview:
+        if not start_interview:
+            interview_company = st.text_input("면접을 볼 회사를 입력해주세요", 
+                                    value=st.session_state.get('interview_company',''))
+            user_info["면접을 볼 회사"] = interview_company
+            st.session_state.user_info = user_info
 with con4:
     if not end_interview:
         if not start_interview:    
