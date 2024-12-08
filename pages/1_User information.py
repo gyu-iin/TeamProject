@@ -54,14 +54,16 @@ with col1:
     if st.button("사용자 정보 삭제"):
         if not user_name and not user_age and not user_field and not user_edu and not user_exp:
             st.write("삭제할 사용자 정보가 없습니다")
-        for key in keys:
-            if key is None:
-                continue
-            st.session_state.pop(key, None)
-        for key in user_info.keys():
-            if st.session_state.user_info[key] is None:
-                continue
-            st.session_state.user_info[key] = None
+        else:
+            for key in keys:
+                if key is None:
+                    continue
+                st.session_state.pop(key, None)
+            for key in user_info.keys():
+                if st.session_state.user_info[key] is None:
+                    continue
+                st.session_state.user_info[key] = None
+            st.write("사용자 정보 삭제 완료")
 
 
 with col2:
