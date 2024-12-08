@@ -45,7 +45,7 @@ with col1:
         keys_to_clear = ['user_name', 'user_age', 'user_field', 'user_edu', 'user_exp']
         for key in keys_to_clear:
             st.session_state.pop(key, None)
-            st.session_state.user_info.pop(key, None)
+            st.session_state.user_info[key] = None
 
 with col2:
     if st.button("면접 꿀팁 얻으러 가기"):
