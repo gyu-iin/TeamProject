@@ -41,14 +41,11 @@ if user_exp:
     st.session_state['user_exp'] = user_exp
 
 if 'user_info' in st.session_state:
-    user_info = st.session_state['user_info']
-elif 'user_info' not in st.session_state or any(value is None for key, value in user_info.items() if key != '면접을 볼 회사'):
-    st.write(user_info)
-    for idx, key in enumerate(keys):
-        var_value = st.session_state.get(key, '')
-        if var_value is not None:
-            user_info[list(user_info.keys())[idx]] = var_value
     st.session_state['user_info'] = user_info
+elif 'user_info' not in st.session_state or any(value is None for key, value in user_info.items() if key != '면접을 볼 회사'):
+    for key in keys:
+        for dic_key in user_info.keys():
+            user_info[dic_key] = globals().get(key)
 col1, col2, col3 = st.columns(3)
 
 with col1:
