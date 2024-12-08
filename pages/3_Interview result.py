@@ -1,6 +1,8 @@
 import streamlit as st
 import os
 
+st.title("면접 결과 확인")
+
 ##면접 진행여부 확인
 end_interview = st.session_state.get('interview ended', None)
 if end_interview is None or not end_interview:
@@ -21,5 +23,13 @@ if client is None:
         st.switch_page("pages/1_User information.py")
     st.stop()
 
-st.title("면접 결과 확인")
+def show_message(msg):
+    with st.chat_message(msg['role']):
+        st.markdown(msg["content"])
+
+if "result_messages" not in st.session_state:
+    st.session_state.result_messages = []
+
+for msg in st.session_state.result_messages[1:]:
+    show_message(msg)
 
