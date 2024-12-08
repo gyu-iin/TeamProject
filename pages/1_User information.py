@@ -42,7 +42,7 @@ if user_exp:
 
 if 'user_info' in st.session_state:
     user_info = st.session_state['user_info']
-elif 'user_info' not in session_state or any(value is None for key, value in user_info.items()):
+elif 'user_info' not in session_state or any(value is None for key, value in user_info.items() if key != '면접을 볼 회사'):
     for key in keys:
         for dic_key in user_info.keys():
             user_info[dic_key] = key
