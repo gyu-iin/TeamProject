@@ -23,4 +23,6 @@ with col2:
     """)
 
 if st.button("서비스 이용하기"):
+    st.switch_page("pages/1_User information.py")
     st.write("서비스 페이지로 이동 중...")
+st.stop()
