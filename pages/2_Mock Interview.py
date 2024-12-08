@@ -4,7 +4,7 @@ from openai import OpenAIError
 import os
 import time
 
-st.set_page_config(layout="centered")
+st.set_page_config(layout="centered", initial_sidebar_state="collapsed")
 
 st.title("🧑‍💼 모의 면접")
 
