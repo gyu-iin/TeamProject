@@ -15,9 +15,14 @@ if api_key:
         client = OpenAI(api_key=api_key)
         st.session_state['openai_client'] = client
 
-submit_delete_user_info = False
-
 start_interview = st.session_state.get('interview_started', False)
+
+def delete_user_info():
+    for key in keys:
+        st.session_state.pop(key, None)
+    st.session_state['user_info'] = {"이름": None, "나이": None, "관심분야": None, "학력": None, "경력사항": None, "면접을 볼 회사": None}
+    submit_delete_user_info = False
+    st.rerun()
 
 @st.dialog("정말 삭제하시겠습니까?")
 def delete_user_info_during_interview():
@@ -27,7 +32,7 @@ def delete_user_info_during_interview():
             del st.session_state.interview_messages
             del st.session_state.thread
             st.session_state.start_interview = False
-        submit_delete_user_info = True
+        delete_user_info()
 
 keys = ['user_name', 'user_age', 'user_field', 'user_edu', 'user_exp']
 
@@ -103,15 +108,7 @@ with col1:
             if st.session_state.interview_messages:
                 delete_user_info_during_interview()
             else:
-                submit_delete_user_info = True
-            if submit_delete_user_info:
-                for key in keys:
-                    st.session_state.pop(key, None)
-                st.session_state['user_info'] = {"이름": None, "나이": None, "관심분야": None, "학력": None, "경력사항": None, "면접을 볼 회사": None}
-                submit_delete_user_info = False
-                st.rerun()
-            else:
-                st.write("사용자 정보가 삭제되지 않았습니다")
+                delete_user_info()
 
 with col2:
     if st.button("면접 꿀팁 얻으러 가기"):
