@@ -32,7 +32,7 @@ summary_started = st.session_state.get('summary_started', False)
 summary_ended = st.session_state.get('summary_ended', False)
 
 if not os.path.exists("interview contents"):
-            os.makedirs("interview contents", exist_ok = True)
+    os.makedirs("interview contents", exist_ok = True)
 
 # Chat history retrieval
 result_messages = st.session_state.get('result_messages', None)

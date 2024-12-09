@@ -44,7 +44,7 @@ if 'tip_messages' not in st.session_state:
     st.session_state.tip_messages = []
 
 if not os.path.exists("interview contents"):
-            os.makedirs("interview contents", exist_ok = True)
+    os.makedirs("interview contents", exist_ok = True)
 
 interview_content = st.session_state.get('interview_content', None)
 
@@ -118,7 +118,6 @@ with con1:
     if not tip_started and not tip_ended:
         # 면접 기록 확인
         st.write("### 면접 기록")
-        st.write(interview_content)
         if interview_content is None:
             interview_contents_recorded = os.listdir("interview contents")
             st.write(interview_contents_recorded)
