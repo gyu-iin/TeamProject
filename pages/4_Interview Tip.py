@@ -27,7 +27,8 @@ if user_info is None or any(value is None for key, value in user_info.items() if
 
 current_time = st.session_state.get('current_time', None)
 
-os.makedirs("interview contents", exist_ok=True)
+if not os.path.exists("interview contents"):
+            os.makedirs("interview contents", exist_ok = True)
 
 # 면접 기록 확인
 st.write("### 면접 기록")

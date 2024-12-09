@@ -142,7 +142,8 @@ def end_interview_and_save():
 
         filename = f"{current_time} {user_info['면접을 볼 회사']} interview contents.txt"
 
-        os.makedirs("interview contents", exist_ok = True)
+        if not os.path.exists("interview contents"):
+            os.makedirs("interview contents", exist_ok = True)
 
         with open(os.path.join("interview contents", filename), 'wb') as f:
             f.write(new_data.read())
