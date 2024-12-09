@@ -26,7 +26,7 @@ if user_info is None or any(value is None for key, value in user_info.items() if
 
 current_time = st.session_state.get('current_time', None)
 
-uploaded_file = None
+summary_started = st.session_state.get('summary_started', False)
 
 if not os.path.exists("interview contents"):
             os.makedirs("interview contents", exist_ok = True)
@@ -80,8 +80,15 @@ for msg in st.session_state.result_messages[1:]:
 # 면접 결과 요약 및 점수 평가
 if "interview_summary" not in st.session_state:
     st.session_state["interview_summary"] = None
-
 if result_messages is not None:
+    col1, col2 = st.columns([7,3])
+
+    with col2:
+        if st.button("면접 요약 확인하기"):
+            summary_started = True
+            st.session_state.summary_started = summary_started
+
+if summary_started:
     with st.spinner("면접 결과를 요약하고 점수를 평가 중입니다..."):
         try:
             # GPT 프롬프트 작성
@@ -118,45 +125,46 @@ if result_messages is not None:
             st.error(f"면접 결과 요약 또는 점수 평가 중 오류가 발생했습니다: {e}")
             st.stop()
 
-# 결과 출력
-summary = st.session_state.get("interview_summary", "")
-if summary:
-    st.markdown("📄 면접 내용 요약 📄")
-    for section in summary.split("\n\n"):  # 섹션별 출력
-        if section.strip():
-            st.markdown(section.strip())
+    # 결과 출력
+    summary = st.session_state.get("interview_summary", "")
+    if summary:
+        st.markdown("📄 면접 내용 요약 📄")
+        for section in summary.split("\n\n"):  # 섹션별 출력
+            if section.strip():
+                st.markdown(section.strip())
 
-    st.markdown("🔬 평가 점수 및 피드백 🔬")
-    feedback_start = summary.find("Feedback:")
-    if feedback_start != -1:
-        st.markdown(summary[feedback_start:])
+        st.markdown("🔬 평가 점수 및 피드백 🔬")
+        feedback_start = summary.find("Feedback:")
+        if feedback_start != -1:
+            st.markdown(summary[feedback_start:])
 
-# 다운로드 버튼
-downloadable_text = f"""
-{user_info['면접을 볼 회사']}에서의 모의면접:
+    # 다운로드 버튼
+    downloadable_text = f"""
+    {user_info['면접을 볼 회사']}에서의 모의면접:
 
-{summary}
-"""
+    {summary}
+    """
 
-st.markdown("### 다운로드 옵션")
-st.download_button(
-    label="결과 다운로드 (txt)",
-    data=downloadable_text,
-    file_name=f"{st.session_state.current_time} {user_info['면접을 볼 회사']}_interview_summary.txt",
-    mime="text/plain"
-)
-col1, col2, col3 = st.columns([5, 1, 4])
-with col1:
-    st.subheader("이번 면접이 어려웠다면")
-    if st.button("면접 꿀팁 얻으러 가기"):
-        st.switch_page("pages/4_Interview Tip.py")
-# 앱 다시 시작 옵션
-with col3:
-    st.subheader("더 나은 면접을 위해")
-    col3, col4 = st.columns([3.5, 6.5])
-    with col4:
-        if st.button("다시 시작하기"):
-            del st.session_state.thread
-            del st.session_state.interview_messages
-            st.session_state.interview_ended = False
-            st.switch_page("pages/1_User information.py")
+    st.markdown("### 다운로드 옵션")
+    st.download_button(
+        label="결과 다운로드 (txt)",
+        data=downloadable_text,
+        file_name=f"{st.session_state.current_time} {user_info['면접을 볼 회사']}_interview_summary.txt",
+        mime="text/plain"
+    )
+    col1, col2, col3 = st.columns([5, 1, 4])
+    with col1:
+        st.subheader("이번 면접이 어려웠다면")
+        if st.button("면접 꿀팁 얻으러 가기"):
+            st.switch_page("pages/4_Interview Tip.py")
+    # 앱 다시 시작 옵션
+    with col3:
+        st.subheader("더 나은 면접을 위해")
+        col3, col4 = st.columns([3.5, 6.5])
+        with col4:
+            if st.button("다시 시작하기"):
+                del st.session_state.thread
+                del st.session_state.interview_messages
+                st.session_state.interview_ended = False
+                summary_started = False
+                st.switch_page("pages/1_User information.py")
