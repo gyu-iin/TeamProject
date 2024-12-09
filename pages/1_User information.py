@@ -30,7 +30,7 @@ def delete_user_info_during_interview():
     col1, col2, col3 = st.columns([1.5, 7, 1.5])
     with col1:
         if st.button("닫기"):
-                st.rerun()`
+                st.rerun()
     with col3:
         if st.button("확인"):
             if start_interview:

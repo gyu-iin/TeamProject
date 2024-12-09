@@ -46,7 +46,7 @@ if len(interview_contents_recorded) > 1:
             for idx, file in enumerate(interview_contents_recorded):
                 with st.container(height=100, border=False)
                     if st.button(f"{idx + 1} {file}", use_container_width=True):
-                        interview_content = open(os.path.join("interview contents", file"))
+                        interview_content = open(os.path.join("interview contents", file))
                     st.divider()
     else:
         st.warning("면접 기록이 없습니다. 먼저 모의 면접을 진행해주세요. 또는 파일이 존재한다면 업로드 해주세요")
