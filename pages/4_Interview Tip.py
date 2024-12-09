@@ -19,8 +19,10 @@ if user_info is None:
         st.switch_page("pages/1_User information.py")
     st.stop()
 
+current_time = st.session_state.current_time
+
 # 면접 기록 확인
-interview_file_path = os.path.join("interview contents", f"{user_info['면접을 볼 회사']} interview contents.txt")
+interview_file_path = os.path.join("interview contents", f"{current_time} {user_info['면접을 볼 회사']} interview contents.txt")
 
 if os.path.exists(interview_file_path):
     # 면접 기록이 파일에 존재하면 파일을 읽어오기

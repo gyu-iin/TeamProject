@@ -3,6 +3,7 @@ import openai
 from openai import OpenAIError
 import os
 import time
+from datetime import datetime
 
 st.set_page_config(layout="centered", initial_sidebar_state="collapsed")
 
@@ -112,7 +113,9 @@ def end_interview_and_save():
         output_file_id = api_response.data[0].content[0].text.annotations[0].file_path.file_id
         st.session_state.file_id = output_file_id
         new_data = get_file_content_infinite(client, output_file_id)
-        filename = f"{user_info['면접을 볼 회사']} interview contents.txt"
+        current_time = formatted_time = current_time.strftime('%Y.%m.%d.%H.%M.%S')
+        st.session_state.current_time = current_time
+        filename = f"{current_time} {user_info['면접을 볼 회사']} interview contents.txt"
 
         os.makedirs("interview contents", exist_ok=True)
 
