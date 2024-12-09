@@ -7,7 +7,7 @@ import os
 st.set_page_config(layout="centered", initial_sidebar_state="collapsed")
 st.title("💼 면접 준비 팁 제공")
 
-# OpenAI API Key 가져오기
+# OpenAI API Key 가져오면 없앨 입력 코드
 api_key = st.text_input("OpenAI API Key", type="password", value=st.session_state.get("api_key", ""))
 if api_key:
     openai.api_key = api_key
