@@ -26,8 +26,8 @@ user_info = {
         "면접을 볼 회사": None
     }
 
-if "interview_messages" not in st.session_state:
-        st.session_state.interview_messages = {}
+if "user_info" not in st.session_state:
+        st.session_state.user_info = {}
 
 user_name = st.text_input("이름을 입력해주세요", 
                         value=st.session_state.get('user_name',''))
