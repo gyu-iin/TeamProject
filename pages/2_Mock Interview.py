@@ -298,7 +298,7 @@ def end_interview_and_download():
         if st.button("다음", use_container_width=True):
             st.switch_page("pages/3_Interview result.py")
         st.stop()
-st.write(user_info)
+
 # 화면 흐름 제어
 if start_interview:
     if "thread" not in st.session_state:
