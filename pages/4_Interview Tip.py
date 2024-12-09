@@ -132,7 +132,7 @@ with con1:
         elif len(interview_contents_recorded) == 1:
             with open(os.path.join("interview contents", f"{current_time} {user_info["면접을 볼 회사"]} interview contents.txt")):
                 interview_content = file.read()
-        elif not interview_contents_recorded:
+        elif len(interview_contents_recorded) == 0:
             st.warning("면접 기록이 없습니다. 먼저 모의 면접을 진행해주세요. 또는 파일이 존재한다면 업로드 해주세요")
             uploaded_file = st.file_uploader("면접 기록 파일을 올려주세요")
 
