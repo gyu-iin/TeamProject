@@ -21,9 +21,3 @@ with col2:
     """)
     if st.button("모의 면접 시작하기"):
         st.switch_page("pages/1_User information.py")
-
-col3, col4, col5 = st.columns([2,2,5])
-
-with col3:
-    if st.button("모의 면접 시작하기"):
-        st.switch_page("pages/1_User information.py")

@@ -20,7 +20,8 @@ client = st.session_state.get('openai_client', None)
 def check_user_info_and_api():
     with con1:
         if client is None:
-            if st.button("사용자 정보에서 API Key가 입력되지 않았습니다."):
+            st.warning("사용자 정보에서 API키가 입력되지 않았습니다.")
+            if st.button("API 키 입력하러 가기."):
                 st.switch_page("pages/1_User information.py")
             st.stop()
 
