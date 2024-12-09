@@ -81,7 +81,7 @@ for msg in st.session_state.result_messages[1:]:
 if "interview_summary" not in st.session_state:
     st.session_state["interview_summary"] = None
 
-if interview_messages is not None:
+if result_messages is not None:
     with st.spinner("면접 결과를 요약하고 점수를 평가 중입니다..."):
         try:
             # GPT 프롬프트 작성
