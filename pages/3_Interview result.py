@@ -17,7 +17,7 @@ if end_interview is None or not end_interview:
 client = st.session_state.get('openai_client', None)
 if client is None:
     st.warning("사용자 정보에서 API키가 입력되지 않았습니다.")
-    if st.button("API 키 입력하러 가기."):
+    if st.button("API 키 입력하러 가기"):
         st.switch_page("pages/1_User information.py")
     st.stop()
 
@@ -28,7 +28,7 @@ if user_info is None or any(value is None for key, value in user_info.items() if
         st.warning("사용자 정보가 입력되지 않았습니다.")
     elif any(value is None for key, value in user_info.items() if key != '면접을 볼 회사'):
         st.warning("사용자 정보 중 일부가 입력되지 않았습니다.")
-    if st.button("사용자 정보 입력하러 가기."):
+    if st.button("사용자 정보 입력하러 가기"):
         st.switch_page("pages/1_User information.py")
     st.stop()
 
@@ -39,25 +39,31 @@ if "result_messages" not in st.session_state:
     st.session_state.result_messages = []
 
 # 면접 대화 기록 불러오기 - 저장된 파일
-try:
-    with open(os.path.join("interview contents", f"{st.session_state.current_time} {user_info["면접을 볼 회사"]} interview contents.txt"), "rb") as file:
-        interview_messages = file.read()
+interview_contents_recorded = os.listdir("interview_contents")
+if len(interview_contents_recorded) > 1:
+    if interview_contents_recorded:
+        with st.expander("파일 목록", expanded = True):
+            for idx, file in enumerate(interview_contents_recorded):
+                with st.container(height=100, border=False)
+                    if st.button(f"{idx + 1} {file}", use_container_width=True):
+                        interview_content = open(os.path.join("interview contents", file"))
+                    st.divider()
+    else:
+        st.warning("면접 기록이 없습니다. 먼저 모의 면접을 진행해주세요. 또는 파일이 존재한다면 업로드 해주세요")
+        uploaded_file = st.file_uploader("면접 기록 파일을 올려주세요")
 
-except FileNotFoundError:
-    st.error("면접 기록이 존재하지 않습니다. 면접 기록 파일을 가지고 계시다면 면접기록 파일을 업로드 해주세요.")
-    uploaded_file = st.file_uploader("면접 기록 파일을 올려주세요")
-    col1, col2, col3 = st.columns(3)
+        col1, col2, col3 = st.columns(3)
 
-    with col1:
-        if st.button("면접 다시 진행하기"):
-            del st.session_state.thread
-            del st.session_state.interview_messages
-            st.session_state.interview_ended = False
-            st.switch_page("pages/1_User information.py")
-    
-    with col3:
-        if st.button("면접 페이지로 돌아가기"):
-            st.switch_page("pages/2_Interview.py")
+        with col1:
+            if st.button("면접 다시 진행하기"):
+                del st.session_state.thread
+                del st.session_state.interview_messages
+                st.session_state.interview_ended = False
+                st.switch_page("pages/1_User information.py")
+
+        with col3:
+            if st.button("면접 페이지로 돌아가기"):
+                st.switch_page("pages/2_Interview.py")
 
 if uploaded_file is not None:
     with open(uploaded_file, "rb") as file:
@@ -139,10 +145,14 @@ st.download_button(
     file_name=f"{st.session_state.current_time} {user_info['면접을 볼 회사']}_interview_summary.txt",
     mime="text/plain"
 )
-
+col1, col2, col3 = st.columns([3, 4, 3])
+with col1:
+    if st.button("면접 꿀팁 얻으러 가기"):
+        st.switch_page("pages/4_Interview Tip.py")
 # 앱 다시 시작 옵션
-if st.button("다시 시작하기"):
-    del st.session_state.thread
-    del st.session_state.interview_messages
-    st.session_state.interview_ended = False
-    st.switch_page("pages/1_User information.py")
+with col3:
+    if st.button("다시 시작하기"):
+        del st.session_state.thread
+        del st.session_state.interview_messages
+        st.session_state.interview_ended = False
+        st.switch_page("pages/1_User information.py")

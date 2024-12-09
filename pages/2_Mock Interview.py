@@ -6,8 +6,25 @@ import time
 from datetime import datetime
 
 st.set_page_config(layout="centered", initial_sidebar_state="collapsed")
+@st.dialog("주의")
+def warning():
+    st.write("면접 진행 중 수정된 사용자 정보는 면접 내용에 반영되지 않습니다.")
+    col1, col2, col3 = st.columns([1.5, 7, 1.5])
+    with col1:
+        if st.button("닫기"):
+            st.rerun()
+    with col3:
+        if st.button("확인"):
+            st.switch_page("pages/1_User information.py")
 
-st.title("🧑‍💼 모의 면접")
+col1 col2 = st.columns([8, 2])
+
+with col1:
+    st.title("🧑‍💼 모의 면접")
+
+with col2:
+    if st.button("사용자 정보 수정"):
+        warning()
 
 ## 페이지 레이아웃
 con1 = st.container(height=550, border=False)
@@ -21,7 +38,7 @@ def check_user_info_and_api():
     with con1:
         if client is None:
             st.warning("사용자 정보에서 API키가 입력되지 않았습니다.")
-            if st.button("API 키 입력하러 가기."):
+            if st.button("API 키 입력하러 가기"):
                 st.switch_page("pages/1_User information.py")
             st.stop()
 
@@ -30,7 +47,7 @@ def check_user_info_and_api():
                 st.warning("사용자 정보가 입력되지 않았습니다.")
             elif any(value is None for key, value in user_info.items() if key != '면접을 볼 회사'):
                 st.warning("사용자 정보 중 일부가 입력되지 않았습니다.")
-            if st.button("사용자 정보 입력하러 가기."):
+            if st.button("사용자 정보 입력하러 가기"):
                 st.switch_page("pages/1_User information.py")
             st.stop()   
 
