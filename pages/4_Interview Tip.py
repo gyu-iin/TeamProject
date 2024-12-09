@@ -117,15 +117,15 @@ with con1:
                                     interview_content = open(os.path.join("interview contents", file))
                                     st.session_state.interview_content = interview_content
                                 st.divider()
-                else:
-                    st.warning("면접 기록이 없습니다. 먼저 모의 면접을 진행해주세요. 또는 파일이 존재한다면 업로드 해주세요")
-                    uploaded_file = st.file_uploader("면접 기록 파일을 올려주세요")
+        else:
+            st.warning("면접 기록이 없습니다. 먼저 모의 면접을 진행해주세요. 또는 파일이 존재한다면 업로드 해주세요")
+            uploaded_file = st.file_uploader("면접 기록 파일을 올려주세요")
 
-                    col1, col2 = st.columns([2 , 5.5, 2.5])
+            col1, col2 = st.columns([2 , 5.5, 2.5])
 
-                    with col2:
-                        if st.button("면접 진행하러 가기"):
-                            st.switch_page("pages/2_Mock Interview.py")
+            with col2:
+                if st.button("면접 진행하러 가기"):
+                    st.switch_page("pages/2_Mock Interview.py")
 
             if uploaded_file is not None:
                     with open(uploaded_file, "rb") as file:
@@ -200,7 +200,7 @@ if tip_ended:
     with con2:
         if st.button("추가 면접 팁 생성"):
             
-            message = "추가 팁을 주세요"
+            message = "추가로 면접 준비 팁을 더 작성해 주세요"
             
             try:
                 with st.spinner("추가 면접 준비 팁을 생성 중입니다..."):
