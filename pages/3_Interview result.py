@@ -80,9 +80,10 @@ for msg in st.session_state.result_messages[1:]:
 # 면접 결과 요약 및 점수 평가
 if "interview_summary" not in st.session_state:
     st.session_state["interview_summary"] = None
-if result_messages is not None:
-    col1, col2 = st.columns([7,3])
 
+col1, col2 = st.columns([7, 3])
+
+if not summary_started:
     with col2:
         if st.button("면접 요약 확인하기"):
             summary_started = True
