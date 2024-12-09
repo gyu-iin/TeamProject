@@ -30,7 +30,6 @@ def delete_user_info_during_interview():
     if st.button("확인"):
         if start_interview:
             del st.session_state.interview_messages
-            del st.session_state.thread
             st.session_state.start_interview = False
         delete_user_info()
 
