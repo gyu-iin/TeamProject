@@ -154,9 +154,7 @@ with con1:
                         model = "gpt-4o-mini"
                     )
             if "tip_thread" not in st.session_state:
-                    st.session_state.tip_thread = client.beta.threads.create(
-                        messages = st.session_state.tip_messages
-                )
+                    st.session_state.tip_thread = client.beta.threads.create()
                 
             if interview_content:
                 message = f"""
