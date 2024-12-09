@@ -44,7 +44,7 @@ if len(interview_contents_recorded) > 1:
     if interview_contents_recorded:
         with st.expander("파일 목록", expanded = True):
             for idx, file in enumerate(interview_contents_recorded):
-                with st.container(height=100, border=False)
+                with st.container(height=100, border=False):
                     if st.button(f"{idx + 1} {file}", use_container_width=True):
                         interview_content = open(os.path.join("interview contents", file))
                     st.divider()

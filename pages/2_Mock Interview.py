@@ -17,7 +17,7 @@ def warning():
         if st.button("확인"):
             st.switch_page("pages/1_User information.py")
 
-col1, col2 = st.columns([8, 2])
+col1, col2 = st.columns([7, 3])
 
 with col1:
     st.title("🧑‍💼 모의 면접")
