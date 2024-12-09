@@ -55,6 +55,7 @@ if len(interview_contents_recorded) > 1:
             if st.button("면접 다시 진행하기"):
                 del st.session_state.thread
                 del st.session_state.interview_messages
+                st.session_state.interview_started = False
                 st.session_state.interview_ended = False
                 st.switch_page("pages/1_User information.py")
 
@@ -64,7 +65,7 @@ if len(interview_contents_recorded) > 1:
 
 if uploaded_file is not None:
     with open(uploaded_file, "rb") as file:
-        interview_messages = file.read()
+        result_messages = file.read()
 
 # Show previous messages (if any)
 def show_message(msg):
@@ -78,7 +79,7 @@ for msg in st.session_state.result_messages[1:]:
 if "interview_summary" not in st.session_state:
     st.session_state["interview_summary"] = None
 
-if st.session_state["interview_summary"] is None:
+if result_messages is not None:
     with st.spinner("면접 결과를 요약하고 점수를 평가 중입니다..."):
         try:
             # GPT 프롬프트 작성
@@ -95,7 +96,7 @@ if st.session_state["interview_summary"] is None:
             4. 최종 종합 점수 100점 만점.(단, 100점 만점을 매기면 안되고 답변이 매우 모범적인 답안이고 질문자의 의도를 잘 파악했다고 판단될때만 만점에 가깝게 점수를 부여할 수 있음.)
             
             ## Transcript:
-            {interview_messages}
+            {result_messages}
             """
 
             # `gpt-4o-mini` 모델로 요청
