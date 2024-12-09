@@ -84,7 +84,7 @@ def generate_tips_with_interview(message):
             for content_block in message.content:
                 if content_block.type == 'text':
                     response = content_block.text.value
-                    return tip_generate(response), st.write(완료)
+                    return tip_generate(response)
 
 def tip_generate(response):    
     try:
@@ -143,9 +143,9 @@ with con1:
                     st.switch_page("pages/2_Mock Interview.py")
 
             if uploaded_file is not None:
-                    with open(uploaded_file, "rb") as file:
-                        interview_content = file.read()
-                        st.session_state.interview_content = interview_content
+                with open(uploaded_file, "rb") as file:
+                    interview_content = file.read()
+                    st.session_state.interview_content = interview_content
 
         if interview_content is not None:
             st.write(interview_content)
