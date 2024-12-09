@@ -35,7 +35,8 @@ if not os.path.exists("interview contents"):
             os.makedirs("interview contents", exist_ok = True)
 
 # Chat history retrieval
-result_messages = st.session_state.get('result_messages', None)
+if 'result messages' not in st.session_state:
+    st.session_state.result_messages = []
 
 # 면접 대화 기록 불러오기 - 저장된 파일
 if result_messages is None:

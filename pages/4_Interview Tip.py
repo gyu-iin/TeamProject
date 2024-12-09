@@ -92,7 +92,7 @@ def tip_generate(api_response):
     st.session_state.tip_started = False
     st.session_state.tip_ended = True
 
-def show_message(msg):
+def show_message(tips):
     with con1:
         with st.chat_message("assistant"):
             st.markdown(tips)
@@ -193,7 +193,8 @@ with con1:
             except Exception as e:
                     st.error(f"팁을 생성하는 도중 오류가 발생했습니다: {e}")
                     st.stop()
-            show_message(tips)
+            msg = {"role": "assistant", "content": tips}
+            show_message(msg)
             st.session_state.tip_messages.append(msg)
 
 if tip_ended:
@@ -210,7 +211,8 @@ if tip_ended:
             except Exception as e:
                     st.error(f"추가 팁을 생성하는 도중 오류가 발생했습니다: {e}")
                     st.stop()
-            show_message(tips)
+            msg = {"role": "assistant", "content": tips}
+            show_message(msg)
             st.session_state.tip_messages.append(msg)
 
     with con4:
