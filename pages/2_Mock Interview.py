@@ -153,8 +153,6 @@ def start_interview_process():
                     tools=[{"type": "code_interpreter"}]
                 )
             
-            if "thread" in st.session_state:
-                del st.session_state
             elif "thread" not in st.session_state:
                 st.session_state.thread = client.beta.threads.create(
                     messages=st.session_state.interview_messages
