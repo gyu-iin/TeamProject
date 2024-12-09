@@ -68,17 +68,14 @@ def generate_tips_with_interview(message):
             run_id = run.id,
             order = "asc"
         )
-    for message in api_response.data:
-        st.write(vars(message))
-    tip_generate(api_response)
+        for data in api_response.data:
+            for content in data.content:
+                if content.type == 'text':
+                    response = content.text.value
+                    return tip_generate(response)
 
 def tip_generate(api_response):    
     try:
-        for data in api_response.data:
-                for content in data.content:
-                    if content.type == 'text':
-                        response = content.text.value
-
         # 문장이 중간에 끊기지 않도록 처리
         if not response.endswith(("다.", "요.", "습니다.", "습니까?", "에요.")):
             response = response.rsplit('.', 1)[0] + '.'
