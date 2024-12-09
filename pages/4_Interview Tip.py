@@ -55,22 +55,21 @@ def generate_tips_with_interview(messages):
             role = "user",
             content = messages
     )
-    tip_generate()
-
-def tip_generate():    
-    try:
-        run = client.beta.threads.runs.create_and_poll(
+    run = client.beta.threads.runs.create_and_poll(
         thread_id = thread.id,
         assistant_id = assistant.id
         )
     
-        if run.status == 'completed':
-            api_response = client.beta.threads.messages.list(
-                thread_id = thread.id,
-                run_id = run.id,
-                order = "asc"
-            )
+    if run.status == 'completed':
+        api_response = client.beta.threads.messages.list(
+            thread_id = thread.id,
+            run_id = run.id,
+            order = "asc"
+        )
+    tip_generate(api_response)
 
+def tip_generate(api_response):    
+    try:
         content = api_response.data.content.txtx.value
 
         # 문장이 중간에 끊기지 않도록 처리
