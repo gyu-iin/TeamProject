@@ -306,6 +306,8 @@ if start_interview:
         if st.button("면접 종료", use_container_width=True):
             end_interview_and_save()
             st.rerun()
+    if not start_interview and not end_interview:
+        start_interview_process()
 
 if not end_interview and not start_interview:
     start_interview_process()
