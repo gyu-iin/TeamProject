@@ -110,6 +110,7 @@ with con1:
     if not tip_started and not tip_ended:
         # 면접 기록 확인
         st.write("### 면접 기록")
+        st.write(interview_content)
         if interview_content is None:
             interview_contents_recorded = os.listdir("interview contents")
             if len(interview_contents_recorded) > 1:
