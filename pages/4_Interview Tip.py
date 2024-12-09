@@ -232,4 +232,4 @@ if tip_ended:
             st.session_state.summary_started = False
             st.session_state.summary_ended = False
             st.session_state.tip_ended = False
-            st.switch_page("pages/2_Mock Interview")
+            st.switch_page("pages/2_Mock Interview.py")
