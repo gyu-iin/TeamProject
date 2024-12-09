@@ -62,8 +62,9 @@ def get_file_content_infinite(client, output_file_id, wait_time=2):
 
 ## 면접 종료 함수
 def end_interview_and_save():
-    msg = {"role": "user", "content": "면접 내용 요약"}
-
+    msg = {"role": "user", "content": "면접 종료"}
+    st.session_state.interview_messages.append(msg)
+    
     thread = st.session_state.thread
 
     assistant = st.session_state.assistant
@@ -71,7 +72,12 @@ def end_interview_and_save():
     client.beta.threads.messages.create(
         thread_id=thread.id,
         role="user",
-        content=f"면접 내용을 요약해서 Q:질문 A:답변 형식으로 저장해서 '{user_info['면접을 볼 회사']} interview contents.txt'로 저장하세요."
+        content=f"""
+                면접 내용을 요약해서 Q:질문 A:답변 형식으로 정리합니다. 
+                이 때 첫 인사와 끝 인사는 Q:에서 빼서 정리하세요.
+                만약 면접을 완전히 끝내지 않았다면 마지막 줄에 면접을 중단하였습니다.를 작성하세요.
+                정리된 내용은 '{user_info['면접을 볼 회사']} interview contents.txt'로 저장하세요.
+                """"
     )
 
     run = client.beta.threads.runs.create_and_poll(
