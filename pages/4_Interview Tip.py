@@ -8,7 +8,7 @@ st.set_page_config(layout="centered", initial_sidebar_state="collapsed")
 
 st.title("💼 면접 준비 팁 제공")
 
-con1 = st.container(height = 600, border = False)
+con1 = st.container(height = 550, border = False)
 con2, con3, con4 = st.columns([3, 4, 3])
 
 with con1:
