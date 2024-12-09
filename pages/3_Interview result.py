@@ -32,40 +32,42 @@ if not os.path.exists("interview contents"):
             os.makedirs("interview contents", exist_ok = True)
 
 # Chat history retrieval
-if "result_messages" not in st.session_state:
-    st.session_state.result_messages = []
+result_messages = st.session_state.get('result_messages', None)
 
 # 면접 대화 기록 불러오기 - 저장된 파일
-interview_contents_recorded = os.listdir("interview contents")
-if len(interview_contents_recorded) > 1:
-    if interview_contents_recorded:
-        with st.expander("파일 목록", expanded = True):
-            for idx, file in enumerate(interview_contents_recorded):
-                with st.container(height=100, border=False):
-                    if st.button(f"{idx + 1} {file}", use_container_width=True):
-                        interview_content = open(os.path.join("interview contents", file))
-                    st.divider()
-    else:
-        st.warning("면접 기록이 없습니다. 먼저 모의 면접을 진행해주세요. 또는 파일이 존재한다면 업로드 해주세요")
-        uploaded_file = st.file_uploader("면접 기록 파일을 올려주세요")
+if result_messages is None:
+    interview_contents_recorded = os.listdir("interview contents")
+    if len(interview_contents_recorded) > 1:
+        if interview_contents_recorded:
+            with st.expander("파일 목록", expanded = True):
+                for idx, file in enumerate(interview_contents_recorded):
+                    with st.container(height=100, border=False):
+                        if st.button(f"{idx + 1} {file}", use_container_width=True):
+                            result_messages = open(os.path.join("interview contents", file))
+                            st.session_state.result_messages = result_messages
+                        st.divider()
+        else:
+            st.warning("면접 기록이 없습니다. 먼저 모의 면접을 진행해주세요. 또는 파일이 존재한다면 업로드 해주세요")
+            uploaded_file = st.file_uploader("면접 기록 파일을 올려주세요")
 
-        col1, col2, col3 = st.columns(3)
+            col1, col2, col3 = st.columns(3)
 
-        with col1:
-            if st.button("면접 다시 진행하기"):
-                del st.session_state.thread
-                del st.session_state.interview_messages
-                st.session_state.interview_started = False
-                st.session_state.interview_ended = False
-                st.switch_page("pages/1_User information.py")
+            with col1:
+                if st.button("면접 다시 진행하기"):
+                    del st.session_state.thread
+                    del st.session_state.interview_messages
+                    st.session_state.interview_started = False
+                    st.session_state.interview_ended = False
+                    st.switch_page("pages/1_User information.py")
 
-        with col3:
-            if st.button("면접 페이지로 돌아가기"):
-                st.switch_page("pages/2_Interview.py")
+            with col3:
+                if st.button("면접 페이지로 돌아가기"):
+                    st.switch_page("pages/2_Interview.py")
 
-if uploaded_file is not None:
-    with open(uploaded_file, "rb") as file:
-        result_messages = file.read()
+    if uploaded_file is not None:
+        with open(uploaded_file, "rb") as file:
+            result_messages = file.read()
+            st.session_state.result_messages = result_messages
 
 # Show previous messages (if any)
 def show_message(msg):
@@ -79,7 +81,7 @@ for msg in st.session_state.result_messages[1:]:
 if "interview_summary" not in st.session_state:
     st.session_state["interview_summary"] = None
 
-if result_messages is not None:
+if interview_messages is not None:
     with st.spinner("면접 결과를 요약하고 점수를 평가 중입니다..."):
         try:
             # GPT 프롬프트 작성

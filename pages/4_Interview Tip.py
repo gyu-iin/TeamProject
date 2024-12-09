@@ -32,33 +32,37 @@ uploaded_file = None
 if not os.path.exists("interview contents"):
             os.makedirs("interview contents", exist_ok = True)
 
+interview_content = st.session_state.get('interview_content', None)
+
 # 면접 기록 확인
 st.write("### 면접 기록")
+if interview_content is None:
+    interview_contents_recorded = os.listdir("interview contents")
+    if len(interview_contents_recorded) > 1:
+        if interview_contents_recorded:
+            with st.expander("파일 목록" ,expanded = True):
+                for idx, file in enumerate(interview_contents_recorded):
+                    with st.container(height=100, border=False):
+                        if st.button(f"{idx + 1} {file}", use_container_width=True):
+                            interview_content = open(os.path.join("interview contents", file))
+                            st.session_state.interview_content = interview_content
+                        st.divider()
+        else:
+            st.warning("면접 기록이 없습니다. 먼저 모의 면접을 진행해주세요. 또는 파일이 존재한다면 업로드 해주세요")
+            uploaded_file = st.file_uploader("면접 기록 파일을 올려주세요")
 
-interview_contents_recorded = os.listdir("interview contents")
-if len(interview_contents_recorded) > 1:
-    if interview_contents_recorded:
-        with st.expander("파일 목록" ,expanded = True):
-            for idx, file in enumerate(interview_contents_recorded):
-                with st.container(height=100, border=False):
-                    if st.button(f"{idx + 1} {file}", use_container_width=True):
-                        interview_content = open(os.path.join("interview contents", file))
-                    st.divider()
-    else:
-        st.warning("면접 기록이 없습니다. 먼저 모의 면접을 진행해주세요. 또는 파일이 존재한다면 업로드 해주세요")
-        uploaded_file = st.file_uploader("면접 기록 파일을 올려주세요")
+            col1, col2 = st.columns([2 , 5.5, 2.5])
 
-        col1, col2 = st.columns([2 , 5.5, 2.5])
+            with col2:
+                if st.button("면접 진행하러 가기"):
+                    st.switch_page("pages/2_Mock Interview.py")
 
-        with col2:
-            if st.button("면접 진행하러 가기"):
-                st.switch_page("pages/2_Mock Interview.py")
+    if uploaded_file is not None:
+            with open(uploaded_file, "rb") as file:
+                interview_content = file.read()
+                st.session_state.interview_content = interview_content
 
-if uploaded_file is not None:
-        with open(uploaded_file, "rb") as file:
-            interview_content = file.read()
-
-if interview_contents is not None:
+if interview_content is not None:
     st.write(interview_content)
 
 # 면접 준비 팁 생성 함수
