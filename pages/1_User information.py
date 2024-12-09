@@ -39,7 +39,7 @@ if user_edu:
 if user_exp:
     st.session_state['user_exp'] = user_exp
 
-st.write(st.session_state.user_name)
+st.write(globals().get(keys[0]))
 
 if 'user_info' in st.session_state:
     user_info = st.session_state['user_info']
