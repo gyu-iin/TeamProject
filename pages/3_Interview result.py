@@ -35,7 +35,7 @@ if not os.path.exists("interview contents"):
             os.makedirs("interview contents", exist_ok = True)
 
 # Chat history retrieval
-result messages = st.session_state.get('result_messages', None)
+result_messages = st.session_state.get('result_messages', None)
 if 'result messages' not in st.session_state:
     st.session_state.result_messages = []
 
