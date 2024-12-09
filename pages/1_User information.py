@@ -15,6 +15,20 @@ if api_key:
         client = OpenAI(api_key=api_key)
         st.session_state['openai_client'] = client
 
+submit_delete_user_info = False
+
+start_interview = st.session_state.get('interview_started', False)
+
+@st.dialog("정말 삭제하시겠습니까?")
+def delete_user_info_during_interview():
+    st.write("면접 종료 버튼을 누르지 않고 사용자 정보를 삭제한다면 면접 진행 내용이 초기화됩니다.")
+    if st.button("확인"):
+        if start_interview:
+            del st.session_state.interview_messages
+            del st.session_state.thread
+            st.session_state.start_interview = False
+        submit_delete_user_info = True
+
 keys = ['user_name', 'user_age', 'user_field', 'user_edu', 'user_exp']
 
 user_info = {
@@ -28,6 +42,9 @@ user_info = {
 
 if "user_info" not in st.session_state:
         st.session_state.user_info = {}
+
+if "interview_messages" not in st.session_state:
+        st.session_state.interview_messages = []
 
 user_name = st.text_input("이름을 입력해주세요", 
                         value=st.session_state.get('user_name',''))
@@ -83,11 +100,18 @@ with col1:
         if all(st.session_state.get(key) in (None, '') for key in keys):
             st.warning("사용자 정보가 없습니다.")
         else:
-            for key in keys:
-                st.session_state.pop(key, None)
-            st.session_state['user_info'] = {"이름": None, "나이": None, "관심분야": None, "학력": None, "경력사항": None, "면접을 볼 회사": None}
-            st.success("사용자 정보 삭제 완료")
-
+            if st.session_state.interview_messages:
+                delete_user_info_during_interview()
+            else:
+                submit_delete_user_info = True
+            if submit_delete_user_info:
+                for key in keys:
+                    st.session_state.pop(key, None)
+                st.session_state['user_info'] = {"이름": None, "나이": None, "관심분야": None, "학력": None, "경력사항": None, "면접을 볼 회사": None}
+                submit_delete_user_info = False
+                st.success("사용자 정보 삭제 완료")
+            else:
+                st.write("사용자 정보가 삭제되지 않았습니다")
 
 with col2:
     if st.button("면접 꿀팁 얻으러 가기"):
