@@ -58,6 +58,7 @@ def get_file_content_infinite(client, output_file_id, wait_time=2):
             new_data = client.files.content(output_file_id)
             return new_data
         except OpenAIError as e:
+            print(e)
             time.sleep(wait_time)
 
 ## 면접 종료 함수
