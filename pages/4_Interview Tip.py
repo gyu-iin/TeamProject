@@ -206,6 +206,7 @@ with con1:
             st.session_state.tip_messages.append(msg)
             st.session_state.tip_started = False
             st.session_state.tip_ended = True
+            st.rerun()
 
 if tip_ended:
     with con2:
@@ -226,6 +227,7 @@ if tip_ended:
             msg = {"role": "assistant", "content": tips}
             show_message(msg)
             st.session_state.tip_messages.append(msg)
+            st.rerun()
 
     with con4:
         st.subheader("꿀팁과 함께")
