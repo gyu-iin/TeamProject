@@ -36,6 +36,9 @@ uploaded_file = None
 tip_started = st.session_state.get('tip_started', False)
 tip_ended = st.session_state.get('tip_ended', False)
 
+job_title = st.session_state.get('job_title', None)
+if 'job_title' not in st.session_state:
+    st.session_state.job_title = job_title
 if 'tip_messages' not in st.session_state:
     st.session_state.tip_messages = []
 
@@ -139,7 +142,7 @@ with con1:
         st.write("### 면접 준비 팁 생성")
         with st.expander("선호 직업 입력하기"):
             job_title = st.text_input("직업명을 입력하세요 (예: 데이터 분석가, 소프트웨어 엔지니어)")
-
+            st.session_state.job_title = job_title
         interview_content = "\n".join(
             [f"{msg['role']}: {msg['content']}" for msg in st.session_state.get("interview_messages", [])]
         ) if "interview_messages" in st.session_state else None
@@ -187,7 +190,10 @@ with con1:
             try: 
                 with st.spinner("면접 준비 팁을 생성 중입니다..."):
                     tips = generate_tips_with_interview(message)
-                st.success(f'{job_title}에 대한 면접 준비 팁이 생성되었습니다!')
+                if job_title is not None:
+                    st.success(f'{job_title}에 대한 면접 준비 팁이 생성되었습니다!')
+                else:
+                    st.success("사용자 정보에 대한 면접 준비 팁이 생성되었습니다!")
             except Exception as e:
                     st.error(f"팁을 생성하는 도중 오류가 발생했습니다: {e}")
                     st.stop()
@@ -206,7 +212,10 @@ if tip_ended:
             try:
                 with st.spinner("추가 면접 준비 팁을 생성 중입니다..."):
                     tips = generate_tips_with_interview(message)
-                st.success(f'{job_title}에 대한 추가 면접 준비 팁이 생성되었습니다!')
+                if job_title is not None:
+                    st.success(f'{job_title}에 대한 추가 면접 준비 팁이 생성되었습니다!')
+                else:
+                    st.success("사용자 정보에 대한 추가 면접 준비 팁이 생성되었습니다!")
             except Exception as e:
                     st.error(f"추가 팁을 생성하는 도중 오류가 발생했습니다: {e}")
                     st.stop()
