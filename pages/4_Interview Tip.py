@@ -36,7 +36,7 @@ uploaded_file = None
 tip_started = st.session_state.get('tip_started', False)
 tip_ended = st.session_state.get('tip_ended', False)
 
-if tip_messages not in st.session_state:
+if 'tip_messages' not in st.session_state:
     st.session_state.tip_messages = []
 
 if not os.path.exists("interview contents"):
