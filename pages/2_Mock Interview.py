@@ -77,7 +77,7 @@ def end_interview_and_save():
                 이 때 첫 인사와 끝 인사는 Q:에서 빼서 정리하세요.
                 만약 면접을 완전히 끝내지 않았다면 마지막 줄에 면접을 중단하였습니다.를 작성하세요.
                 정리된 내용은 '{user_info['면접을 볼 회사']} interview contents.txt'로 저장하세요.
-                """"
+                """
     )
 
     run = client.beta.threads.runs.create_and_poll(
