@@ -138,6 +138,13 @@ with con1:
         ) if "interview_messages" in st.session_state else None
 
         if st.button("면접 준비 팁 생성"):
+            if "tip_assistant" not in st.session_state:
+                    st.session_state.assistant = client.beta.assistants.create(
+                        instructions = "사용자 정보와 면접 기록, 선호 직업을 참고하여 면접의 팁을 주세요",
+                        name = "면접 보좌관",
+                        model = "gpt-4o-mini"
+                    )
+                
             if interview_content:
                 messages = {
                     "role": "user",
@@ -156,6 +163,12 @@ with con1:
                     1. 면접 기록에 기반한 사용자 피드백
                     2. 선호 직업에 특화된 맞춤형 면접 준비 팁
                     각각의 항목을 명확히 구분하여 작성해주세요."""}
+
+                if "tip_thread" not in st.session_state:
+                    st.session_state.thread = client.beta.threads.create(
+                        messages = messages
+                    )
+
             else:
                 messages ={
                         "role": "user",
@@ -171,18 +184,12 @@ with con1:
                         1. 선호직업에 맞는 면접 준비 팁
                         """
                     }
-
-            if "tip_assistant" not in st.session_state:
-                    st.session_state.assistant = client.beta.assistants.create(
-                        instructions = "사용자 정보와 면접 기록, 선호 직업을 참고하여 면접의 팁을 주세요",
-                        name = "면접 보좌관",
-                        model = "gpt-4o-mini"
+                    
+                if "tip_thread" not in st.session_state:
+                    st.session_state.thread = client.beta.threads.create(
+                        messages = messages
                     )
-                
-            if "tip_thread" not in st.session_state:
-                st.session_state.thread = client.beta.threads.create(
-                    messages = messages
-                )
+
             try: 
                 with st.spinner("면접 준비 팁을 생성 중입니다..."):
                     tips = generate_tips_with_interview()
