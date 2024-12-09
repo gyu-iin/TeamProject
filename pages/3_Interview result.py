@@ -31,7 +31,7 @@ if "result_messages" not in st.session_state:
     st.session_state.result_messages = []
 
 # 면접 대화 기록 불러오기 - 저장된 파일
-with open(os.path.join("interview contents", f"{user_info["면접을 볼 회사"]} interview contents.txt"), "rb") as file:
+with open(os.path.join("interview contents", f"{st.session_state.current_time} {user_info["면접을 볼 회사"]} interview contents.txt"), "rb") as file:
     interview_messages = file
 
 if not interview_messages:
@@ -111,7 +111,7 @@ st.markdown("### 다운로드 옵션")
 st.download_button(
     label="결과 다운로드 (txt)",
     data=downloadable_text,
-    file_name=f"{user_info['면접을 볼 회사']}_interview_summary.txt",
+    file_name=f"{st.session_state.current_time} {user_info['면접을 볼 회사']}_interview_summary.txt",
     mime="text/plain"
 )
 
