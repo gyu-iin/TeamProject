@@ -26,6 +26,9 @@ user_info = {
         "면접을 볼 회사": None
     }
 
+if "interview_messages" not in st.session_state:
+        st.session_state.interview_messages = {}
+
 user_name = st.text_input("이름을 입력해주세요", 
                         value=st.session_state.get('user_name',''))
 user_age = st.text_input("나이를 입력해주세요", 
@@ -43,35 +46,35 @@ if user_name:
         user_info["이름"] = st.session_state['user_name']
     else:
         user_info["이름"] = st.session_state['user_name']
-        st.session_state.user_info["이름"] = user_info["이름"]
+        st.session_state.user_info.append(user_info["이름"])
 if user_age:
     st.session_state['user_age'] = user_age
     if 'user_info["나이"]' in st.session_state:
-        user_info["나이"] = st.session_state['user_name']
+        user_info["나이"] = st.session_state['user_age']
     else:
         user_info["나이"] = st.session_state['user_age']
-        st.session_state.user_info["나이"] = user_info["나이"]
+        st.session_state.user_info.append(user_info["나이"])
 if user_field:
     st.session_state['user_field'] = user_field
     if 'user_info["관심분야"]' in st.session_state:
-        user_info["관심분야"] = st.session_state['user_name']
+        user_info["관심분야"] = st.session_state['user_field']
     else:
         user_info["관심분야"] = st.session_state['user_field']
-        st.session_state.user_info["관심분야"] = user_info["관심분야"]
+        st.session_state.user_info.append(user_info["관심분야"])
 if user_edu:
-    st.session_state['user_edu'] = user_edu
+    st.session_state['user_field'] = user_edu
     if 'user_info["학력"]' in st.session_state:
-        user_info["학력"] = st.session_state['user_name']
+        user_info["학력"] = st.session_state['user_field']
     else:
         user_info["학력"] = st.session_state['user_edu']
-        st.session_state.user_info["학력"] = user_info["학력"]
+        st.session_state.user_info.append(user_info["학력"])
 if user_exp:
     st.session_state['user_exp'] = user_exp
     if 'user_info["경력사항"]' in st.session_state:
-        user_info["경력사항"] = st.session_state['user_name']
+        user_info["경력사항"] = st.session_state['user_exp']
     else:
         user_info["경력사항"] = st.session_state['user_exp']
-        st.session_state.user_info["경력사항"] = user_info["경력사항"]
+        st.session_state.user_info.append(user_info["경력사항"])
 
 col1, col2, col3 = st.columns(3)
 
