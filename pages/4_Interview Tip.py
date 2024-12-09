@@ -1,12 +1,13 @@
 import streamlit as st
 import openai
 from openai import OpenAIError
+import os
 
 # Streamlit 기본 설정
 st.set_page_config(layout="centered", initial_sidebar_state="collapsed")
 st.title("💼 면접 준비 팁 제공")
 
-# OpenAI API Key 가져오면 없앨 입력 코드
+# OpenAI API Key 가져오기
 api_key = st.text_input("OpenAI API Key", type="password", value=st.session_state.get("api_key", ""))
 if api_key:
     openai.api_key = api_key
@@ -16,15 +17,17 @@ else:
     st.stop()
 
 # 면접 기록 확인
-if "interview_messages" not in st.session_state or not st.session_state["interview_messages"]:
-    st.warning("면접 기록이 없습니다. 먼저 모의 면접을 진행해주세요.")
+interview_file_path = os.path.join("interview contents", f"{st.session_state.get('user_info', {}).get('면접을 볼 회사', '')} interview contents.txt")
 
-# 면접 기록 불러오기
-if "interview_messages" in st.session_state and st.session_state["interview_messages"]:
+if os.path.exists(interview_file_path):
+    # 면접 기록이 파일에 존재하면 파일을 읽어오기
+    with open(interview_file_path, "r", encoding="utf-8") as file:
+        interview_content = file.read()
+    st.session_state["interview_messages"] = [{"role": "user", "content": interview_content}]
     st.write("### 면접 기록")
-    for msg in st.session_state["interview_messages"]:
-        role = "👤 사용자" if msg["role"] == "user" else "🤖 면접관"
-        st.write(f"{role}: {msg['content']}")
+    st.write(interview_content)
+else:
+    st.warning("면접 기록이 없습니다. 먼저 모의 면접을 진행해주세요.")
 
 # 면접 준비 팁 생성 함수
 @st.cache_data
@@ -86,7 +89,7 @@ st.write("### 면접 준비 팁 생성")
 job_title = st.text_input("직업명을 입력하세요 (예: 데이터 분석가, 소프트웨어 엔지니어)")
 
 interview_content = "\n".join(
-    [f"{msg['role']}: {msg['content']}" for msg in st.session_state["interview_messages"]]
+    [f"{msg['role']}: {msg['content']}" for msg in st.session_state.get("interview_messages", [])]
 ) if "interview_messages" in st.session_state else None
 
 if st.button("면접 준비 팁 생성"):
