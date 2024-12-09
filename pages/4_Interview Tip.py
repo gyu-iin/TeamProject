@@ -68,10 +68,10 @@ def generate_tips_with_interview(message):
             run_id = run.id,
             order = "asc"
         )
-        for data in api_response.data:
-            for content in data.content:
-                if content.type == 'text':
-                    response = content.text.value
+        for message in api_response.data:
+            for content_block in message.content:
+                if content_block.type == 'text':
+                    response = content_block.text.value
                     return tip_generate(response)
 
 def tip_generate(api_response):    
