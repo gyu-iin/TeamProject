@@ -46,7 +46,7 @@ user_info = {
     }
 
 if "user_info" not in st.session_state:
-        st.session_state.user_info = {}
+        st.session_state.user_info = user_info
 
 if "interview_messages" not in st.session_state:
         st.session_state.interview_messages = []
