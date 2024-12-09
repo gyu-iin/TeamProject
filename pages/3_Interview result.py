@@ -145,7 +145,7 @@ st.download_button(
     file_name=f"{st.session_state.current_time} {user_info['면접을 볼 회사']}_interview_summary.txt",
     mime="text/plain"
 )
-col1, col2, col3 = st.columns([5, 2, 4])
+col1, col2, col3 = st.columns([5, 1, 4])
 with col1:
     st.subheader("이번 면접이 어려웠다면")
     if st.button("면접 꿀팁 얻으러 가기"):
