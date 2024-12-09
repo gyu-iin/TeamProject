@@ -33,7 +33,7 @@ if not os.path.exists("interview contents"):
 # 면접 기록 확인
 st.write("### 면접 기록")
 
-interview_contents_recorded = os.listdir("interview_contents")
+interview_contents_recorded = os.listdir("interview contents")
 if len(interview_contents_recorded) > 1:
     if interview_contents_recorded:
         with st.expander("파일 목록" ,expanded = True):

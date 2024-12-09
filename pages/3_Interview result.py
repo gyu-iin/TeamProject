@@ -34,7 +34,7 @@ if "result_messages" not in st.session_state:
     st.session_state.result_messages = []
 
 # 면접 대화 기록 불러오기 - 저장된 파일
-interview_contents_recorded = os.listdir("interview_contents")
+interview_contents_recorded = os.listdir("interview contents")
 if len(interview_contents_recorded) > 1:
     if interview_contents_recorded:
         with st.expander("파일 목록", expanded = True):
