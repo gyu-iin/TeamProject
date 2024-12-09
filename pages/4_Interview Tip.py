@@ -29,9 +29,7 @@ try:
 except FileNotFoundError:
     st.warning("면접 기록이 없습니다. 먼저 모의 면접을 진행해주세요. 또는 파일이 존재한다면 업로드 해주세요")
     col1, col2 = st.columns([2 , 5.5, 2.5])
-    with col1:
-        st.button("파일 업로드"):
-        uploaded_file = st.file_uploader("면접 기록 파일을 올려주세요")
+    uploaded_file = st.file_uploader("면접 기록 파일을 올려주세요")
 
     with col2:
         if st.button("면접 진행하러 가기"):
