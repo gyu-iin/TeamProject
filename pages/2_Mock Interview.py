@@ -24,7 +24,7 @@ with col1:
     st.title("🧑‍💼 모의 면접")
 
 with col2:
-    col3 = st.container(height = 100, border = False)
+    col3 = st.container(height = 20, border = False)
     if st.button("사용자 정보 수정"):
         warning()
 
