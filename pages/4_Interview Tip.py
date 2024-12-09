@@ -72,7 +72,6 @@ def generate_tips_with_interview(message):
             for content_block in message.content:
                 if content_block.type == 'text':
                     response = content_block.text.value
-                    st.write(response)
                     tip_generate(response)
 
 def tip_generate(response):    
