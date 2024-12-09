@@ -53,7 +53,7 @@ elif 'user_info' not in st.session_state or any(globals().get(key) is not "" for
     st.session_state['user_info'] = user_info
 
 if not user_name:
-    st.write(not user_name)
+    st.write(user_name)
 st.write(user_info)
 col1, col2, col3 = st.columns(3)
 
