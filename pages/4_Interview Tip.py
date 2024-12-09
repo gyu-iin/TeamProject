@@ -75,7 +75,7 @@ def generate_tips_with_interview(message):
                     st.write(response)
                     tip_generate(response)
 
-def tip_generate(api_response):    
+def tip_generate(response):    
     try:
         # 문장이 중간에 끊기지 않도록 처리
         if not response.endswith(("다.", "요.", "습니다.", "습니까?", "에요.")):
