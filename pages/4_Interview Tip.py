@@ -34,7 +34,7 @@ if os.path.exists(interview_file_path):
 else:
     st.warning("면접 기록이 없습니다. 먼저 모의 면접을 진행해주세요.")
     col1, col2 = st.columns([7, 3])
-    with co12:
+    with col2:
         if st.button("면접 진행하러 가기"):
             st.switch_page("pages/2_Mock Interview.py")
 
