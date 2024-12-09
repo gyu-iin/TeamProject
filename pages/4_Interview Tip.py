@@ -68,7 +68,12 @@ def generate_tips_with_interview(message):
             run_id = run.id,
             order = "asc"
         )
-    st.write(dir(api_response.data))
+    for message in api_response.data:
+        st.write(message)
+        if hasattr(message, 'content'):
+            st.write(message.content)  # content 필드가 있다면 출력
+        else:
+            st.write("No content field in this message.")
     tip_generate(api_response)
 
 def tip_generate(api_response):    
