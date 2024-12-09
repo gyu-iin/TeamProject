@@ -25,7 +25,7 @@ interview_file_path = os.path.join("interview contents", f"{user_info['면접을
 if os.path.exists(interview_file_path):
     # 면접 기록이 파일에 존재하면 파일을 읽어오기
     with open(interview_file_path, "rb") as file:
-        interview_content = file
+        interview_content = file.read()
     st.session_state["interview_record"] = [{"role": "user", "content": interview_content}]
     st.write("### 면접 기록")
     st.write(interview_content)
