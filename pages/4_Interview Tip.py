@@ -46,7 +46,7 @@ interview_content = st.session_state.get('interview_content', None)
 
 # 면접 준비 팁 생성 함수
 @st.cache_data
-def generate_tips_with_interview(messages):
+def generate_tips_with_interview(message):
     thread = st.session_state.tip_thread
 
     assistant = st.session_state.tip_assistant
@@ -54,7 +54,7 @@ def generate_tips_with_interview(messages):
     client.beta.threads.messages.create(
             thread_id = thread.id,
             role = "user",
-            content = messages
+            content = message
     )
 
     run = client.beta.threads.runs.create_and_poll(
@@ -159,7 +159,7 @@ with con1:
                 )
                 
             if interview_content:
-                messages = f"""
+                message = f"""
                     사용자의 면접 기록과, 사용자 정보, 선호 직업명을 참고하여 면접 준비 팁을 작성해주세요.
                     면접 기록:
                     {interview_content}
@@ -176,7 +176,7 @@ with con1:
                     각각의 항목을 명확히 구분하여 작성해주세요."""
 
             else:
-                messages = f"""
+                message = f"""
                     사용자 정보와 선호 직업에 특화된 면접 준비 팁을 작성해주세요.
                     선호 직업:
                     {job_title}
@@ -190,7 +190,7 @@ with con1:
 
             try: 
                 with st.spinner("면접 준비 팁을 생성 중입니다..."):
-                    tips = generate_tips_with_interview(messages)
+                    tips = generate_tips_with_interview(message)
                 st.success(f'{job_title}에 대한 면접 준비 팁이 생성되었습니다!')
                 tip_ended = True
             except Exception as e:
@@ -204,11 +204,11 @@ if tip_ended:
     with con2:
         if st.button("추가 면접 팁 생성"):
             
-            messages = "추가 팁을 주세요"
+            message = "추가 팁을 주세요"
             
             try:
                 with st.spinner("추가 면접 준비 팁을 생성 중입니다..."):
-                    tips = generate_tips_with_interview(messages)
+                    tips = generate_tips_with_interview(message)
                 st.success(f'{job_title}에 대한 추가 면접 준비 팁이 생성되었습니다!')
                 tip_ended = True
             except Exception as e:
