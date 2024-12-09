@@ -20,9 +20,9 @@ if "interview_messages" not in st.session_state or not st.session_state["intervi
     st.warning("면접 기록이 없습니다. 먼저 모의 면접을 진행해주세요.")
 
 # 면접 기록 불러오기
-if "interview_messages" in st.session_state and st.session_state["interview_messages"]:
+if "interview_messages" in st.session_state and st.session_state.interview_messages:
     st.write("### 면접 기록")
-    for msg in st.session_state["interview_messages"]:
+    for msg in st.session_state.interview_messages:
         role = "👤 사용자" if msg["role"] == "user" else "🤖 면접관"
         st.write(f"{role}: {msg['content']}")
 
