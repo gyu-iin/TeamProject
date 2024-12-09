@@ -188,13 +188,14 @@ with con1:
                 with st.spinner("면접 준비 팁을 생성 중입니다..."):
                     tips = generate_tips_with_interview(message)
                 st.success(f'{job_title}에 대한 면접 준비 팁이 생성되었습니다!')
-                tip_ended = True
+                st.session_state.tip_ended = True
             except Exception as e:
                     st.error(f"팁을 생성하는 도중 오류가 발생했습니다: {e}")
                     st.stop()
             msg = {"role": "assistant", "content": tips}
             show_message(msg)
             st.session_state.tip_messages.append(msg)
+    st.session_state.tip_started = False
 
 if tip_ended:
     with con2:
@@ -206,7 +207,7 @@ if tip_ended:
                 with st.spinner("추가 면접 준비 팁을 생성 중입니다..."):
                     tips = generate_tips_with_interview(message)
                 st.success(f'{job_title}에 대한 추가 면접 준비 팁이 생성되었습니다!')
-                tip_ended = True
+                st.session_state.tip_ended = True
             except Exception as e:
                     st.error(f"추가 팁을 생성하는 도중 오류가 발생했습니다: {e}")
                     st.stop()
