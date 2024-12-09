@@ -186,7 +186,7 @@ if not tip_started:
                 messages = messages
             )
         try: 
-            st.spinner("면접 준비 팁을 생성 중입니다..."):
+            with st.spinner("면접 준비 팁을 생성 중입니다..."):
                 tips = generate_tips_with_interview()
         st.success(f'{job_title}에 대한 면접 준비 팁이 생성되었습니다!')
         tip_ended = True
@@ -210,7 +210,7 @@ if tip_ended:
             content = "추가 면접 팁을 주세요"
             )
             try:
-                st.spinner("추가 면접 준비 팁을 생성 중입니다..."):
+                with st.spinner("추가 면접 준비 팁을 생성 중입니다..."):
                     tips = generate_tips_with_interview()
             st.success(f'{job_title}에 대한 추가 면접 준비 팁이 생성되었습니다!')
             tip_ended = True
