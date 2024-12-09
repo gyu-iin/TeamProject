@@ -74,6 +74,8 @@ def generate_tips_with_interview(message):
             st.write(message.content)  # content 필드가 있다면 출력
         else:
             st.write("No content field in this message.")
+    for message in api_response.data:
+        print(message.__dict__)
     tip_generate(api_response)
 
 def tip_generate(api_response):    
