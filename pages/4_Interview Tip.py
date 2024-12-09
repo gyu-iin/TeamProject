@@ -9,13 +9,18 @@ st.title("💼 면접 준비 팁 제공")
 
 client = st.session_state.get('openai_client', None)
 if client is None:
-    if st.button("사용자 정보에서 API Key가 입력되지 않았습니다."):
+    st.warning("사용자 정보에서 API키가 입력되지 않았습니다.")
+    if st.button("API 키 입력하러 가기."):
         st.switch_page("pages/1_User information.py")
     st.stop()
-    
+
 user_info = st.session_state.get('user_info', None)
-if user_info is None:
-    if st.button("사용자 정보가 입력되지 않았습니다."):
+if user_info is None or any(value is None for key, value in user_info.items() if key != '면접을 볼 회사'):
+    if user_info is None:
+        st.warning("사용자 정보가 입력되지 않았습니다.")
+    elif any(value is None for key, value in user_info.items() if key != '면접을 볼 회사'):
+        st.warning("사용자 정보 중 일부가 입력되지 않았습니다.")
+    if st.button("사용자 정보 입력하러 가기."):
         st.switch_page("pages/1_User information.py")
     st.stop()
 
