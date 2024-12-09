@@ -27,6 +27,8 @@ if user_info is None or any(value is None for key, value in user_info.items() if
 
 current_time = st.session_state.get('current_time', None)
 
+uploaded_file = None
+
 if not os.path.exists("interview contents"):
             os.makedirs("interview contents", exist_ok = True)
 
