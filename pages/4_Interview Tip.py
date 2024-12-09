@@ -185,7 +185,7 @@ with con1:
 
             try: 
                 with st.spinner("면접 준비 팁을 생성 중입니다..."):
-                    tips = generate_tips_with_interview()
+                    tips = generate_tips_with_interview(messages)
                 st.success(f'{job_title}에 대한 면접 준비 팁이 생성되었습니다!')
                 tip_ended = True
             except Exception as e:
@@ -198,18 +198,11 @@ if tip_ended:
     with con2:
         if st.button("추가 면접 팁 생성"):
             
-            thread = st.session_state.tip_thread
-
-            assistant = st.session_state.tip_assistant
-
-            client.beta.threads.messages.create(
-            thread_id = thread.id,
-            role = "user",
-            content = "추가 면접 팁을 주세요"
-            )
+            messages = "추가 팁을 주세요"
+            
             try:
                 with st.spinner("추가 면접 준비 팁을 생성 중입니다..."):
-                    tips = generate_tips_with_interview()
+                    tips = generate_tips_with_interview(messages)
                 st.success(f'{job_title}에 대한 추가 면접 준비 팁이 생성되었습니다!')
                 tip_ended = True
             except Exception as e:
