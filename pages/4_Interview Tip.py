@@ -183,25 +183,8 @@ if not tip_started:
             
         if "tip_thread" not in st.session_state:
             st.session_state.thread = client.beta.threads.create(
-                messages = messages{
-            "role": "user",
-            "content": f"""
-            사용자의 면접 기록과, 사용자 정보, 선호 직업명을 참고하여 면접 준비 팁을 작성해주세요.
-            면접 기록:
-            {interview_content}
-
-            사용자 정보:
-            {user_info}
-
-            선호 직업명:
-            {job_title}
-
-            작성 항목:
-            1. 면접 기록에 기반한 사용자 피드백
-            2. 선호 직업에 특화된 맞춤형 면접 준비 팁
-            각각의 항목을 명확히 구분하여 작성해주세요."""}
+                messages = messages
             )
-
         try st.spinner("면접 준비 팁을 생성 중입니다..."):
             tips = generate_tips_with_interview()
         st.success(f'{job_title}에 대한 면접 준비 팁이 생성되었습니다!')
