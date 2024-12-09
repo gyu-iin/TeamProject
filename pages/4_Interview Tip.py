@@ -51,8 +51,16 @@ interview_content = st.session_state.get('interview_content', None)
 # 면접 준비 팁 생성 함수
 @st.cache_data
 def generate_tips_with_interview(message):
+    if "tip_thread" not in st.session_state:
+        st.session_state.tip_thread = client.beta.threads.create()
     thread = st.session_state.tip_thread
-
+    
+    if "tip_assistant" not in st.session_state:
+        st.session_state.tip_assistant = client.beta.assistants.create(
+            instructions = "사용자 정보와 면접 기록, 선호 직업을 참고하여 면접의 팁을 주세요",
+            name = "면접 보좌관",
+            model = "gpt-4o-mini"
+        )
     assistant = st.session_state.tip_assistant
 
     client.beta.threads.messages.create(
@@ -122,7 +130,6 @@ with con1:
                                 if st.button(f"{idx + 1} {file}", use_container_width=True):
                                     interview_content = open(os.path.join("interview contents", file)).read()
                                     st.session_state.interview_content = interview_content
-                                st.divider()
         elif len(interview_contents_recorded) == 1:
             with open(os.path.join("interview contents", f"{current_time} {user_info["면접을 볼 회사"]} interview contents.txt")):
                 interview_content = file.read()
@@ -143,6 +150,7 @@ with con1:
 
         if interview_content is not None:
             st.write(interview_content)
+        st.divider()
 
         # 직업명 입력과 팁 생성
         st.write("### 면접 준비 팁 생성")
@@ -154,15 +162,6 @@ with con1:
         ) if "interview_messages" in st.session_state else None
 
         if st.button("면접 준비 팁 생성"):
-            if "tip_assistant" not in st.session_state:
-                    st.session_state.tip_assistant = client.beta.assistants.create(
-                        instructions = "사용자 정보와 면접 기록, 선호 직업을 참고하여 면접의 팁을 주세요",
-                        name = "면접 보좌관",
-                        model = "gpt-4o-mini"
-                    )
-            if "tip_thread" not in st.session_state:
-                    st.session_state.tip_thread = client.beta.threads.create()
-                
             if interview_content:
                 message = f"""
                     사용자의 면접 기록과, 사용자 정보, 선호 직업명을 참고하여 면접 준비 팁을 작성해주세요.
