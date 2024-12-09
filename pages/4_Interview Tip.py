@@ -36,7 +36,7 @@ else:
     col1, col2 = st.columns([7.5, 2.5])
     with col2:
         if st.button("면접 진행하러 가기"):
-            st.switch_page("pages/2_Mock Interview.py", use_container_width=True)
+            st.switch_page("pages/2_Mock Interview.py")
 
 # 면접 준비 팁 생성 함수
 @st.cache_data
