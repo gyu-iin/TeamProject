@@ -7,29 +7,30 @@ import os
 st.set_page_config(layout="centered", initial_sidebar_state="collapsed")
 st.title("💼 면접 준비 팁 제공")
 
-# OpenAI API Key 가져오면 없앨 입력 코드
-api_key = st.text_input("OpenAI API Key", type="password", value=st.session_state.get("api_key", ""))
-if api_key:
-    st.session_state["api_key"] = api_key
-else:
-    st.warning("OpenAI API Key를 입력하세요.")
+client = st.session_state.get('openai_client', None)
+if client is None:
+    if st.button("사용자 정보에서 API Key가 입력되지 않았습니다."):
+        st.switch_page("pages/1_User information.py")
+    st.stop()
+    
+user_info = st.session_state.get('user_info', None)
+if user_info is None:
+    if st.button("사용자 정보가 입력되지 않았습니다."):
+        st.switch_page("pages/1_User information.py")
     st.stop()
 
 # 면접 기록 확인
-interview_file_path = os.path.join("interview contents", f"{st.session_state.get('user_info', {}).get('면접을 볼 회사', '')} interview contents.txt")
+interview_file_path = os.path.join("interview contents", f"{user_info['면접을 볼 회사']} interview contents.txt")
 
 if os.path.exists(interview_file_path):
     # 면접 기록이 파일에 존재하면 파일을 읽어오기
-    with open(interview_file_path, "r", encoding="utf-8") as file:
-        interview_content = file.read()
-    st.session_state["interview_messages"] = [{"role": "user", "content": interview_content}]
+    with open(interview_file_path, "rb") as file:
+        interview_content = file
+    st.session_state["interview_record"] = [{"role": "user", "content": interview_content}]
     st.write("### 면접 기록")
     st.write(interview_content)
 else:
     st.warning("면접 기록이 없습니다. 먼저 모의 면접을 진행해주세요.")
-
-# OpenAI Client 객체 초기화
-client = openai.Client(api_key=st.session_state["api_key"])  # OpenAI API key를 client 객체에 전달
 
 # 면접 준비 팁 생성 함수
 @st.cache_data
@@ -40,9 +41,12 @@ def generate_tips_with_interview(job_title, interview_content=None):
             {
                 "role": "user",
                 "content": f"""
-                사용자의 면접 기록과 직업명 "{job_title}"을 참고하여 면접 준비 팁을 작성해주세요.
+                사용자의 면접 기록과, 사용자 정보, 직업명 "{job_title}"을 참고하여 면접 준비 팁을 작성해주세요.
                 면접 기록:
                 {interview_content}
+
+                사용자 정보:
+                {user_info}
 
                 작성 항목:
                 1. 면접 기록에 기반한 사용자 피드백
@@ -66,7 +70,7 @@ def generate_tips_with_interview(job_title, interview_content=None):
     try:
         # client 객체를 통해 최신 방식으로 호출
         response = client.chat.completions.create(
-            model="gpt-3.5-turbo",  # 원하는 모델명을 입력
+            model="gpt-4o-mini",
             messages=messages,
             max_tokens=1000,
             temperature=0.7
