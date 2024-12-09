@@ -26,6 +26,8 @@ if user_info is None or any(value is None for key, value in user_info.items() if
 
 current_time = st.session_state.get('current_time', None)
 
+uploaded_file = None
+
 summary_started = st.session_state.get('summary_started', False)
 summary_ended = st.session_state.get('summary_ended', False)
 
@@ -162,7 +164,7 @@ if summary_ended:
         st.subheader("이번 면접이 어려웠다면")
         if st.button("면접 꿀팁 얻으러 가기"):
             st.switch_page("pages/4_Interview Tip.py")
-            
+
     # 앱 다시 시작 옵션
     with col3:
         st.subheader("더 나은 면접을 위해")

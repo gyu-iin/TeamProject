@@ -70,20 +70,23 @@ def generate_tips_with_interview(messages):
 
 def tip_generate(api_response):    
     try:
-        content = api_response.data.content.txtx.value
+        for data in api_response.data:
+                for content in data.content:
+                    if content.type == 'text':
+                        response = content.text.value
 
         # 문장이 중간에 끊기지 않도록 처리
-        if not content.endswith(("다.", "요.", "습니다.", "습니까?", "에요.")):
-            content = content.rsplit('.', 1)[0] + '.'
+        if not response.endswith(("다.", "요.", "습니다.", "습니까?", "에요.")):
+            response = response.rsplit('.', 1)[0] + '.'
         
         # 마지막 항목이 완전하게 마무리된 형태로 만들기
-        if content.endswith(('.', '요.', '습니다.', '에요.')):
-            return content
+        if response.endswith(('.', '요.', '습니다.', '에요.')):
+            return response
         else:
-            content = content.rstrip()
-            if content:
-                content += '.'
-            return content
+            response = response.rstrip()
+            if response:
+                response += '.'
+            return response
     except OpenAIError as e:
         return f"OpenAI API 오류 발생: {e}", print(api_response)
     st.session_state.tip_started = False
