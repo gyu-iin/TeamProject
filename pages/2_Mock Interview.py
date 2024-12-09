@@ -285,11 +285,11 @@ def end_interview_and_download():
     show_message(msg)
 
     with con2:
-        with open(os.path.join("interview contents", f"{current_time} {user_info['면접을 볼 회사']} interview contents.txt"), "rb") as file:
+        with open(os.path.join("interview contents", f"{st.session_state.current_time} {user_info['면접을 볼 회사']} interview contents.txt"), "rb") as file:
             st.download_button(
                 label="면접 내용 다운로드",
                 data=file,
-                file_name=f"{current_time} {user_info['면접을 볼 회사']} interview contents.txt",
+                file_name=f"{st.session_state.current_time} {user_info['면접을 볼 회사']} interview contents.txt",
                 mime="text/csv",
                 use_container_width=True
             )
