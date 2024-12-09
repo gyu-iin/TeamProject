@@ -68,7 +68,7 @@ def generate_tips_with_interview(messages):
             run_id = run.id,
             order = "asc"
         )
-    st.write(dir(api_response.message))
+    st.write(dir(api_response))
     tip_generate(api_response)
 
 def tip_generate(api_response):    
