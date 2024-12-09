@@ -168,6 +168,8 @@ def interview_in_progress():
         st.session_state.interview_messages.append(msg)
 
         thread = st.session_state.thread
+        if "thread" not in st.session_state:
+            st.rerun()
 
         assistant = st.session_state.assistant
 
@@ -301,8 +303,6 @@ def end_interview_and_download():
 
 # 화면 흐름 제어
 if start_interview:
-    if "thread" not in st.session_state:
-        st.rerun()
     interview_in_progress()
     with con4:
         if st.button("면접 종료", use_container_width=True):
