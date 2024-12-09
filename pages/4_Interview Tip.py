@@ -145,10 +145,10 @@ if st.button("면접 준비 팁 생성"):
     st.success(f'{job_title}에 대한 면접 준비 팁이 생성되었습니다!')
     with st.chat_message("assistant"):
             st.markdown(tips)
-col1, col2 = st.columns([4, 6])
+col1, col2 = st.columns([6, 4])
 
 with col2:
-    st.markdown("꿀팁과 함께")
+    st.subheader("꿀팁과 함께")
     col3, col4 = st.columns(2)
     with col4:
         if st.button("면접 진행하러 가기"):
