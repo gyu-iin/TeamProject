@@ -46,14 +46,18 @@ interview_content = st.session_state.get('interview_content', None)
 
 # 면접 준비 팁 생성 함수
 @st.cache_data
-def generate_tips_with_interview():
+def generate_tips_with_interview(messages):
     thread = st.session_state.tip_thread
 
     assistant = st.session_state.tip_assistant
+    client.beta.threads.messages.create(
+            thread_id = thread.id,
+            role = "user",
+            content = messages
+    )
+    tip_generate()
 
-    tip_generate(messages)
-
-def tip_generate(messages):    
+def tip_generate():    
     try:
         run = client.beta.threads.runs.create_and_poll(
         thread_id = thread.id,
@@ -144,11 +148,13 @@ with con1:
                         name = "면접 보좌관",
                         model = "gpt-4o-mini"
                     )
+            if "tip_thread" not in st.session_state:
+                    st.session_state.thread = client.beta.threads.create(
+                        messages = st.session_state.tip_messages
+                )
                 
             if interview_content:
-                messages = {
-                    "role": "user",
-                    "content": f"""
+                messages = f"""
                     사용자의 면접 기록과, 사용자 정보, 선호 직업명을 참고하여 면접 준비 팁을 작성해주세요.
                     면접 기록:
                     {interview_content}
@@ -163,17 +169,9 @@ with con1:
                     1. 면접 기록에 기반한 사용자 피드백
                     2. 선호 직업에 특화된 맞춤형 면접 준비 팁
                     각각의 항목을 명확히 구분하여 작성해주세요."""
-                    }
-
-                if "tip_thread" not in st.session_state:
-                    st.session_state.thread = client.beta.threads.create(
-                        messages = messages
-                    )
 
             else:
-                messages ={
-                    "role": "user", 
-                    "content": f"""
+                messages = f"""
                     사용자 정보와 선호 직업에 특화된 면접 준비 팁을 작성해주세요.
                     선호 직업:
                     {job_title}
@@ -184,12 +182,6 @@ with con1:
                     작성 항목:
                     1. 선호직업에 맞는 면접 준비 팁
                     """
-                }
-
-                if "tip_thread" not in st.session_state:
-                    st.session_state.tip_thread = client.beta.threads.create(
-                        messages = messages
-                    )
 
             try: 
                 with st.spinner("면접 준비 팁을 생성 중입니다..."):
