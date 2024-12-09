@@ -153,7 +153,7 @@ with col1:
 # 앱 다시 시작 옵션
 with col3:
     st.subheader("더 나은 면접을 위해")
-    col3, col4 = st.columns([3, 7])
+    col3, col4 = st.columns([3.5, 6.5])
     with col4:
         if st.button("다시 시작하기"):
             del st.session_state.thread
