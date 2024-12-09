@@ -36,7 +36,6 @@ uploaded_file = None
 tip_started = st.session_state.get('tip_started', False)
 tip_ended = st.session_state.get('tip_ended', False)
 
-tip_messages = st.session_state.get('tip_messages', None)
 if tip_messages not in st.session_state:
     st.session_state.tip_messages = []
 
@@ -93,7 +92,7 @@ def show_message(msg):
             st.markdown(tips)
 
 with con1:
-    for msg in tip_messages:
+    for msg in st.session_state.tip_messages:
         show_message(msg)
 
 with con1:
