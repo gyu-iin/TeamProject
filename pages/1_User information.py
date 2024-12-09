@@ -27,11 +27,8 @@ def delete_user_info():
 @st.dialog("정말 삭제하시겠습니까?")
 def delete_user_info_during_interview():
     st.write("면접 종료 버튼을 누르지 않고 사용자 정보를 삭제한다면 면접 진행 내용이 초기화됩니다.")
-    col1, col2, col3 = st.columns([1.5, 7, 1.5])
-    with col1:
-        if st.button("닫기"):
-                st.rerun()
-    with col3:
+    col1, col2 = st.columns([8, 2])
+    with col2:
         if st.button("확인"):
             if start_interview:
                 del st.session_state.interview_messages

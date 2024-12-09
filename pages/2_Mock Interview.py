@@ -10,11 +10,8 @@ st.set_page_config(layout = "centered", initial_sidebar_state = "collapsed")
 @st.dialog("주의")
 def warning():
     st.write("면접 진행 중 수정된 사용자 정보는 면접 내용에 반영되지 않습니다.")
-    col1, col2, col3 = st.columns([2, 6, 2])
-    with col1:
-        if st.button("닫기"):
-            st.rerun()
-    with col3:
+    col1, col2= st.columns([8, 2])
+    with col2:
         if st.button("확인"):
             st.switch_page("pages/1_User information.py")
 
