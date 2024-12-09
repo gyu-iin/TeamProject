@@ -103,7 +103,7 @@ with con1:
         show_message(msg)
 
 with con1:
-    if not tip_started:
+    if not tip_started and not tip_ended:
         # 면접 기록 확인
         st.write("### 면접 기록")
         if interview_content is None:
