@@ -5,6 +5,7 @@ import os
 
 # Streamlit 기본 설정
 st.set_page_config(layout="centered", initial_sidebar_state="collapsed")
+
 st.title("💼 면접 준비 팁 제공")
 
 client = st.session_state.get('openai_client', None)
@@ -25,6 +26,8 @@ if user_info is None or any(value is None for key, value in user_info.items() if
     st.stop()
 
 current_time = st.session_state.get('current_time', None)
+
+os.makedirs("interview contents", exist_ok=True)
 
 # 면접 기록 확인
 st.write("### 면접 기록")
@@ -135,8 +138,11 @@ if st.button("면접 준비 팁 생성"):
     st.success(f'{job_title}에 대한 면접 준비 팁이 생성되었습니다!')
     with st.chat_message("assistant"):
             st.markdown(tips)
-col1, col2 = st.columns([7, 3])
+col1, col2 = st.columns([4, 6])
 
 with col2:
-    if st.button("면접 진행하러 가기"):
-        st.switch_page("pages/2_Mock Interview")
+    st.markdown("꿀팁과 함께")
+    col3, col4 = st.columns(2)
+    with col4:
+        if st.button("면접 진행하러 가기"):
+            st.switch_page("pages/2_Mock Interview")

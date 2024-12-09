@@ -6,6 +6,7 @@ import time
 from datetime import datetime
 
 st.set_page_config(layout="centered", initial_sidebar_state="collapsed")
+
 @st.dialog("주의")
 def warning():
     st.write("면접 진행 중 수정된 사용자 정보는 면접 내용에 반영되지 않습니다.")
@@ -17,7 +18,7 @@ def warning():
         if st.button("확인"):
             st.switch_page("pages/1_User information.py")
 
-col1, col2 = st.columns([7, 3])
+col1, col2 = st.columns([7.5, 2.5])
 
 with col1:
     st.title("🧑‍💼 모의 면접")
@@ -134,8 +135,10 @@ def end_interview_and_save():
         output_file_id = api_response.data[0].content[0].text.annotations[0].file_path.file_id
         st.session_state.file_id = output_file_id
         new_data = get_file_content_infinite(client, output_file_id)
+
         current_time = datetime.now().strftime('%Y.%m.%d.%H.%M.%S')
         st.session_state.current_time = current_time
+
         filename = f"{current_time} {user_info['면접을 볼 회사']} interview contents.txt"
 
         os.makedirs("interview contents", exist_ok=True)
@@ -302,7 +305,7 @@ def interview_in_progress():
 def end_interview_and_download():
     msg = {"role": "assistant", "content": "면접을 종료합니다."}
     show_message(msg)
-    msg = {"role": "assistant", "content": "면접 내용을 다운받으시려면 다운로드 버튼을 눌러주세요. 다음 화면으로 넘어가고 싶으시다면 다음 버튼을 눌러주세요."}
+    msg = {"role": "assistant", "content": "면접 내용을 다운받으시려면 다운로드 버튼을 눌러주세요. 결과 확인 화면으로 넘어가고 싶으시다면 결과 확인 버튼을 눌러주세요."}
     show_message(msg)
 
     with con2:
@@ -316,7 +319,7 @@ def end_interview_and_download():
             )
 
     with con4:
-        if st.button("다음", use_container_width=True):
+        if st.button("결과 확인", use_container_width=True):
             st.switch_page("pages/3_Interview result.py")
         st.stop()
 

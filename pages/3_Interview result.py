@@ -34,6 +34,8 @@ if user_info is None or any(value is None for key, value in user_info.items() if
 
 current_time = st.session_state.get('current_time', None)
 
+os.makedirs("interview contents", exist_ok=True)
+
 # Chat history retrieval
 if "result_messages" not in st.session_state:
     st.session_state.result_messages = []
@@ -145,14 +147,18 @@ st.download_button(
     file_name=f"{st.session_state.current_time} {user_info['면접을 볼 회사']}_interview_summary.txt",
     mime="text/plain"
 )
-col1, col2, col3 = st.columns([3, 4, 3])
+col1, col2 = st.columns(2)
 with col1:
+    st.markdown("이번 면접이 어려웠다면")
     if st.button("면접 꿀팁 얻으러 가기"):
         st.switch_page("pages/4_Interview Tip.py")
 # 앱 다시 시작 옵션
-with col3:
-    if st.button("다시 시작하기"):
-        del st.session_state.thread
-        del st.session_state.interview_messages
-        st.session_state.interview_ended = False
-        st.switch_page("pages/1_User information.py")
+with col2:
+    st.markdown("더 나은 면접을 위해")
+    col3, col4 = st.columns([4, 6])
+    with col4:
+        if st.button("다시 시작하기"):
+            del st.session_state.thread
+            del st.session_state.interview_messages
+            st.session_state.interview_ended = False
+            st.switch_page("pages/1_User information.py")
