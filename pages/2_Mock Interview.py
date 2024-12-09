@@ -15,11 +15,9 @@ con2, con3, con4 = st.columns(3)
 # 사용자 정보와 API Key 확인 함수
 user_info = st.session_state.get('user_info', None)
 client = st.session_state.get('openai_client', None)
+
 st.write(user_info)
 def check_user_info_and_api():
-    if 'user_info' not in st.session_state or not st.session_state.user_info:
-        st.session_state['user_info'] = {"이름": None, "나이": None, "관심분야": None, "학력": None, "경력사항": None, "면접을 볼 회사": None}
-
     with con1:
         if user_info is None or any(value is None for key, value in user_info.items() if key != '면접을 볼 회사'):
                 if st.button("사용자 정보가 입력되지 않았습니다."):

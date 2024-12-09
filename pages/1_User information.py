@@ -17,6 +17,15 @@ if api_key:
 
 keys = ['user_name', 'user_age', 'user_field', 'user_edu', 'user_exp']
 
+user_info = {
+        "이름": None,
+        "나이": None,
+        "관심분야": None,
+        "학력": None,
+        "경력사항": None,
+        "면접을 볼 회사": None
+    }
+
 user_name = st.text_input("이름을 입력해주세요", 
                         value=st.session_state.get('user_name',''))
 user_age = st.text_input("나이를 입력해주세요", 
@@ -30,47 +39,51 @@ user_exp = st.text_area("관련 경력사항을 자유롭게 입력해주세요"
 
 if user_name:
     st.session_state['user_name'] = user_name
+    if 'user_info["이름"]' in st.session_state:
+        user_info["이름"] = st.session_state['user_name']
+    else:
+        user_info["이름"] = st.session_state['user_name']
+        st.session_state.user_info["이름"] = user_info["이름"]
 if user_age:
     st.session_state['user_age'] = user_age
+    if 'user_info["나이"]' in st.session_state:
+        user_info["나이"] = st.session_state['user_name']
+    else:
+        user_info["나이"] = st.session_state['user_age']
+        st.session_state.user_info["나이"] = user_info["나이"]
 if user_field:
     st.session_state['user_field'] = user_field
+    if 'user_info["관심분야"]' in st.session_state:
+        user_info["관심분야"] = st.session_state['user_name']
+    else:
+        user_info["관심분야"] = st.session_state['user_field']
+        st.session_state.user_info["관심분야"] = user_info["관심분야"]
 if user_edu:
     st.session_state['user_edu'] = user_edu
+    if 'user_info["학력"]' in st.session_state:
+        user_info["학력"] = st.session_state['user_name']
+    else:
+        user_info["학력"] = st.session_state['user_edu']
+        st.session_state.user_info["학력"] = user_info["학력"]
 if user_exp:
     st.session_state['user_exp'] = user_exp
+    if 'user_info["경력사항"]' in st.session_state:
+        user_info["경력사항"] = st.session_state['user_name']
+    else:
+        user_info["경력사항"] = st.session_state['user_exp']
+        st.session_state.user_info["경력사항"] = user_info["경력사항"]
 
-if 'user_info' in st.session_state:
-    user_info = st.session_state['user_info']
-elif 'user_info' not in st.session_state or any(globals().get(key) is not "" for key in keys):
-    user_info = {
-        "이름": user_name,
-        "나이": user_age,
-        "관심분야": user_field,
-        "학력": user_edu,
-        "경력사항": user_exp,
-        "면접을 볼 회사": None
-    }
-    st.session_state['user_info'] = user_info
-
-if not user_name:
-    st.write(user_name)
-st.write(user_info)
 col1, col2, col3 = st.columns(3)
 
 with col1:
     if st.button("사용자 정보 삭제"):
-        if not user_name and not user_age and not user_field and not user_edu and not user_exp:
-            st.write("삭제할 사용자 정보가 없습니다")
+        if all(st.session_state.get(key) in (None, '') for key in keys):
+            st.warning("사용자 정보가 없습니다.")
         else:
             for key in keys:
-                if key is None:
-                    continue
                 st.session_state.pop(key, None)
-            for key in user_info.keys():
-                if st.session_state.user_info[key] is None:
-                    continue
-                st.session_state.user_info[key] = None
-            st.write("사용자 정보 삭제 완료")
+            st.session_state['user_info'] = {"이름": None, "나이": None, "관심분야": None, "학력": None, "경력사항": None, "면접을 볼 회사": None}
+            st.success("사용자 정보 삭제 완료")
 
 
 with col2:
