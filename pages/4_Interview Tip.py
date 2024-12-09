@@ -139,7 +139,7 @@ with con1:
 
         if st.button("면접 준비 팁 생성"):
             if "tip_assistant" not in st.session_state:
-                    st.session_state.assistant = client.beta.assistants.create(
+                    st.session_state.tip_assistant = client.beta.assistants.create(
                         instructions = "사용자 정보와 면접 기록, 선호 직업을 참고하여 면접의 팁을 주세요",
                         name = "면접 보좌관",
                         model = "gpt-4o-mini"
@@ -187,7 +187,7 @@ with con1:
                 }
 
                 if "tip_thread" not in st.session_state:
-                    st.session_state.thread = client.beta.threads.create(
+                    st.session_state.tip_thread = client.beta.threads.create(
                         messages = messages
                     )
 
