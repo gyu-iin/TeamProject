@@ -38,16 +38,10 @@ if user_edu:
     st.session_state['user_edu'] = user_edu
 if user_exp:
     st.session_state['user_exp'] = user_exp
-if globals().get(keys[0]) is None:
-    st.write("None")
-elif globals().get(keys[0]) is "":
-    st.write("Null")
-else:
-    st.write(globals().get(keys[0]))
 
 if 'user_info' in st.session_state:
     user_info = st.session_state['user_info']
-elif 'user_info' not in st.session_state or any(globals().get(key) is not None for key in globals(keys)):
+elif 'user_info' not in st.session_state or any(globals().get(key) is not "" for key in globals(keys)):
     user_info = {
         "이름": user_name,
         "나이": user_age,
