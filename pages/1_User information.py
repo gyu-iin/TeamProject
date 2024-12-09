@@ -16,7 +16,6 @@ if api_key:
         st.session_state['openai_client'] = client
 
 keys = ['user_name', 'user_age', 'user_field', 'user_edu', 'user_exp']
-user_info = st.session_state['user_info']
 
 user_name = st.text_input("이름을 입력해주세요", 
                         value=st.session_state.get('user_name',''))
@@ -42,7 +41,7 @@ if user_exp:
 
 if 'user_info' in st.session_state:
     user_info = st.session_state['user_info']
-elif 'user_info' not in st.session_state or any(value is None for key, value in user_info.items() if key != '면접을 볼 회사'):
+elif 'user_info' not in st.session_state or any(value is not None for key in globals(keys)):
     user_info = {
         "이름": user_name,
         "나이": user_age,
