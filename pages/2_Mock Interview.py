@@ -168,8 +168,6 @@ def interview_in_progress():
         st.session_state.interview_messages.append(msg)
 
         thread = st.session_state.thread
-        if "thread" not in st.session_state:
-            st.rerun()
 
         assistant = st.session_state.assistant
 
@@ -223,6 +221,8 @@ def interview_in_progress():
         st.session_state.interview_messages.append(msg)
 
         thread = st.session_state.thread
+        if "thread" not in st.session_state:
+            st.rerun()
 
         assistant = st.session_state.assistant
 
