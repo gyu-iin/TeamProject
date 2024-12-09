@@ -31,7 +31,7 @@ def delete_user_info_during_interview():
         if start_interview:
             del st.session_state.interview_messages
             del st.session_state.thread
-            st.session_state.start_interview = False
+            st.session_state.interview_started = False
         delete_user_info()
 
 keys = ['user_name', 'user_age', 'user_field', 'user_edu', 'user_exp']

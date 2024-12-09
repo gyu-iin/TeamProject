@@ -167,9 +167,7 @@ def interview_in_progress():
         msg = {"role": "user", "content": "면접 시작"}
         st.session_state.interview_messages.append(msg)
 
-        thread = st.session_state.get('thread', None)
-        if thread is None:
-            st.rerun()
+        thread = st.session_state.thread
 
         assistant = st.session_state.assistant
 
@@ -222,9 +220,7 @@ def interview_in_progress():
         show_message(msg)
         st.session_state.interview_messages.append(msg)
 
-        thread = st.session_state.get('thread', None)
-        if thread is None:
-            st.rerun()
+        thread = st.session_state.thread
 
         assistant = st.session_state.assistant
 
