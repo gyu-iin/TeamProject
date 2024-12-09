@@ -155,6 +155,7 @@ def start_interview_process():
                 )
 
             st.session_state["interview_started"] = True
+            st.rerun()
 
 ## 면접 시행 중 문답
 def interview_in_progress():
@@ -300,6 +301,7 @@ if start_interview:
     with con4:
         if st.button("면접 종료", use_container_width=True):
             end_interview_and_save()
+            st.rerun()
 
 if not end_interview and not start_interview:
     start_interview_process()
