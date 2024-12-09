@@ -5,7 +5,7 @@ import os
 import time
 from datetime import datetime
 
-st.set_page_config(layout="centered", initial_sidebar_state="collapsed")
+st.set_page_config(layout = "centered", initial_sidebar_state = "collapsed")
 
 @st.dialog("주의")
 def warning():
@@ -24,11 +24,12 @@ with col1:
     st.title("🧑‍💼 모의 면접")
 
 with col2:
+    col3 = st.container(height = 100, border = False)
     if st.button("사용자 정보 수정"):
         warning()
 
 ## 페이지 레이아웃
-con1 = st.container(height=550, border=False)
+con1 = st.container(height = 550, border = False)
 con2, con3, con4 = st.columns(3)
 
 # 사용자 정보와 API Key 확인 함수
@@ -76,7 +77,7 @@ for msg in st.session_state.interview_messages[2:]:
     show_message(msg)
     
 ## 서버에서 파일 받을 때 오류 발생시 재시도 함수
-def get_file_content_infinite(client, output_file_id, wait_time=2):
+def get_file_content_infinite(client, output_file_id, wait_time = 2):
     while True:
         try:
             new_data = client.files.content(output_file_id)
@@ -94,9 +95,9 @@ def end_interview_and_save():
     assistant = st.session_state.assistant
 
     client.beta.threads.messages.create(
-        thread_id=thread.id,
-        role="user",
-        content=f"""
+        thread_id = thread.id,
+        role = "user",
+        content = f"""
                 면접 내용을 요약해서 Q:질문 A:답변 형식으로 정리합니다. 
                 이 때 첫 인사와 끝 인사는 맨 위와 아래에 각각 정리하세요.
                 마지막 줄에는 면접이 종료되었습니다.를 작성하세요.
@@ -105,8 +106,8 @@ def end_interview_and_save():
     )
 
     run = client.beta.threads.runs.create_and_poll(
-        thread_id=thread.id,
-        assistant_id=assistant.id
+        thread_id = thread.id,
+        assistant_id = assistant.id
     )
 
     while run.status == 'requires_action':
@@ -120,16 +121,16 @@ def end_interview_and_save():
             tool_outputs.append({"tool_call_id": tool.id, "output": str(output)})
 
         run = client.beta.threads.runs.submit_tool_outputs_and_poll(
-            thread_id=thread.id,
-            run_id=run.id,
-            tool_outputs=tool_outputs
+            thread_id = thread.id,
+            run_id = run.id,
+            tool_outputs = tool_outputs
         )
 
     if run.status == 'completed':
         api_response = client.beta.threads.messages.list(
-            thread_id=thread.id,
-            run_id=run.id,
-            order="asc"
+            thread_id = thread.id,
+            run_id = run.id,
+            order = "asc"
         )
         
         output_file_id = api_response.data[0].content[0].text.annotations[0].file_path.file_id
@@ -141,7 +142,7 @@ def end_interview_and_save():
 
         filename = f"{current_time} {user_info['면접을 볼 회사']} interview contents.txt"
 
-        os.makedirs("interview contents", exist_ok=True)
+        os.makedirs("interview contents", exist_ok = True)
 
         with open(os.path.join("interview contents", filename), 'wb') as f:
             f.write(new_data.read())
@@ -155,12 +156,12 @@ def end_interview_and_save():
 def start_interview_process():
     with con1:
         interview_company = st.text_input("면접을 볼 회사를 입력해주세요", 
-                                        value=st.session_state.get('interview_company', ''))
+                                        value = st.session_state.get('interview_company', ''))
         user_info["면접을 볼 회사"] = interview_company
         st.session_state.user_info = user_info
 
     with con4:
-        if st.button("면접 시작", use_container_width=True):
+        if st.button("면접 시작", use_container_width = True):
             if not st.session_state.interview_messages:
                 st.session_state.interview_messages = [{"role": "user", "content": f"""
                     당신은 모의면접관입니다. 사용자 정보에 따라 사용자에게 모의면접을 실시하세요
@@ -171,15 +172,15 @@ def start_interview_process():
             
             if "assistant" not in st.session_state:
                 st.session_state.assistant = client.beta.assistants.create(
-                    instructions="사용자 정보에 따라 모의 면접을 도와주세요.",
-                    name="모의면접관",
-                    model="gpt-4o-mini",
-                    tools=[{"type": "code_interpreter"}]
+                    instructions = "사용자 정보에 따라 모의 면접을 도와주세요.",
+                    name = "모의면접관",
+                    model = "gpt-4o-mini",
+                    tools = [{"type": "code_interpreter"}]
                 )
             
             if "thread" not in st.session_state:
                 st.session_state.thread = client.beta.threads.create(
-                    messages=st.session_state.interview_messages
+                    messages = st.session_state.interview_messages
                 )
 
             st.session_state["interview_started"] = True
@@ -196,14 +197,14 @@ def interview_in_progress():
         assistant = st.session_state.assistant
 
         client.beta.threads.messages.create(
-            thread_id=thread.id,
-            role="user",
-            content="면접 시작"
+            thread_id = thread.id,
+            role = "user",
+            content = "면접 시작"
         )
 
         run = client.beta.threads.runs.create_and_poll(
-            thread_id=thread.id,
-            assistant_id=assistant.id
+            thread_id = thread.id,
+            assistant_id = assistant.id
         )
 
         while run.status == 'requires_action':
@@ -217,16 +218,16 @@ def interview_in_progress():
                 tool_outputs.append({"tool_call_id": tool.id, "output": str(output)})
 
             run = client.beta.threads.runs.submit_tool_outputs_and_poll(
-                thread_id=thread.id,
-                run_id=run.id,
-                tool_outputs=tool_outputs
+                thread_id = thread.id,
+                run_id = run.id,
+                tool_outputs = tool_outputs
             )
 
         if run.status == 'completed':
             api_response = client.beta.threads.messages.list(
-                thread_id=thread.id,
-                run_id=run.id,
-                order="asc"
+                thread_id = thread.id,
+                run_id = run.id,
+                order = "asc"
             )
             
             for data in api_response.data:
@@ -249,14 +250,14 @@ def interview_in_progress():
         assistant = st.session_state.assistant
 
         client.beta.threads.messages.create(
-            thread_id=thread.id,
-            role="user",
-            content=prompt
+            thread_id = thread.id,
+            role = "user",
+            content = prompt
         )
 
         run = client.beta.threads.runs.create_and_poll(
-            thread_id=thread.id,
-            assistant_id=assistant.id
+            thread_id = thread.id,
+            assistant_id = assistant.id
         )
 
         while run.status == 'requires_action':
@@ -279,16 +280,16 @@ def interview_in_progress():
                 )
 
             run = client.beta.threads.runs.submit_tool_outputs_and_poll(
-                thread_id=thread.id,
-                run_id=run.id,
-                tool_outputs=tool_outputs
+                thread_id = thread.id,
+                run_id = run.id,
+                tool_outputs = tool_outputs
             )
 
         if run.status == 'completed':
             api_response = client.beta.threads.messages.list(
-                thread_id=thread.id,
-                run_id=run.id,
-                order="asc"
+                thread_id = thread.id,
+                run_id = run.id,
+                order = "asc"
             )
             
             for data in api_response.data:
@@ -311,15 +312,15 @@ def end_interview_and_download():
     with con2:
         with open(os.path.join("interview contents", f"{st.session_state.current_time} {user_info['면접을 볼 회사']} interview contents.txt"), "rb") as file:
             st.download_button(
-                label="면접 내용 다운로드",
-                data=file,
-                file_name=f"{st.session_state.current_time} {user_info['면접을 볼 회사']} interview contents.txt",
-                mime="text/csv",
-                use_container_width=True
+                label = "면접 내용 다운로드",
+                data = file,
+                file_name = f"{st.session_state.current_time} {user_info['면접을 볼 회사']} interview contents.txt",
+                mime = "text/csv",
+                use_container_width = True
             )
 
     with con4:
-        if st.button("결과 확인", use_container_width=True):
+        if st.button("결과 확인", use_container_width = True):
             st.switch_page("pages/3_Interview result.py")
         st.stop()
 
@@ -327,7 +328,7 @@ def end_interview_and_download():
 if start_interview:
     interview_in_progress()
     with con4:
-        if st.button("면접 종료", use_container_width=True):
+        if st.button("면접 종료", use_container_width = True):
             end_interview_and_save()
             st.rerun()
 
