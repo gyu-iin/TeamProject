@@ -120,7 +120,7 @@ with con1:
         st.write("### 면접 기록")
         if interview_content is None:
             interview_contents_recorded = os.listdir("interview contents")
-            st.write(interview_contents_recorded)
+            st.write(f"Recorded contents: {interview_contents_recorded}") 
             if len(interview_contents_recorded) > 1:
                 if interview_contents_recorded:
                     with st.expander("파일 목록" ,expanded = True):
