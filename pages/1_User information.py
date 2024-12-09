@@ -39,6 +39,8 @@ if user_edu:
 if user_exp:
     st.session_state['user_exp'] = user_exp
 
+print(st.session_state.user_name)
+
 if 'user_info' in st.session_state:
     user_info = st.session_state['user_info']
 elif 'user_info' not in st.session_state or any(globals().get(key) is not None for key in globals(keys)):
