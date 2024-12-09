@@ -50,11 +50,13 @@ def generate_tips_with_interview(messages):
     thread = st.session_state.tip_thread
 
     assistant = st.session_state.tip_assistant
+
     client.beta.threads.messages.create(
             thread_id = thread.id,
             role = "user",
             content = messages
     )
+
     run = client.beta.threads.runs.create_and_poll(
         thread_id = thread.id,
         assistant_id = assistant.id
@@ -66,7 +68,7 @@ def generate_tips_with_interview(messages):
             run_id = run.id,
             order = "asc"
         )
-        st.write(print(api_response))
+    st.write(print(run.status))
     tip_generate(api_response)
 
 def tip_generate(api_response):    
