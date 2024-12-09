@@ -85,7 +85,7 @@ def tip_generate(api_response):
                 content += '.'
             return content
     except OpenAIError as e:
-        return f"OpenAI API 오류 발생: {e}"
+        return f"OpenAI API 오류 발생: {e}", print(api_response)
     st.session_state.tip_started = False
     st.session_state.tip_ended = True
 
