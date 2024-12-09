@@ -38,8 +38,12 @@ if user_edu:
     st.session_state['user_edu'] = user_edu
 if user_exp:
     st.session_state['user_exp'] = user_exp
-
-st.write(globals().get(keys[0]))
+if globals().get(keys[0]) is None:
+    st.write("None")
+elif globals().get(keys[0]) is "":
+    st.write("Null")
+else:
+    st.write(globals().get(keys[0]))
 
 if 'user_info' in st.session_state:
     user_info = st.session_state['user_info']
