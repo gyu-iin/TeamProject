@@ -18,15 +18,15 @@ client = st.session_state.get('openai_client', None)
 
 def check_user_info_and_api():
     with con1:
-        if user_info is None or any(value is None for key, value in user_info.items() if key != '면접을 볼 회사'):
-                if st.button("사용자 정보가 입력되지 않았습니다."):
-                    st.switch_page("pages/1_User information.py")
-                st.stop()
-
         if client is None:
             if st.button("사용자 정보에서 API Key가 입력되지 않았습니다."):
                 st.switch_page("pages/1_User information.py")
             st.stop()
+
+        if user_info is None or any(value is None for key, value in user_info.items() if key != '면접을 볼 회사'):
+                if st.button("사용자 정보가 입력되지 않았습니다."):
+                    st.switch_page("pages/1_User information.py")
+                st.stop()    
 
 check_user_info_and_api()
 
