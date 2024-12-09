@@ -96,7 +96,7 @@ def tip_generate(response):
 def show_message(tips):
     with con1:
         with st.chat_message("assistant"):
-            st.markdown(tips)
+            st.markdown(msg["content"])
 
 with con1:
     for msg in st.session_state.tip_messages:
