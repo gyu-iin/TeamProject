@@ -27,6 +27,7 @@ if user_info is None or any(value is None for key, value in user_info.items() if
 current_time = st.session_state.get('current_time', None)
 
 summary_started = st.session_state.get('summary_started', False)
+summary_ended = st.session_state.get('summary_ended', False)
 
 if not os.path.exists("interview contents"):
             os.makedirs("interview contents", exist_ok = True)
@@ -83,7 +84,7 @@ if "interview_summary" not in st.session_state:
 
 col1, col2 = st.columns([7, 3])
 
-if not summary_started:
+if not summary_started and not summary_ended:
     with col2:
         if st.button("면접 요약 확인하기"):
             summary_started = True
@@ -121,11 +122,14 @@ if summary_started:
 
             summary = completion.choices[0].message.content
             st.session_state["interview_summary"] = summary
+            st.session_state.summary_started = False
+            st.session_state.summary_ended = True
 
         except Exception as e:
             st.error(f"면접 결과 요약 또는 점수 평가 중 오류가 발생했습니다: {e}")
             st.stop()
 
+if summary_ended:
     # 결과 출력
     summary = st.session_state.get("interview_summary", "")
     if summary:
@@ -158,6 +162,7 @@ if summary_started:
         st.subheader("이번 면접이 어려웠다면")
         if st.button("면접 꿀팁 얻으러 가기"):
             st.switch_page("pages/4_Interview Tip.py")
+            
     # 앱 다시 시작 옵션
     with col3:
         st.subheader("더 나은 면접을 위해")
@@ -167,5 +172,6 @@ if summary_started:
                 del st.session_state.thread
                 del st.session_state.interview_messages
                 st.session_state.interview_ended = False
-                summary_started = False
+                st.session_state.summary_started = False
+                st.session_state.summary_ended = False
                 st.switch_page("pages/1_User information.py")
