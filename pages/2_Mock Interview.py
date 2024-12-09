@@ -16,7 +16,6 @@ con2, con3, con4 = st.columns(3)
 user_info = st.session_state.get('user_info', None)
 client = st.session_state.get('openai_client', None)
 
-st.write(user_info)
 def check_user_info_and_api():
     with con1:
         if user_info is None or any(value is None for key, value in user_info.items() if key != '면접을 볼 회사'):
