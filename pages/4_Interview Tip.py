@@ -230,9 +230,12 @@ if tip_ended:
     with con4:
         st.subheader("꿀팁과 함께")
         if st.button("면접 진행하러 가기"):
-            del st.session_state.thread
-            del st.session_state.interview_messages
+            if 'thread' in st.session_state:
+                del st.session_state.thread
+            if 'interview_messages' in st.session_state:
+                del st.session_state.interview_messages
             del st.session_state.tip_messages
+            del st.session_state.tip_thread
             st.session_state.job_title = None
             st.session_state.interview_ended = False
             st.session_state.summary_started = False

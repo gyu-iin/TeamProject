@@ -176,8 +176,10 @@ if summary_ended:
         col3, col4 = st.columns([3.5, 6.5])
         with col4:
             if st.button("다시 시작하기"):
-                del st.session_state.thread
-                del st.session_state.interview_messages
+                if 'thread' in st.session_state:
+                    del st.session_state.thread
+                if 'interview_messages' in st.session_state:
+                    del st.session_state.interview_messages
                 del st.session_state.result_messages
                 st.session_state.interview_ended = False
                 st.session_state.summary_started = False
