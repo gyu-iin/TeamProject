@@ -147,8 +147,7 @@ with con1:
                 
             if interview_content:
                 messages = [
-                    {"role": "user"},
-                    {"content": f"""
+                    f"""
                     사용자의 면접 기록과, 사용자 정보, 선호 직업명을 참고하여 면접 준비 팁을 작성해주세요.
                     면접 기록:
                     {interview_content}
@@ -162,17 +161,17 @@ with con1:
                     작성 항목:
                     1. 면접 기록에 기반한 사용자 피드백
                     2. 선호 직업에 특화된 맞춤형 면접 준비 팁
-                    각각의 항목을 명확히 구분하여 작성해주세요."""}]
+                    각각의 항목을 명확히 구분하여 작성해주세요."""]
 
                 if "tip_thread" not in st.session_state:
                     st.session_state.thread = client.beta.threads.create(
-                        messages = messages
+                        role = "user",
+                        content = messages 
                     )
 
             else:
                 messages =[
-                        {"role": "user"},
-                        {"content": f"""
+                        f"""
                         사용자 정보와 선호 직업에 특화된 면접 준비 팁을 작성해주세요.
                         선호 직업:
                         {job_title}
@@ -182,12 +181,13 @@ with con1:
 
                         작성 항목:
                         1. 선호직업에 맞는 면접 준비 팁
-                        """}
+                        """
                 ]
 
                 if "tip_thread" not in st.session_state:
                     st.session_state.thread = client.beta.threads.create(
-                        messages = messages
+                        role = "user",
+                        content = messages
                     )
 
             try: 
