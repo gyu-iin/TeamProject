@@ -111,7 +111,6 @@ with col1:
                 st.session_state['user_info'] = {"이름": None, "나이": None, "관심분야": None, "학력": None, "경력사항": None, "면접을 볼 회사": None}
                 submit_delete_user_info = False
                 st.rerun()
-                st.success("사용자 정보 삭제 완료")
             else:
                 st.write("사용자 정보가 삭제되지 않았습니다")
 
