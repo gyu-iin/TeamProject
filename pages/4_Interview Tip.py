@@ -10,7 +10,6 @@ st.title("💼 면접 준비 팁 제공")
 # OpenAI API Key 가져오면 없앨 입력 코드
 api_key = st.text_input("OpenAI API Key", type="password", value=st.session_state.get("api_key", ""))
 if api_key:
-    openai.api_key = api_key
     st.session_state["api_key"] = api_key
 else:
     st.warning("OpenAI API Key를 입력하세요.")
@@ -28,6 +27,9 @@ if os.path.exists(interview_file_path):
     st.write(interview_content)
 else:
     st.warning("면접 기록이 없습니다. 먼저 모의 면접을 진행해주세요.")
+
+# OpenAI Client 객체 초기화
+client = openai.Client(api_key=st.session_state["api_key"])  # OpenAI API key를 client 객체에 전달
 
 # 면접 준비 팁 생성 함수
 @st.cache_data
@@ -62,13 +64,15 @@ def generate_tips_with_interview(job_title, interview_content=None):
         ]
     
     try:
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
+        # client 객체를 통해 최신 방식으로 호출
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",  # 원하는 모델명을 입력
             messages=messages,
             max_tokens=1000,
             temperature=0.7
         )
-        content = response["choices"][0]["message"]["content"]
+        content = response.choices[0].message.content  # message에서 content 직접 접근
+
         # 문장이 중간에 끊기지 않도록 처리
         if not content.endswith(("다.", "요.", "습니다.", "습니까?", "에요.")):
             content = content.rsplit('.', 1)[0] + '.'
