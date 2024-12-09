@@ -26,6 +26,8 @@ if client is None:
         st.switch_page("pages/1_User information.py")
     st.stop()
 
+current_time = st.session_state.get('current_time', None)
+
 # Chat history retrieval
 if "result_messages" not in st.session_state:
     st.session_state.result_messages = []
