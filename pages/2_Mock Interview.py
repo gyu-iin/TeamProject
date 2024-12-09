@@ -25,9 +25,13 @@ def check_user_info_and_api():
             st.stop()
 
         if user_info is None or any(value is None for key, value in user_info.items() if key != '면접을 볼 회사'):
-                if st.button("사용자 정보가 입력되지 않았습니다."):
-                    st.switch_page("pages/1_User information.py")
-                st.stop()    
+            if user_info is None:
+                st.warning("사용자 정보가 입력되지 않았습니다.")
+            elif any(value is None for key, value in user_info.items() if key != '면접을 볼 회사'):
+                st.warning("사용자 정보 중 일부가 입력되지 않았습니다.")
+            if st.button("사용자 정보 입력하러 가기."):
+                st.switch_page("pages/1_User information.py")
+            st.stop()   
 
 check_user_info_and_api()
 
@@ -65,7 +69,6 @@ def get_file_content_infinite(client, output_file_id, wait_time=2):
 ## 면접 종료 함수
 def end_interview_and_save():
     msg = {"role": "user", "content": "면접 종료"}
-    st.session_state.interview_messages.append(msg)
     
     thread = st.session_state.thread
 

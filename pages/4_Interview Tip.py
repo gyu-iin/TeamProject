@@ -22,53 +22,64 @@ if user_info is None:
 current_time = st.session_state.get('current_time', None)
 
 # 면접 기록 확인
-interview_file_path = os.path.join("interview contents", f"{current_time} {user_info['면접을 볼 회사']} interview contents.txt")
+try:
+    with open(os.path.join("interview contents", f"{st.session_state.current_time} {user_info["면접을 볼 회사"]} interview contents.txt"), "rb") as file:
+        interview_messages = file.read()
 
-if os.path.exists(interview_file_path):
-    # 면접 기록이 파일에 존재하면 파일을 읽어오기
-    with open(interview_file_path, "r",  encoding="utf-8") as file:
-        interview_content = file.read()
-    st.session_state["interview_record"] = [{"role": "user", "content": interview_content}]
-    st.write("### 면접 기록")
-    st.write(interview_content)
-else:
-    st.warning("면접 기록이 없습니다. 먼저 모의 면접을 진행해주세요.")
-    col1, col2 = st.columns([7.5, 2.5])
+except FileNotFoundError:
+    st.warning("면접 기록이 없습니다. 먼저 모의 면접을 진행해주세요. 또는 파일이 존재한다면 업로드 해주세요")
+    col1, col2 = st.columns([2 , 5.5, 2.5])
+    with col1:
+        st.button("파일 업로드"):
+        uploaded_file = st.file_uploader("면접 기록 파일을 올려주세요")
+
     with col2:
         if st.button("면접 진행하러 가기"):
             st.switch_page("pages/2_Mock Interview.py")
 
+if uploaded_file is not None:
+        with open(uploaded_file, "rb") as file:
+            interview_content = file.read()
+
+st.write("### 면접 기록")
+st.write(interview_content)
+
 # 면접 준비 팁 생성 함수
 @st.cache_data
-def generate_tips_with_interview(job_title, interview_content=None):
+def generate_tips_with_interview():
     if interview_content:
         messages = [
-            {"role": "system", "content": "You are an expert interview coach. Please respond in Korean."},
+            {"role": "system", "content": "당신은 면접 보좌관입니다."},
             {
                 "role": "user",
                 "content": f"""
-                사용자의 면접 기록과, 사용자 정보, 직업명 "{job_title}"을 참고하여 면접 준비 팁을 작성해주세요.
+                사용자의 면접 기록과, 사용자 정보, 선호 직업명을 참고하여 면접 준비 팁을 작성해주세요.
                 면접 기록:
                 {interview_content}
 
                 사용자 정보:
                 {user_info}
 
+                선호 직업명:
+                {job_title}
+
                 작성 항목:
                 1. 면접 기록에 기반한 사용자 피드백
-                2. "{job_title}" 직업에 특화된 맞춤형 면접 준비 팁
+                2. 선호 직업에 특화된 맞춤형 면접 준비 팁
                 각각의 항목을 명확히 구분하여 작성해주세요."""}
         ]
     else:
         messages = [
-            {"role": "system", "content": "You are an expert interview coach. Please respond in Korean."},
+            {"role": "system", "content": "당신은 면접 보좌관입니다."},
             {
                 "role": "user",
                 "content": f"""
-                "{job_title}" 직업에 특화된 면접 준비 팁을 작성해주세요.
+                사용자 정보와 선호 직업에 특화된 면접 준비 팁을 작성해주세요.
+                선호 직업:
+                {job_title}
                 
                 작성 항목:
-                1. "{job_title}" 직업에 맞는 면접 준비 팁
+                1. 선호직업에 맞는 면접 준비 팁
                 """
             }
         ]
@@ -100,7 +111,8 @@ def generate_tips_with_interview(job_title, interview_content=None):
 
 # 직업명 입력과 팁 생성
 st.write("### 면접 준비 팁 생성")
-job_title = st.text_input("직업명을 입력하세요 (예: 데이터 분석가, 소프트웨어 엔지니어)")
+with st.expander("선호 직업 입력하기"):
+    job_title = st.text_input("직업명을 입력하세요 (예: 데이터 분석가, 소프트웨어 엔지니어)")
 
 interview_content = "\n".join(
     [f"{msg['role']}: {msg['content']}" for msg in st.session_state.get("interview_messages", [])]
