@@ -41,7 +41,7 @@ if user_exp:
 
 if 'user_info' in st.session_state:
     user_info = st.session_state['user_info']
-elif 'user_info' not in st.session_state or any(globals().get(key) is not "" for key in globals(keys)):
+elif 'user_info' not in st.session_state or any(globals().get(key) is not "" for key in keys):
     user_info = {
         "이름": user_name,
         "나이": user_age,
