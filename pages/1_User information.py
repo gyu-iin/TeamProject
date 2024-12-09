@@ -51,6 +51,9 @@ elif 'user_info' not in st.session_state or any(globals().get(key) is not "" for
         "면접을 볼 회사": None
     }
     st.session_state['user_info'] = user_info
+
+if globals().get(keys[0]) is not "":
+    st.write(globals().get(keys[0]))
 st.write(user_info)
 col1, col2, col3 = st.columns(3)
 
