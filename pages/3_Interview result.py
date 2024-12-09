@@ -5,14 +5,6 @@ import os
 # Page title
 st.title("📖 면접 결과 확인 📖")
 
-## 면접 진행 여부 확인
-end_interview = st.session_state.get('interview_ended', None)
-if end_interview is None or not end_interview:
-    st.error("면접 진행 기록을 찾을 수 없습니다. 먼저 면접을 진행해주세요.")
-    if st.button("면접을 진행하지 않았습니다."):
-        st.switch_page("pages/2_Mock Interview.py")
-    st.stop()
-
 ## OpenAI Client 확인
 client = st.session_state.get('openai_client', None)
 if client is None:
