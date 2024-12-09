@@ -39,6 +39,7 @@ tip_ended = st.session_state.get('tip_ended', False)
 job_title = st.session_state.get('job_title', None)
 if 'job_title' not in st.session_state:
     st.session_state.job_title = job_title
+
 if 'tip_messages' not in st.session_state:
     st.session_state.tip_messages = []
 
@@ -117,9 +118,12 @@ with con1:
                         for idx, file in enumerate(interview_contents_recorded):
                             with st.container(height=100, border=False):
                                 if st.button(f"{idx + 1} {file}", use_container_width=True):
-                                    interview_content = open(os.path.join("interview contents", file))
+                                    interview_content = open(os.path.join("interview contents", file)).read()
                                     st.session_state.interview_content = interview_content
                                 st.divider()
+        elif len(interview_contents_recorded) == 1:
+            with open(os.path.join("interview contents", f"{current_time} {user_info["면접을 볼 회사"]} interview contents.txt")):
+                interview_content = file.read()
         else:
             st.warning("면접 기록이 없습니다. 먼저 모의 면접을 진행해주세요. 또는 파일이 존재한다면 업로드 해주세요")
             uploaded_file = st.file_uploader("면접 기록 파일을 올려주세요")
@@ -228,6 +232,8 @@ if tip_ended:
         if st.button("면접 진행하러 가기"):
             del st.session_state.thread
             del st.session_state.interview_messages
+            del st.session_state.tip_messages
+            st.session_state.job_title = None
             st.session_state.interview_ended = False
             st.session_state.summary_started = False
             st.session_state.summary_ended = False

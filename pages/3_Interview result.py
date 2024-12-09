@@ -48,9 +48,12 @@ if result_messages is None:
                 for idx, file in enumerate(interview_contents_recorded):
                     with st.container(height=100, border=False):
                         if st.button(f"{idx + 1} {file}", use_container_width=True):
-                            result_messages = open(os.path.join("interview contents", file))
+                            result_messages = open(os.path.join("interview contents", file)).read()
                             st.session_state.result_messages = result_messages
                         st.divider()
+        elif len(interview_contents_recorded) == 1:
+            with open(os.path.join("interview contents", f"{current_time} {user_info["면접을 볼 회사"]} interview contents.txt")) as file:
+                result_messages = file.read()
         else:
             st.warning("면접 기록이 없습니다. 먼저 모의 면접을 진행해주세요. 또는 파일이 존재한다면 업로드 해주세요")
             uploaded_file = st.file_uploader("면접 기록 파일을 올려주세요")
@@ -158,7 +161,7 @@ if summary_ended:
     st.download_button(
         label="결과 다운로드 (txt)",
         data=downloadable_text,
-        file_name=f"{st.session_state.current_time} {user_info['면접을 볼 회사']}_interview_summary.txt",
+        file_name=f"{current_time} {user_info['면접을 볼 회사']}_interview_summary.txt",
         mime="text/plain"
     )
     col1, col2, col3 = st.columns([5, 1, 4])
@@ -175,6 +178,7 @@ if summary_ended:
             if st.button("다시 시작하기"):
                 del st.session_state.thread
                 del st.session_state.interview_messages
+                del st.session_state.result_messages
                 st.session_state.interview_ended = False
                 st.session_state.summary_started = False
                 st.session_state.summary_ended = False
