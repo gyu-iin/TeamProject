@@ -60,6 +60,7 @@ def get_interview_status():
     return start_interview, end_interview
 
 start_interview, end_interview = get_interview_status()
+sever_error = False
 
 if "interview_messages" not in st.session_state:
         st.session_state.interview_messages = []
@@ -78,9 +79,10 @@ def get_file_content_infinite(client, output_file_id, wait_time = 2):
     while True:
         try:
             new_data = client.files.content(output_file_id)
+            sever_error = False
             return new_data
         except OpenAIError as e:
-            print(e)
+            sever_error = True
             time.sleep(wait_time)
 
 ## 면접 종료 함수
@@ -339,7 +341,10 @@ if start_interview:
                 try:
                     end_interview_and_save()
                 except Exception as e:
-                    st.error("면접 내용을 정리하는 도중 오류가 발생했습니다. 버튼을 다시 눌러주세요.")
+                    if sever_error:
+                        st.error("면접 내용을 정리하는 도중 서버에서 오류가 발생했습니다. 버튼을 다시 눌러주세요.")
+                    else:
+                        st.error("면접 내용을 정리하는 도중 오류가 발생했습니다. 버튼을 다시 눌러주세요.")
                     st.stop()
             st.rerun()
 
