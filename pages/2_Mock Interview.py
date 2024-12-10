@@ -324,10 +324,20 @@ def end_interview_and_download():
 
 # 화면 흐름 제어
 if start_interview:
-    interview_in_progress()
+    with st.spinner("대답에 따른 다음 질문 가져오는 중..."):
+        try:
+            interview_in_progress()
+        except Exception as e:
+            st.error("다음 질문을 가져오는 도중 오류가 발생했습니다.")
+            st.stop()
     with con4:
         if st.button("면접 종료", use_container_width = True):
-            end_interview_and_save()
+            with st.spinner("면접 내용 정리중..."):
+                try:
+                    end_interview_and_save()
+                except Exception as e:
+                    st.error("면접 내용을 정리하는 도중 오류가 발생했습니다. 버튼을 다시 눌러주세요.")
+                    st.stop()
             st.rerun()
 
 if not end_interview and not start_interview:
@@ -335,3 +345,4 @@ if not end_interview and not start_interview:
 
 if end_interview:
     end_interview_and_download()
+            
