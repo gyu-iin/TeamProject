@@ -42,21 +42,26 @@ if 'result messages' not in st.session_state:
 # 면접 대화 기록 불러오기 - 저장된 파일
 if result_messages is None:
     interview_contents_recorded = os.listdir("interview contents")
-    if len(interview_contents_recorded) > 1:
-        if interview_contents_recorded:
-            with st.expander("파일 목록", expanded = True):
-                for idx, file in enumerate(interview_contents_recorded):
-                    with st.container(height=100, border=False):
-                        if st.button(f"{idx + 1} {file}", use_container_width=True):
-                            result_messages = open(os.path.join("interview contents", file)).read()
-                            st.session_state.result_messages = result_messages
-                        st.divider()
-        elif len(interview_contents_recorded) == 1:
-            with open(os.path.join("interview contents", f"{current_time} {user_info["면접을 볼 회사"]} interview contents.txt")) as file:
-                result_messages = file.read()
-        else:
-            st.warning("면접 기록이 없습니다. 먼저 모의 면접을 진행해주세요. 또는 파일이 존재한다면 업로드 해주세요")
+        if len(interview_contents_recorded) == 0:
+            st.warning("면접 기록이 없습니다. 먼저 모의 면접을 진행해주세요. 또는 파일이 존재한다면 업로드 해주세요.")
             uploaded_file = st.file_uploader("면접 기록 파일을 올려주세요")
+            col1, col2, col3 = st.columns([2 , 5.5, 2.5])
+
+            with col3:
+                if st.button("면접 진행하러 가기"):
+                    st.switch_page("pages/2_Mock Interview.py")
+            if uploaded_file is not None:
+                interview_content = uploaded_file.getvalue()
+                st.session_state.interview_content = interview_content
+
+        elif len(interview_contents_recorded) > 0:
+            with st.expander("파일을 선택해주세요", expanded=True):
+                for idx, file in enumerate(interview_contents_recorded):
+                    if st.button(f"{idx + 1} {file}", use_container_width=True):
+                        with open(os.path.join("interview contents", file), "r", encoding="utf-8") as f:
+                            interview_content = f.read()
+                            st.session_state.interview_content = interview_content
+                            st.write(interview_content)
 
             col1, col2, col3 = st.columns(3)
 
@@ -133,7 +138,7 @@ if summary_started:
             st.session_state.summary_ended = True
 
         except Exception as e:
-            st.error(f"면접 결과 요약 또는 점수 평가 중 오류가 발생했습니다: {e}")
+            st.error(f"면접 결과 요약 또는 점수 평가 중 오류가 발생했습니다.")
             st.stop()
 
 if summary_ended:
