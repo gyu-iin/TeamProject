@@ -4,7 +4,7 @@ from openai import OpenAIError
 import os
 import time
 from datetime import datetime
-
+면접 진행한것처럼 꾸며줘
 st.set_page_config(layout = "centered", initial_sidebar_state = "collapsed")
 
 @st.dialog("주의")
@@ -95,7 +95,10 @@ def end_interview_and_save():
         thread_id = thread.id,
         role = "user",
         content = f"""
-                면접 내용을 요약해서 Q:질문 A:답변 형식으로 정리합니다. 
+                면접 내용을 요약해서 다음과 같은 형식으로 정리합니다. 
+                형식:
+                Q:(질문)
+                A:(답변)
                 이 때 첫 인사와 끝 인사는 맨 위와 아래에 각각 정리하세요.
                 마지막 줄에는 면접이 종료되었습니다.를 작성하세요.
                 정리된 내용은 '{user_info['면접을 볼 회사']} interview contents.txt'로 저장하세요.
