@@ -4,7 +4,7 @@ from openai import OpenAIError
 import os
 import time
 from datetime import datetime
-면접 진행한것처럼 꾸며줘
+
 st.set_page_config(layout = "centered", initial_sidebar_state = "collapsed")
 
 @st.dialog("주의")
