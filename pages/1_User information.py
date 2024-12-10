@@ -23,6 +23,14 @@ def delete_user_info():
     st.session_state['user_info'] = {"이름": None, "나이": None, "관심분야": None, "학력": None, "경력사항": None, "면접을 볼 회사": None}
     submit_delete_user_info = False
     st.rerun()
+    delete_complete()
+  
+@st.dialog("사용자 정보가 삭제되었습니다")
+def delete_complete():
+  col1, col2 = st.columns([8, 2])
+  with col2:
+        if st.button("확인"):
+          st.rerun()
 
 @st.dialog("정말 삭제하시겠습니까?")
 def delete_user_info_during_interview():
@@ -105,7 +113,7 @@ col1, col2, col3 = st.columns(3)
 with col1:
     if st.button("사용자 정보 삭제"):
         if all(st.session_state.get(key) in (None, '') for key in keys):
-            st.warning("사용자 정보가 없습니다.")
+            st.error("사용자 정보가 존재하지 않습니다.")
         else:
             if st.session_state.interview_messages:
                 delete_user_info_during_interview()
