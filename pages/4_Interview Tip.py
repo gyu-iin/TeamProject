@@ -192,7 +192,7 @@ with con1:
                 else:
                     st.success("사용자 정보에 대한 면접 준비 팁이 생성되었습니다!")
             except Exception as e:
-                    st.error(f"팁을 생성하는 도중 오류가 발생했습니다: {e}")
+                    st.error(f"팁을 생성하는 도중 오류가 발생했습니다")
                     st.stop()
             msg = {"role": "assistant", "content": tips}
             show_message(msg)
