@@ -113,7 +113,7 @@ col1, col2, col3 = st.columns(3)
 with col1:
     if st.button("사용자 정보 삭제"):
         if all(st.session_state.get(key) in (None, '') for key in keys):
-            st.error("사용자 정보가 존재하지 않습니다.")
+            st.warning("사용자 정보가 존재하지 않습니다.")
         else:
             if st.session_state.interview_messages:
                 delete_user_info_during_interview()
