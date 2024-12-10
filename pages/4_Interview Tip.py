@@ -118,34 +118,33 @@ with con1:
     if not tip_started and not tip_ended:
         # 면접 기록 확인
         st.write("### 면접 기록")
-        if interview_content is None:
-            interview_contents_recorded = os.listdir("interview contents")
-            st.write(f"Recorded contents: {interview_contents_recorded}") 
-            if len(interview_contents_recorded) > 1:
-                if interview_contents_recorded:
-                    with st.expander("파일 목록" ,expanded = True):
-                        for idx, file in enumerate(interview_contents_recorded):
-                            with st.container(height=100, border=False):
-                                if st.button(f"{idx + 1} {file}", use_container_width=True):
-                                    interview_content = open(os.path.join("interview contents", file)).read()
-                                    st.session_state.interview_content = interview_content
-        elif len(interview_contents_recorded) == 1:
-            with open(os.path.join("interview contents", f"{current_time} {user_info["면접을 볼 회사"]} interview contents.txt")):
-                interview_content = file.read()
-        elif len(interview_contents_recorded) == 0:
+        interview_contents_recorded = os.listdir("interview contents")
+st.write(f"Recorded contents: {interview_contents_recorded}")  # 디버깅용
+
+if interview_content is None:
+    if not tip_started and not tip_ended:
+        if len(interview_contents_recorded) == 0:
             st.warning("면접 기록이 없습니다. 먼저 모의 면접을 진행해주세요. 또는 파일이 존재한다면 업로드 해주세요")
             uploaded_file = st.file_uploader("면접 기록 파일을 올려주세요")
-
             col1, col2 = st.columns([2 , 5.5, 2.5])
 
             with col2:
                 if st.button("면접 진행하러 가기"):
                     st.switch_page("pages/2_Mock Interview.py")
-
             if uploaded_file is not None:
-                with open(uploaded_file, "rb") as file:
-                    interview_content = file.read()
-                    st.session_state.interview_content = interview_content
+                st.write(f"Uploaded file: {uploaded_file.name}")  # 업로드된 파일 확인
+                interview_content = uploaded_file.getvalue()
+                st.session_state.interview_content = interview_content
+                st.write(interview_content)  # 확인용 출력
+
+        elif len(interview_contents_recorded) > 0:
+            with st.expander("파일 목록", expanded=True):
+                for idx, file in enumerate(interview_contents_recorded):
+                    if st.button(f"{idx + 1} {file}", use_container_width=True):
+                        with open(os.path.join("interview contents", file), "r", encoding="utf-8") as f:
+                            interview_content = f.read()
+                            st.session_state.interview_content = interview_content
+                            st.write(interview_content)
 
         if interview_content is not None:
             st.write(interview_content)
